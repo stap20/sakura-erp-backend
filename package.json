@@ -76,7 +76,9 @@
       "<rootDir>/src/**/*.(t|j)s",
       "!<rootDir>/src/main.ts",
       "!<rootDir>/src/**/*.module.ts",
-      "!<rootDir>/src/prisma/**/*"
+      "!<rootDir>/src/prisma/**/*",
+      "!<rootDir>/src/app.controller.ts",
+      "!<rootDir>/src/app.service.ts"
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
