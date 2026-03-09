@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Item {
+  id              String   @id @default(uuid())
+  name            String
+  type            String
+  unitMeasure     String
+  vendorId        String?
+  price           Float
+  categoryId      String?
+  currentQuantity Float    @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  category        Category? @relation(fields: [categoryId], references: [id])
+  vendor          Vendor?   @relation(fields: [vendorId], references: [id])
+  transactions    InventoryTransaction[]
+
+  @@index([type], name: "idx_item_type")
+  @@index([vendorId], name: "idx_item_vendor_id")
+  @@index([categoryId], name: "idx_item_category_id")
+  @@map("inventory_items")
+}
+
+model Category {
+  id              String   @id @default(uuid())
+  name            String   @unique
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  items           Item[]
+
+  @@map("inventory_categories")
+}
+
+model Vendor {
+  id              String   @id @default(uuid())
+  name            String
+  contact         String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  items           Item[]
+  transactions    InventoryTransaction[]
+
+  @@map("inventory_vendors")
+}
+
+model InventoryTransaction {
+  id              String   @id @default(uuid())
+  itemId          String
+  type            String
+  quantity        Float
+  previousStock   Float
+  newStock        Float
+  vendorId        String?
+  notes           String?
+  createdBy       String
+  createdAt       DateTime @default(now())
+
+  item            Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  vendor          Vendor?  @relation(fields: [vendorId], references: [id], onDelete: SetNull)
+
+  @@index([itemId], name: "idx_transaction_item_id")
+  @@index([type], name: "idx_transaction_type")
+  @@index([createdAt], name: "idx_transaction_created_at")
+  @@map("inventory_transactions")
+}
