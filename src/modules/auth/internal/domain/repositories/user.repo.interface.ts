@@ -1,0 +1,13 @@
+import { User } from '../entities/user.aggregate';
+import { Email } from '../value-objects/email.vo';
+import { UserId } from '../value-objects/user-id.vo';
+import { EmployeeId } from '../value-objects/employee-id.vo';
+
+export interface IUserRepository {
+  getById(id: UserId): Promise<User | null>;
+  getByEmail(email: Email): Promise<User | null>;
+  getByEmployeeId(employeeId: EmployeeId): Promise<User | null>;
+  save(user: User): Promise<void>;
+}
+
+export const IUserRepository = Symbol('IUserRepository');

@@ -1,0 +1,16 @@
+{
+    "extends": "./tsconfig.json",
+    "exclude": [
+        "node_modules",
+        "test",
+        "dist",
+        "**/*spec.ts",
+        "src/modules/ticket/internal/infrastructure/database/prisma/generated",
+        "src/modules/work_management/internal/infrastructure/database/prisma/generated",
+        "src/modules/device_solution/internal/infrastructure/database/prisma/generated",
+        "src/modules/device/internal/database/prisma/generated",
+        "src/modules/auth/internal/infrastructure/database/prisma/generated",
+        "eslint.config.mjs",
+        "eslint.config.d.mts"
+    ]
+}
