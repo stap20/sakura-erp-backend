@@ -22,7 +22,12 @@
         "auth:db:generate": "prisma generate --config=./src/modules/auth/internal/infrastructure/database/prisma/prisma.config.ts",
         "auth:db:migrate": "prisma migrate dev --config=./src/modules/auth/internal/infrastructure/database/prisma/prisma.config.ts",
         "auth:db:deploy": "prisma migrate deploy --config=./src/modules/auth/internal/infrastructure/database/prisma/prisma.config.ts",
-        "auth:db:studio": "prisma studio --config=./src/modules/auth/internal/infrastructure/database/prisma/prisma.config.ts"
+        "auth:db:studio": "prisma studio --config=./src/modules/auth/internal/infrastructure/database/prisma/prisma.config.ts",
+        "vendor:db:validate": "prisma validate --config=./src/modules/vendor/internal/infrastructure/database/prisma/prisma.config.ts",
+        "vendor:db:generate": "prisma generate --config=./src/modules/vendor/internal/infrastructure/database/prisma/prisma.config.ts",
+        "vendor:db:migrate": "prisma migrate dev --config=./src/modules/vendor/internal/infrastructure/database/prisma/prisma.config.ts",
+        "vendor:db:deploy": "prisma migrate deploy --config=./src/modules/vendor/internal/infrastructure/database/prisma/prisma.config.ts",
+        "vendor:db:studio": "prisma studio --config=./src/modules/vendor/internal/infrastructure/database/prisma/prisma.config.ts"
     },
     "dependencies": {
         "@elastic/elasticsearch": "^9.2.0",
@@ -48,7 +53,8 @@
         "cron": "^4.3.5",
         "pg": "^8.16.3",
         "reflect-metadata": "^0.2.2",
-        "rxjs": "^7.8.1"
+        "rxjs": "^7.8.1",
+        "vendor-db": "file:src/modules/vendor/internal/infrastructure/database/prisma/generated/client"
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3.2.0",

@@ -6,6 +6,7 @@ import { ConfigModule } from './config/config.module';
 import { SecurityModule } from './modules/security/shared/security.module';
 
 import { AuthModule } from './modules/auth/shared/auth.module';
+import { VendorModule } from './modules/vendor/shared/vendor.module';
 
 import { AppController } from './app.controller';
 
@@ -16,6 +17,7 @@ import { AppController } from './app.controller';
         ConfigModule,
         SecurityModule,
         AuthModule,
+        VendorModule,
     ],
     controllers: [AppController],
 })
