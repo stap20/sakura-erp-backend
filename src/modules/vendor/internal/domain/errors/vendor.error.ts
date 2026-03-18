@@ -1,6 +1,7 @@
 import { DomainError } from 'src/shared/domain/errors/domain.error';
+import { NotFoundDomainError } from 'src/shared/domain/errors/not-found.domain.error';
 
-export class VendorNotFoundError extends DomainError {
+export class VendorNotFoundError extends NotFoundDomainError {
     constructor(vendorId: string) {
         super(`Vendor with id ${vendorId} not found`);
     }

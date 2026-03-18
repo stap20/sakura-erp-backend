@@ -27,7 +27,12 @@
         "vendor:db:generate": "prisma generate --config=./src/modules/vendor/internal/infrastructure/database/prisma/prisma.config.ts",
         "vendor:db:migrate": "prisma migrate dev --config=./src/modules/vendor/internal/infrastructure/database/prisma/prisma.config.ts",
         "vendor:db:deploy": "prisma migrate deploy --config=./src/modules/vendor/internal/infrastructure/database/prisma/prisma.config.ts",
-        "vendor:db:studio": "prisma studio --config=./src/modules/vendor/internal/infrastructure/database/prisma/prisma.config.ts"
+        "vendor:db:studio": "prisma studio --config=./src/modules/vendor/internal/infrastructure/database/prisma/prisma.config.ts",
+        "inventory:db:validate": "prisma validate --config=./src/modules/inventory/internal/infrastructure/database/prisma/prisma.config.ts",
+        "inventory:db:generate": "prisma generate --config=./src/modules/inventory/internal/infrastructure/database/prisma/prisma.config.ts",
+        "inventory:db:migrate": "prisma migrate dev --config=./src/modules/inventory/internal/infrastructure/database/prisma/prisma.config.ts",
+        "inventory:db:deploy": "prisma migrate deploy --config=./src/modules/inventory/internal/infrastructure/database/prisma/prisma.config.ts",
+        "inventory:db:studio": "prisma studio --config=./src/modules/inventory/internal/infrastructure/database/prisma/prisma.config.ts"
     },
     "dependencies": {
         "@elastic/elasticsearch": "^9.2.0",
@@ -54,7 +59,8 @@
         "pg": "^8.16.3",
         "reflect-metadata": "^0.2.2",
         "rxjs": "^7.8.1",
-        "vendor-db": "file:src/modules/vendor/internal/infrastructure/database/prisma/generated/client"
+        "vendor-db": "file:src/modules/vendor/internal/infrastructure/database/prisma/generated/client",
+        "inventory-db": "file:src/modules/inventory/internal/infrastructure/database/prisma/generated/client"
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3.2.0",

@@ -10,8 +10,8 @@ datasource db {
 model Item {
   id           String   @id @default(cuid())
   name         String   @unique
-  type         String   // RAW_MATERIAL | PACKAGING | FINAL_PRODUCT
-  measureUnit  String   // KG | G | L | ML | PCS
+  type         String // RAW_MATERIAL | PACKAGING | FINAL_PRODUCT
+  measureUnit  String // KG | G | L | ML | PCS
   currentStock Decimal  @default(0)
   categoryId   String?
   status       String   @default("ACTIVE")
@@ -40,7 +40,7 @@ model Category {
 model InventoryTransaction {
   id          String   @id @default(cuid())
   itemId      String
-  type        String   // RESTOCK | DEDUCT
+  type        String // RESTOCK | DEDUCT
   quantity    Decimal
   vendorId    String?
   unitPrice   Decimal?
