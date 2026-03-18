@@ -53,6 +53,12 @@ npm run inventory:db:generate
 npm run inventory:db:migrate
 npm run inventory:db:deploy
 npm run inventory:db:studio
+
+# Recipe DB
+npm run recipe:db:generate
+npm run recipe:db:migrate
+npm run recipe:db:deploy
+npm run recipe:db:studio
 ```
 
 ## Architecture
@@ -100,6 +106,7 @@ Each module has its own PostgreSQL database and Prisma client:
 | Auth      | `sakura_users_db`     | `AUTH_DATABASE_URL`      |
 | Vendor    | `sakura_vendor_db`    | `VENDOR_DATABASE_URL`    |
 | Inventory | `sakura_inventory_db` | `INVENTORY_DATABASE_URL` |
+| Recipe    | `sakura_recipe_db`    | `RECIPE_DATABASE_URL`    |
 
 Prisma schemas and generated clients live inside each module's infrastructure directory, not at the project root.
 
@@ -135,3 +142,4 @@ Prisma schemas and generated clients live inside each module's infrastructure di
 - **Vendor**: Complete (CRUD, activate/deactivate)
 - **Security**: Complete (JWT + RBAC)
 - **Inventory**: Complete — 3 item types (RAW_MATERIAL, PACKAGING, FINAL_PRODUCT), categories, restock/deduct with immutable transaction audit trail, soft-delete (archive). E2E tested (28 tests).
+- **Recipe**: Complete — formula/BOM management with version lifecycle (DRAFT → ACTIVE → ARCHIVED), w/w% percentage quantities, add-on placeholders (fragrance/colorants), 100% base formula validation at activation. E2E tested.
