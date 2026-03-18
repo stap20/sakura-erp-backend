@@ -88,6 +88,10 @@ export class RecipeVersion extends AggregateRoot<RecipeVersionId> {
         );
     }
 
+    public equals(other: AggregateRoot<RecipeVersionId>): boolean {
+        return this.id.equals(other.getId());
+    }
+
     public addIngredient(ingredient: RecipeIngredient): void {
         if (!this.status.isDraft()) {
             throw new RecipeVersionNotEditableError();
