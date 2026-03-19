@@ -32,13 +32,14 @@ npx jest --config test/jest-e2e.json --testPathPatterns=items             # Item
 npx jest --config test/jest-e2e.json --testPathPatterns=categories        # Categories suite only
 npx jest --config test/jest-e2e.json --testPathPatterns=recipes           # Recipes suite only
 npx jest --config test/jest-e2e.json --testPathPatterns=purchases         # Purchases suite only
+npx jest --config test/jest-e2e.json --testPathPatterns=production        # Production suite only
 ```
 
 E2E tests use the real databases and clean relevant tables before each suite. Test files live in `test/inventory/`, `test/recipe/`, and `test/purchase/`. The helper `test/helpers/app.setup.ts` bootstraps the full `AppModule` with identical global setup to `main.ts` and exports `cleanInventoryDb()`, `cleanRecipeDb()`, and `cleanPurchaseDb()`.
 
 **Important**: The `test:e2e` script runs with `--runInBand` (all suites in one process, sequentially). This is required because all suites share the same real databases — parallel execution causes `cleanXxxDb()` calls from one suite to corrupt in-flight data of another. Do not remove `--runInBand`.
 
-Current totals: **85 tests** — 28 inventory (19 items + 9 categories) + 30 recipe + 27 purchase.
+Current totals: **104 tests** — 28 inventory (19 items + 9 categories) + 30 recipe + 27 purchase + 19 production.
 
 ### Database (Prisma — per module)
 ```bash
@@ -71,6 +72,12 @@ npm run purchase:db:generate
 npm run purchase:db:migrate
 npm run purchase:db:deploy
 npm run purchase:db:studio
+
+# Production DB
+npm run production:db:generate
+npm run production:db:migrate
+npm run production:db:deploy
+npm run production:db:studio
 ```
 
 ## Architecture
@@ -126,6 +133,7 @@ Each module has its own PostgreSQL database and Prisma client:
 | Inventory | `sakura_inventory_db`  | `INVENTORY_DATABASE_URL`  |
 | Recipe    | `sakura_recipe_db`     | `RECIPE_DATABASE_URL`     |
 | Purchase  | `sakura_purchase_db`   | `PURCHASE_DATABASE_URL`   |
+| Production| `sakura_production_db` | `PRODUCTION_DATABASE_URL` |
 
 Prisma schemas and generated clients live inside each module's infrastructure directory, not at the project root.
 
@@ -169,3 +177,4 @@ Prisma schemas and generated clients live inside each module's infrastructure di
 - **Inventory**: Complete — 3 item types (RAW_MATERIAL, PACKAGING, FINAL_PRODUCT), categories, restock/deduct with immutable transaction audit trail (vendorId + unitPrice), soft-delete (archive). E2E tested (28 tests).
 - **Recipe**: Complete — formula/BOM management with version lifecycle (DRAFT → ACTIVE → ARCHIVED), w/w% percentage quantities, add-on placeholders (fragrance/colorants), 100% base formula validation at activation. E2E tested (30 tests).
 - **Purchase**: Complete — procurement management with PO lifecycle (DRAFT → CONFIRMED → RECEIVED + CANCELLED), vendor snapshot, item validation (RAW_MATERIAL/PACKAGING only), auto-restock on receive with vendorId + unitPrice propagation to InventoryTransaction. Cross-module integration via `IInventoryFacade` (facade pattern). E2E tested (27 tests).
+- **Production**: Complete — manufacturing batch management with ProductionOrder lifecycle (DRAFT → CONFIRMED → EXECUTED | CANCELLED). Entry point = select FINAL_PRODUCT item; auto-finds ACTIVE recipe; batch size = quantityUnits × unitWeightGm; waste% applied to each ingredient line; on execute: deducts all ingredients from inventory + restocks final product; cost snapshot at execution (lineCost + totalMaterialCost) for future Accountant module. Cross-module integration via `IInventoryFacade` + new `IRecipeFacade` (facade pattern). E2E tested (19 tests).
