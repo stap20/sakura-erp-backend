@@ -18,6 +18,7 @@ export interface CreateItemParams {
     type: string;
     measureUnit: string;
     categoryId?: string | null;
+    unitWeightGm?: number | null;
 }
 
 export interface PersistenceItemParams {
@@ -28,12 +29,14 @@ export interface PersistenceItemParams {
     currentStock: number;
     categoryId: string | null;
     status: string;
+    unitWeightGm: number | null;
 }
 
 export interface UpdateItemParams {
     name?: string;
     measureUnit?: string;
     categoryId?: string | null;
+    unitWeightGm?: number | null;
 }
 
 export class Item extends AggregateRoot<ItemId> {
@@ -43,6 +46,7 @@ export class Item extends AggregateRoot<ItemId> {
     private currentStock: number;
     private categoryId: string | null;
     private status: ItemStatus;
+    private unitWeightGm: number | null;
 
     private constructor(
         id: ItemId,
@@ -52,6 +56,7 @@ export class Item extends AggregateRoot<ItemId> {
         currentStock: number,
         categoryId: string | null,
         status: ItemStatus,
+        unitWeightGm: number | null,
     ) {
         super(id);
         this.name = name;
@@ -60,6 +65,7 @@ export class Item extends AggregateRoot<ItemId> {
         this.currentStock = currentStock;
         this.categoryId = categoryId;
         this.status = status;
+        this.unitWeightGm = unitWeightGm;
     }
 
     public static create(params: CreateItemParams): Item {
@@ -81,6 +87,7 @@ export class Item extends AggregateRoot<ItemId> {
             0,
             params.categoryId ?? null,
             status,
+            params.unitWeightGm ?? null,
         );
     }
 
@@ -99,6 +106,7 @@ export class Item extends AggregateRoot<ItemId> {
             params.currentStock,
             params.categoryId,
             status,
+            params.unitWeightGm,
         );
     }
 
@@ -114,6 +122,9 @@ export class Item extends AggregateRoot<ItemId> {
                 throw new InvalidCategoryForItemTypeError();
             }
             this.categoryId = params.categoryId;
+        }
+        if (params.unitWeightGm !== undefined) {
+            this.unitWeightGm = params.unitWeightGm;
         }
     }
 
