@@ -6,6 +6,7 @@ import { RestockItemDto } from 'src/modules/inventory/shared/contracts/restock-i
 import { DeductItemDto } from 'src/modules/inventory/shared/contracts/deduct-item.dto';
 import { ReadItemRepository } from '../repositories/read-item.repository';
 import { ReadProductRepository } from '../repositories/read-product.repository';
+import { ReadPackagingBomRepository } from '../repositories/read-packaging-bom.repository';
 import { RestockItemHandler } from '../../application/commands/restock-item/restock-item.handler';
 import { RestockItemCommand } from '../../application/commands/restock-item/restock-item.command';
 import { DeductItemHandler } from '../../application/commands/deduct-item/deduct-item.handler';
@@ -16,6 +17,7 @@ export class InventoryFacade implements IInventoryFacade {
     constructor(
         private readonly readItemRepository: ReadItemRepository,
         private readonly readProductRepository: ReadProductRepository,
+        private readonly readPackagingBomRepository: ReadPackagingBomRepository,
         private readonly restockItemHandler: RestockItemHandler,
         private readonly deductItemHandler: DeductItemHandler,
     ) {}
@@ -23,6 +25,7 @@ export class InventoryFacade implements IInventoryFacade {
     async getItem(itemId: string): Promise<InventoryItemDto | null> {
         const item = await this.readItemRepository.getById(itemId);
         if (!item) return null;
+        const components = await this.readPackagingBomRepository.getByVariantItemId(itemId);
         return new InventoryItemDto(
             item.id,
             item.name,
@@ -30,6 +33,7 @@ export class InventoryFacade implements IInventoryFacade {
             item.measureUnit,
             item.unitWeightGm ?? null,
             item.weightedAverageUnitPrice ?? null,
+            components.map((c) => ({ packagingItemId: c.packagingItemId, qtyPerUnit: c.qtyPerUnit })),
         );
     }
 

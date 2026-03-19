@@ -29,6 +29,11 @@ export type Item = $Result.DefaultSelection<Prisma.$ItemPayload>
  */
 export type Category = $Result.DefaultSelection<Prisma.$CategoryPayload>
 /**
+ * Model PackagingComponent
+ * 
+ */
+export type PackagingComponent = $Result.DefaultSelection<Prisma.$PackagingComponentPayload>
+/**
  * Model InventoryTransaction
  * 
  */
@@ -184,6 +189,16 @@ export class PrismaClient<
     * ```
     */
   get category(): Prisma.CategoryDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.packagingComponent`: Exposes CRUD operations for the **PackagingComponent** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PackagingComponents
+    * const packagingComponents = await prisma.packagingComponent.findMany()
+    * ```
+    */
+  get packagingComponent(): Prisma.PackagingComponentDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.inventoryTransaction`: Exposes CRUD operations for the **InventoryTransaction** model.
@@ -631,6 +646,7 @@ export namespace Prisma {
     Product: 'Product',
     Item: 'Item',
     Category: 'Category',
+    PackagingComponent: 'PackagingComponent',
     InventoryTransaction: 'InventoryTransaction'
   };
 
@@ -647,7 +663,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "product" | "item" | "category" | "inventoryTransaction"
+      modelProps: "product" | "item" | "category" | "packagingComponent" | "inventoryTransaction"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -873,6 +889,80 @@ export namespace Prisma {
           }
         }
       }
+      PackagingComponent: {
+        payload: Prisma.$PackagingComponentPayload<ExtArgs>
+        fields: Prisma.PackagingComponentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PackagingComponentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackagingComponentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PackagingComponentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackagingComponentPayload>
+          }
+          findFirst: {
+            args: Prisma.PackagingComponentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackagingComponentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PackagingComponentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackagingComponentPayload>
+          }
+          findMany: {
+            args: Prisma.PackagingComponentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackagingComponentPayload>[]
+          }
+          create: {
+            args: Prisma.PackagingComponentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackagingComponentPayload>
+          }
+          createMany: {
+            args: Prisma.PackagingComponentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PackagingComponentCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackagingComponentPayload>[]
+          }
+          delete: {
+            args: Prisma.PackagingComponentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackagingComponentPayload>
+          }
+          update: {
+            args: Prisma.PackagingComponentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackagingComponentPayload>
+          }
+          deleteMany: {
+            args: Prisma.PackagingComponentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PackagingComponentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PackagingComponentUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackagingComponentPayload>[]
+          }
+          upsert: {
+            args: Prisma.PackagingComponentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PackagingComponentPayload>
+          }
+          aggregate: {
+            args: Prisma.PackagingComponentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePackagingComponent>
+          }
+          groupBy: {
+            args: Prisma.PackagingComponentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PackagingComponentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PackagingComponentCountArgs<ExtArgs>
+            result: $Utils.Optional<PackagingComponentCountAggregateOutputType> | number
+          }
+        }
+      }
       InventoryTransaction: {
         payload: Prisma.$InventoryTransactionPayload<ExtArgs>
         fields: Prisma.InventoryTransactionFieldRefs
@@ -1058,6 +1148,7 @@ export namespace Prisma {
     product?: ProductOmit
     item?: ItemOmit
     category?: CategoryOmit
+    packagingComponent?: PackagingComponentOmit
     inventoryTransaction?: InventoryTransactionOmit
   }
 
@@ -1171,10 +1262,14 @@ export namespace Prisma {
 
   export type ItemCountOutputType = {
     transactions: number
+    packagingComponents: number
+    usedAsPackagingIn: number
   }
 
   export type ItemCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     transactions?: boolean | ItemCountOutputTypeCountTransactionsArgs
+    packagingComponents?: boolean | ItemCountOutputTypeCountPackagingComponentsArgs
+    usedAsPackagingIn?: boolean | ItemCountOutputTypeCountUsedAsPackagingInArgs
   }
 
   // Custom InputTypes
@@ -1193,6 +1288,20 @@ export namespace Prisma {
    */
   export type ItemCountOutputTypeCountTransactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: InventoryTransactionWhereInput
+  }
+
+  /**
+   * ItemCountOutputType without action
+   */
+  export type ItemCountOutputTypeCountPackagingComponentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PackagingComponentWhereInput
+  }
+
+  /**
+   * ItemCountOutputType without action
+   */
+  export type ItemCountOutputTypeCountUsedAsPackagingInArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PackagingComponentWhereInput
   }
 
 
@@ -2566,6 +2675,8 @@ export namespace Prisma {
     category?: boolean | Item$categoryArgs<ExtArgs>
     product?: boolean | Item$productArgs<ExtArgs>
     transactions?: boolean | Item$transactionsArgs<ExtArgs>
+    packagingComponents?: boolean | Item$packagingComponentsArgs<ExtArgs>
+    usedAsPackagingIn?: boolean | Item$usedAsPackagingInArgs<ExtArgs>
     _count?: boolean | ItemCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["item"]>
 
@@ -2623,6 +2734,8 @@ export namespace Prisma {
     category?: boolean | Item$categoryArgs<ExtArgs>
     product?: boolean | Item$productArgs<ExtArgs>
     transactions?: boolean | Item$transactionsArgs<ExtArgs>
+    packagingComponents?: boolean | Item$packagingComponentsArgs<ExtArgs>
+    usedAsPackagingIn?: boolean | Item$usedAsPackagingInArgs<ExtArgs>
     _count?: boolean | ItemCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2640,6 +2753,8 @@ export namespace Prisma {
       category: Prisma.$CategoryPayload<ExtArgs> | null
       product: Prisma.$ProductPayload<ExtArgs> | null
       transactions: Prisma.$InventoryTransactionPayload<ExtArgs>[]
+      packagingComponents: Prisma.$PackagingComponentPayload<ExtArgs>[]
+      usedAsPackagingIn: Prisma.$PackagingComponentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3051,6 +3166,8 @@ export namespace Prisma {
     category<T extends Item$categoryArgs<ExtArgs> = {}>(args?: Subset<T, Item$categoryArgs<ExtArgs>>): Prisma__CategoryClient<$Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     product<T extends Item$productArgs<ExtArgs> = {}>(args?: Subset<T, Item$productArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     transactions<T extends Item$transactionsArgs<ExtArgs> = {}>(args?: Subset<T, Item$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    packagingComponents<T extends Item$packagingComponentsArgs<ExtArgs> = {}>(args?: Subset<T, Item$packagingComponentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackagingComponentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    usedAsPackagingIn<T extends Item$usedAsPackagingInArgs<ExtArgs> = {}>(args?: Subset<T, Item$usedAsPackagingInArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackagingComponentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3547,6 +3664,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: InventoryTransactionScalarFieldEnum | InventoryTransactionScalarFieldEnum[]
+  }
+
+  /**
+   * Item.packagingComponents
+   */
+  export type Item$packagingComponentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackagingComponent
+     */
+    select?: PackagingComponentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackagingComponent
+     */
+    omit?: PackagingComponentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackagingComponentInclude<ExtArgs> | null
+    where?: PackagingComponentWhereInput
+    orderBy?: PackagingComponentOrderByWithRelationInput | PackagingComponentOrderByWithRelationInput[]
+    cursor?: PackagingComponentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PackagingComponentScalarFieldEnum | PackagingComponentScalarFieldEnum[]
+  }
+
+  /**
+   * Item.usedAsPackagingIn
+   */
+  export type Item$usedAsPackagingInArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackagingComponent
+     */
+    select?: PackagingComponentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackagingComponent
+     */
+    omit?: PackagingComponentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackagingComponentInclude<ExtArgs> | null
+    where?: PackagingComponentWhereInput
+    orderBy?: PackagingComponentOrderByWithRelationInput | PackagingComponentOrderByWithRelationInput[]
+    cursor?: PackagingComponentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PackagingComponentScalarFieldEnum | PackagingComponentScalarFieldEnum[]
   }
 
   /**
@@ -4648,6 +4813,1093 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: CategoryInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PackagingComponent
+   */
+
+  export type AggregatePackagingComponent = {
+    _count: PackagingComponentCountAggregateOutputType | null
+    _avg: PackagingComponentAvgAggregateOutputType | null
+    _sum: PackagingComponentSumAggregateOutputType | null
+    _min: PackagingComponentMinAggregateOutputType | null
+    _max: PackagingComponentMaxAggregateOutputType | null
+  }
+
+  export type PackagingComponentAvgAggregateOutputType = {
+    qtyPerUnit: number | null
+  }
+
+  export type PackagingComponentSumAggregateOutputType = {
+    qtyPerUnit: number | null
+  }
+
+  export type PackagingComponentMinAggregateOutputType = {
+    id: string | null
+    variantItemId: string | null
+    packagingItemId: string | null
+    qtyPerUnit: number | null
+  }
+
+  export type PackagingComponentMaxAggregateOutputType = {
+    id: string | null
+    variantItemId: string | null
+    packagingItemId: string | null
+    qtyPerUnit: number | null
+  }
+
+  export type PackagingComponentCountAggregateOutputType = {
+    id: number
+    variantItemId: number
+    packagingItemId: number
+    qtyPerUnit: number
+    _all: number
+  }
+
+
+  export type PackagingComponentAvgAggregateInputType = {
+    qtyPerUnit?: true
+  }
+
+  export type PackagingComponentSumAggregateInputType = {
+    qtyPerUnit?: true
+  }
+
+  export type PackagingComponentMinAggregateInputType = {
+    id?: true
+    variantItemId?: true
+    packagingItemId?: true
+    qtyPerUnit?: true
+  }
+
+  export type PackagingComponentMaxAggregateInputType = {
+    id?: true
+    variantItemId?: true
+    packagingItemId?: true
+    qtyPerUnit?: true
+  }
+
+  export type PackagingComponentCountAggregateInputType = {
+    id?: true
+    variantItemId?: true
+    packagingItemId?: true
+    qtyPerUnit?: true
+    _all?: true
+  }
+
+  export type PackagingComponentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PackagingComponent to aggregate.
+     */
+    where?: PackagingComponentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PackagingComponents to fetch.
+     */
+    orderBy?: PackagingComponentOrderByWithRelationInput | PackagingComponentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PackagingComponentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PackagingComponents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PackagingComponents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PackagingComponents
+    **/
+    _count?: true | PackagingComponentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PackagingComponentAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PackagingComponentSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PackagingComponentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PackagingComponentMaxAggregateInputType
+  }
+
+  export type GetPackagingComponentAggregateType<T extends PackagingComponentAggregateArgs> = {
+        [P in keyof T & keyof AggregatePackagingComponent]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePackagingComponent[P]>
+      : GetScalarType<T[P], AggregatePackagingComponent[P]>
+  }
+
+
+
+
+  export type PackagingComponentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PackagingComponentWhereInput
+    orderBy?: PackagingComponentOrderByWithAggregationInput | PackagingComponentOrderByWithAggregationInput[]
+    by: PackagingComponentScalarFieldEnum[] | PackagingComponentScalarFieldEnum
+    having?: PackagingComponentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PackagingComponentCountAggregateInputType | true
+    _avg?: PackagingComponentAvgAggregateInputType
+    _sum?: PackagingComponentSumAggregateInputType
+    _min?: PackagingComponentMinAggregateInputType
+    _max?: PackagingComponentMaxAggregateInputType
+  }
+
+  export type PackagingComponentGroupByOutputType = {
+    id: string
+    variantItemId: string
+    packagingItemId: string
+    qtyPerUnit: number
+    _count: PackagingComponentCountAggregateOutputType | null
+    _avg: PackagingComponentAvgAggregateOutputType | null
+    _sum: PackagingComponentSumAggregateOutputType | null
+    _min: PackagingComponentMinAggregateOutputType | null
+    _max: PackagingComponentMaxAggregateOutputType | null
+  }
+
+  type GetPackagingComponentGroupByPayload<T extends PackagingComponentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PackagingComponentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PackagingComponentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PackagingComponentGroupByOutputType[P]>
+            : GetScalarType<T[P], PackagingComponentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PackagingComponentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    variantItemId?: boolean
+    packagingItemId?: boolean
+    qtyPerUnit?: boolean
+    variantItem?: boolean | ItemDefaultArgs<ExtArgs>
+    packagingItem?: boolean | ItemDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["packagingComponent"]>
+
+  export type PackagingComponentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    variantItemId?: boolean
+    packagingItemId?: boolean
+    qtyPerUnit?: boolean
+    variantItem?: boolean | ItemDefaultArgs<ExtArgs>
+    packagingItem?: boolean | ItemDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["packagingComponent"]>
+
+  export type PackagingComponentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    variantItemId?: boolean
+    packagingItemId?: boolean
+    qtyPerUnit?: boolean
+    variantItem?: boolean | ItemDefaultArgs<ExtArgs>
+    packagingItem?: boolean | ItemDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["packagingComponent"]>
+
+  export type PackagingComponentSelectScalar = {
+    id?: boolean
+    variantItemId?: boolean
+    packagingItemId?: boolean
+    qtyPerUnit?: boolean
+  }
+
+  export type PackagingComponentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "variantItemId" | "packagingItemId" | "qtyPerUnit", ExtArgs["result"]["packagingComponent"]>
+  export type PackagingComponentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    variantItem?: boolean | ItemDefaultArgs<ExtArgs>
+    packagingItem?: boolean | ItemDefaultArgs<ExtArgs>
+  }
+  export type PackagingComponentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    variantItem?: boolean | ItemDefaultArgs<ExtArgs>
+    packagingItem?: boolean | ItemDefaultArgs<ExtArgs>
+  }
+  export type PackagingComponentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    variantItem?: boolean | ItemDefaultArgs<ExtArgs>
+    packagingItem?: boolean | ItemDefaultArgs<ExtArgs>
+  }
+
+  export type $PackagingComponentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PackagingComponent"
+    objects: {
+      variantItem: Prisma.$ItemPayload<ExtArgs>
+      packagingItem: Prisma.$ItemPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      variantItemId: string
+      packagingItemId: string
+      qtyPerUnit: number
+    }, ExtArgs["result"]["packagingComponent"]>
+    composites: {}
+  }
+
+  type PackagingComponentGetPayload<S extends boolean | null | undefined | PackagingComponentDefaultArgs> = $Result.GetResult<Prisma.$PackagingComponentPayload, S>
+
+  type PackagingComponentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PackagingComponentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PackagingComponentCountAggregateInputType | true
+    }
+
+  export interface PackagingComponentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PackagingComponent'], meta: { name: 'PackagingComponent' } }
+    /**
+     * Find zero or one PackagingComponent that matches the filter.
+     * @param {PackagingComponentFindUniqueArgs} args - Arguments to find a PackagingComponent
+     * @example
+     * // Get one PackagingComponent
+     * const packagingComponent = await prisma.packagingComponent.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PackagingComponentFindUniqueArgs>(args: SelectSubset<T, PackagingComponentFindUniqueArgs<ExtArgs>>): Prisma__PackagingComponentClient<$Result.GetResult<Prisma.$PackagingComponentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PackagingComponent that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PackagingComponentFindUniqueOrThrowArgs} args - Arguments to find a PackagingComponent
+     * @example
+     * // Get one PackagingComponent
+     * const packagingComponent = await prisma.packagingComponent.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PackagingComponentFindUniqueOrThrowArgs>(args: SelectSubset<T, PackagingComponentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PackagingComponentClient<$Result.GetResult<Prisma.$PackagingComponentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PackagingComponent that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackagingComponentFindFirstArgs} args - Arguments to find a PackagingComponent
+     * @example
+     * // Get one PackagingComponent
+     * const packagingComponent = await prisma.packagingComponent.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PackagingComponentFindFirstArgs>(args?: SelectSubset<T, PackagingComponentFindFirstArgs<ExtArgs>>): Prisma__PackagingComponentClient<$Result.GetResult<Prisma.$PackagingComponentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PackagingComponent that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackagingComponentFindFirstOrThrowArgs} args - Arguments to find a PackagingComponent
+     * @example
+     * // Get one PackagingComponent
+     * const packagingComponent = await prisma.packagingComponent.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PackagingComponentFindFirstOrThrowArgs>(args?: SelectSubset<T, PackagingComponentFindFirstOrThrowArgs<ExtArgs>>): Prisma__PackagingComponentClient<$Result.GetResult<Prisma.$PackagingComponentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PackagingComponents that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackagingComponentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PackagingComponents
+     * const packagingComponents = await prisma.packagingComponent.findMany()
+     * 
+     * // Get first 10 PackagingComponents
+     * const packagingComponents = await prisma.packagingComponent.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const packagingComponentWithIdOnly = await prisma.packagingComponent.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PackagingComponentFindManyArgs>(args?: SelectSubset<T, PackagingComponentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackagingComponentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PackagingComponent.
+     * @param {PackagingComponentCreateArgs} args - Arguments to create a PackagingComponent.
+     * @example
+     * // Create one PackagingComponent
+     * const PackagingComponent = await prisma.packagingComponent.create({
+     *   data: {
+     *     // ... data to create a PackagingComponent
+     *   }
+     * })
+     * 
+     */
+    create<T extends PackagingComponentCreateArgs>(args: SelectSubset<T, PackagingComponentCreateArgs<ExtArgs>>): Prisma__PackagingComponentClient<$Result.GetResult<Prisma.$PackagingComponentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PackagingComponents.
+     * @param {PackagingComponentCreateManyArgs} args - Arguments to create many PackagingComponents.
+     * @example
+     * // Create many PackagingComponents
+     * const packagingComponent = await prisma.packagingComponent.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PackagingComponentCreateManyArgs>(args?: SelectSubset<T, PackagingComponentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PackagingComponents and returns the data saved in the database.
+     * @param {PackagingComponentCreateManyAndReturnArgs} args - Arguments to create many PackagingComponents.
+     * @example
+     * // Create many PackagingComponents
+     * const packagingComponent = await prisma.packagingComponent.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PackagingComponents and only return the `id`
+     * const packagingComponentWithIdOnly = await prisma.packagingComponent.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PackagingComponentCreateManyAndReturnArgs>(args?: SelectSubset<T, PackagingComponentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackagingComponentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PackagingComponent.
+     * @param {PackagingComponentDeleteArgs} args - Arguments to delete one PackagingComponent.
+     * @example
+     * // Delete one PackagingComponent
+     * const PackagingComponent = await prisma.packagingComponent.delete({
+     *   where: {
+     *     // ... filter to delete one PackagingComponent
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PackagingComponentDeleteArgs>(args: SelectSubset<T, PackagingComponentDeleteArgs<ExtArgs>>): Prisma__PackagingComponentClient<$Result.GetResult<Prisma.$PackagingComponentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PackagingComponent.
+     * @param {PackagingComponentUpdateArgs} args - Arguments to update one PackagingComponent.
+     * @example
+     * // Update one PackagingComponent
+     * const packagingComponent = await prisma.packagingComponent.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PackagingComponentUpdateArgs>(args: SelectSubset<T, PackagingComponentUpdateArgs<ExtArgs>>): Prisma__PackagingComponentClient<$Result.GetResult<Prisma.$PackagingComponentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PackagingComponents.
+     * @param {PackagingComponentDeleteManyArgs} args - Arguments to filter PackagingComponents to delete.
+     * @example
+     * // Delete a few PackagingComponents
+     * const { count } = await prisma.packagingComponent.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PackagingComponentDeleteManyArgs>(args?: SelectSubset<T, PackagingComponentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PackagingComponents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackagingComponentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PackagingComponents
+     * const packagingComponent = await prisma.packagingComponent.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PackagingComponentUpdateManyArgs>(args: SelectSubset<T, PackagingComponentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PackagingComponents and returns the data updated in the database.
+     * @param {PackagingComponentUpdateManyAndReturnArgs} args - Arguments to update many PackagingComponents.
+     * @example
+     * // Update many PackagingComponents
+     * const packagingComponent = await prisma.packagingComponent.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PackagingComponents and only return the `id`
+     * const packagingComponentWithIdOnly = await prisma.packagingComponent.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PackagingComponentUpdateManyAndReturnArgs>(args: SelectSubset<T, PackagingComponentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackagingComponentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PackagingComponent.
+     * @param {PackagingComponentUpsertArgs} args - Arguments to update or create a PackagingComponent.
+     * @example
+     * // Update or create a PackagingComponent
+     * const packagingComponent = await prisma.packagingComponent.upsert({
+     *   create: {
+     *     // ... data to create a PackagingComponent
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PackagingComponent we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PackagingComponentUpsertArgs>(args: SelectSubset<T, PackagingComponentUpsertArgs<ExtArgs>>): Prisma__PackagingComponentClient<$Result.GetResult<Prisma.$PackagingComponentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PackagingComponents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackagingComponentCountArgs} args - Arguments to filter PackagingComponents to count.
+     * @example
+     * // Count the number of PackagingComponents
+     * const count = await prisma.packagingComponent.count({
+     *   where: {
+     *     // ... the filter for the PackagingComponents we want to count
+     *   }
+     * })
+    **/
+    count<T extends PackagingComponentCountArgs>(
+      args?: Subset<T, PackagingComponentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PackagingComponentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PackagingComponent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackagingComponentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PackagingComponentAggregateArgs>(args: Subset<T, PackagingComponentAggregateArgs>): Prisma.PrismaPromise<GetPackagingComponentAggregateType<T>>
+
+    /**
+     * Group by PackagingComponent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PackagingComponentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PackagingComponentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PackagingComponentGroupByArgs['orderBy'] }
+        : { orderBy?: PackagingComponentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PackagingComponentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPackagingComponentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PackagingComponent model
+   */
+  readonly fields: PackagingComponentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PackagingComponent.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PackagingComponentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    variantItem<T extends ItemDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ItemDefaultArgs<ExtArgs>>): Prisma__ItemClient<$Result.GetResult<Prisma.$ItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    packagingItem<T extends ItemDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ItemDefaultArgs<ExtArgs>>): Prisma__ItemClient<$Result.GetResult<Prisma.$ItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PackagingComponent model
+   */
+  interface PackagingComponentFieldRefs {
+    readonly id: FieldRef<"PackagingComponent", 'String'>
+    readonly variantItemId: FieldRef<"PackagingComponent", 'String'>
+    readonly packagingItemId: FieldRef<"PackagingComponent", 'String'>
+    readonly qtyPerUnit: FieldRef<"PackagingComponent", 'Float'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PackagingComponent findUnique
+   */
+  export type PackagingComponentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackagingComponent
+     */
+    select?: PackagingComponentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackagingComponent
+     */
+    omit?: PackagingComponentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackagingComponentInclude<ExtArgs> | null
+    /**
+     * Filter, which PackagingComponent to fetch.
+     */
+    where: PackagingComponentWhereUniqueInput
+  }
+
+  /**
+   * PackagingComponent findUniqueOrThrow
+   */
+  export type PackagingComponentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackagingComponent
+     */
+    select?: PackagingComponentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackagingComponent
+     */
+    omit?: PackagingComponentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackagingComponentInclude<ExtArgs> | null
+    /**
+     * Filter, which PackagingComponent to fetch.
+     */
+    where: PackagingComponentWhereUniqueInput
+  }
+
+  /**
+   * PackagingComponent findFirst
+   */
+  export type PackagingComponentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackagingComponent
+     */
+    select?: PackagingComponentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackagingComponent
+     */
+    omit?: PackagingComponentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackagingComponentInclude<ExtArgs> | null
+    /**
+     * Filter, which PackagingComponent to fetch.
+     */
+    where?: PackagingComponentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PackagingComponents to fetch.
+     */
+    orderBy?: PackagingComponentOrderByWithRelationInput | PackagingComponentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PackagingComponents.
+     */
+    cursor?: PackagingComponentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PackagingComponents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PackagingComponents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PackagingComponents.
+     */
+    distinct?: PackagingComponentScalarFieldEnum | PackagingComponentScalarFieldEnum[]
+  }
+
+  /**
+   * PackagingComponent findFirstOrThrow
+   */
+  export type PackagingComponentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackagingComponent
+     */
+    select?: PackagingComponentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackagingComponent
+     */
+    omit?: PackagingComponentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackagingComponentInclude<ExtArgs> | null
+    /**
+     * Filter, which PackagingComponent to fetch.
+     */
+    where?: PackagingComponentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PackagingComponents to fetch.
+     */
+    orderBy?: PackagingComponentOrderByWithRelationInput | PackagingComponentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PackagingComponents.
+     */
+    cursor?: PackagingComponentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PackagingComponents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PackagingComponents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PackagingComponents.
+     */
+    distinct?: PackagingComponentScalarFieldEnum | PackagingComponentScalarFieldEnum[]
+  }
+
+  /**
+   * PackagingComponent findMany
+   */
+  export type PackagingComponentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackagingComponent
+     */
+    select?: PackagingComponentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackagingComponent
+     */
+    omit?: PackagingComponentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackagingComponentInclude<ExtArgs> | null
+    /**
+     * Filter, which PackagingComponents to fetch.
+     */
+    where?: PackagingComponentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PackagingComponents to fetch.
+     */
+    orderBy?: PackagingComponentOrderByWithRelationInput | PackagingComponentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PackagingComponents.
+     */
+    cursor?: PackagingComponentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PackagingComponents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PackagingComponents.
+     */
+    skip?: number
+    distinct?: PackagingComponentScalarFieldEnum | PackagingComponentScalarFieldEnum[]
+  }
+
+  /**
+   * PackagingComponent create
+   */
+  export type PackagingComponentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackagingComponent
+     */
+    select?: PackagingComponentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackagingComponent
+     */
+    omit?: PackagingComponentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackagingComponentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PackagingComponent.
+     */
+    data: XOR<PackagingComponentCreateInput, PackagingComponentUncheckedCreateInput>
+  }
+
+  /**
+   * PackagingComponent createMany
+   */
+  export type PackagingComponentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PackagingComponents.
+     */
+    data: PackagingComponentCreateManyInput | PackagingComponentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PackagingComponent createManyAndReturn
+   */
+  export type PackagingComponentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackagingComponent
+     */
+    select?: PackagingComponentSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackagingComponent
+     */
+    omit?: PackagingComponentOmit<ExtArgs> | null
+    /**
+     * The data used to create many PackagingComponents.
+     */
+    data: PackagingComponentCreateManyInput | PackagingComponentCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackagingComponentIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PackagingComponent update
+   */
+  export type PackagingComponentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackagingComponent
+     */
+    select?: PackagingComponentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackagingComponent
+     */
+    omit?: PackagingComponentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackagingComponentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PackagingComponent.
+     */
+    data: XOR<PackagingComponentUpdateInput, PackagingComponentUncheckedUpdateInput>
+    /**
+     * Choose, which PackagingComponent to update.
+     */
+    where: PackagingComponentWhereUniqueInput
+  }
+
+  /**
+   * PackagingComponent updateMany
+   */
+  export type PackagingComponentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PackagingComponents.
+     */
+    data: XOR<PackagingComponentUpdateManyMutationInput, PackagingComponentUncheckedUpdateManyInput>
+    /**
+     * Filter which PackagingComponents to update
+     */
+    where?: PackagingComponentWhereInput
+    /**
+     * Limit how many PackagingComponents to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PackagingComponent updateManyAndReturn
+   */
+  export type PackagingComponentUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackagingComponent
+     */
+    select?: PackagingComponentSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackagingComponent
+     */
+    omit?: PackagingComponentOmit<ExtArgs> | null
+    /**
+     * The data used to update PackagingComponents.
+     */
+    data: XOR<PackagingComponentUpdateManyMutationInput, PackagingComponentUncheckedUpdateManyInput>
+    /**
+     * Filter which PackagingComponents to update
+     */
+    where?: PackagingComponentWhereInput
+    /**
+     * Limit how many PackagingComponents to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackagingComponentIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PackagingComponent upsert
+   */
+  export type PackagingComponentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackagingComponent
+     */
+    select?: PackagingComponentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackagingComponent
+     */
+    omit?: PackagingComponentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackagingComponentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PackagingComponent to update in case it exists.
+     */
+    where: PackagingComponentWhereUniqueInput
+    /**
+     * In case the PackagingComponent found by the `where` argument doesn't exist, create a new PackagingComponent with this data.
+     */
+    create: XOR<PackagingComponentCreateInput, PackagingComponentUncheckedCreateInput>
+    /**
+     * In case the PackagingComponent was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PackagingComponentUpdateInput, PackagingComponentUncheckedUpdateInput>
+  }
+
+  /**
+   * PackagingComponent delete
+   */
+  export type PackagingComponentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackagingComponent
+     */
+    select?: PackagingComponentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackagingComponent
+     */
+    omit?: PackagingComponentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackagingComponentInclude<ExtArgs> | null
+    /**
+     * Filter which PackagingComponent to delete.
+     */
+    where: PackagingComponentWhereUniqueInput
+  }
+
+  /**
+   * PackagingComponent deleteMany
+   */
+  export type PackagingComponentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PackagingComponents to delete
+     */
+    where?: PackagingComponentWhereInput
+    /**
+     * Limit how many PackagingComponents to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PackagingComponent without action
+   */
+  export type PackagingComponentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PackagingComponent
+     */
+    select?: PackagingComponentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PackagingComponent
+     */
+    omit?: PackagingComponentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PackagingComponentInclude<ExtArgs> | null
   }
 
 
@@ -5854,6 +7106,16 @@ export namespace Prisma {
   export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
 
 
+  export const PackagingComponentScalarFieldEnum: {
+    id: 'id',
+    variantItemId: 'variantItemId',
+    packagingItemId: 'packagingItemId',
+    qtyPerUnit: 'qtyPerUnit'
+  };
+
+  export type PackagingComponentScalarFieldEnum = (typeof PackagingComponentScalarFieldEnum)[keyof typeof PackagingComponentScalarFieldEnum]
+
+
   export const InventoryTransactionScalarFieldEnum: {
     id: 'id',
     itemId: 'itemId',
@@ -6045,6 +7307,8 @@ export namespace Prisma {
     category?: XOR<CategoryNullableScalarRelationFilter, CategoryWhereInput> | null
     product?: XOR<ProductNullableScalarRelationFilter, ProductWhereInput> | null
     transactions?: InventoryTransactionListRelationFilter
+    packagingComponents?: PackagingComponentListRelationFilter
+    usedAsPackagingIn?: PackagingComponentListRelationFilter
   }
 
   export type ItemOrderByWithRelationInput = {
@@ -6063,6 +7327,8 @@ export namespace Prisma {
     category?: CategoryOrderByWithRelationInput
     product?: ProductOrderByWithRelationInput
     transactions?: InventoryTransactionOrderByRelationAggregateInput
+    packagingComponents?: PackagingComponentOrderByRelationAggregateInput
+    usedAsPackagingIn?: PackagingComponentOrderByRelationAggregateInput
   }
 
   export type ItemWhereUniqueInput = Prisma.AtLeast<{
@@ -6084,6 +7350,8 @@ export namespace Prisma {
     category?: XOR<CategoryNullableScalarRelationFilter, CategoryWhereInput> | null
     product?: XOR<ProductNullableScalarRelationFilter, ProductWhereInput> | null
     transactions?: InventoryTransactionListRelationFilter
+    packagingComponents?: PackagingComponentListRelationFilter
+    usedAsPackagingIn?: PackagingComponentListRelationFilter
   }, "id" | "name">
 
   export type ItemOrderByWithAggregationInput = {
@@ -6182,6 +7450,61 @@ export namespace Prisma {
     status?: StringWithAggregatesFilter<"Category"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Category"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Category"> | Date | string
+  }
+
+  export type PackagingComponentWhereInput = {
+    AND?: PackagingComponentWhereInput | PackagingComponentWhereInput[]
+    OR?: PackagingComponentWhereInput[]
+    NOT?: PackagingComponentWhereInput | PackagingComponentWhereInput[]
+    id?: StringFilter<"PackagingComponent"> | string
+    variantItemId?: StringFilter<"PackagingComponent"> | string
+    packagingItemId?: StringFilter<"PackagingComponent"> | string
+    qtyPerUnit?: FloatFilter<"PackagingComponent"> | number
+    variantItem?: XOR<ItemScalarRelationFilter, ItemWhereInput>
+    packagingItem?: XOR<ItemScalarRelationFilter, ItemWhereInput>
+  }
+
+  export type PackagingComponentOrderByWithRelationInput = {
+    id?: SortOrder
+    variantItemId?: SortOrder
+    packagingItemId?: SortOrder
+    qtyPerUnit?: SortOrder
+    variantItem?: ItemOrderByWithRelationInput
+    packagingItem?: ItemOrderByWithRelationInput
+  }
+
+  export type PackagingComponentWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: PackagingComponentWhereInput | PackagingComponentWhereInput[]
+    OR?: PackagingComponentWhereInput[]
+    NOT?: PackagingComponentWhereInput | PackagingComponentWhereInput[]
+    variantItemId?: StringFilter<"PackagingComponent"> | string
+    packagingItemId?: StringFilter<"PackagingComponent"> | string
+    qtyPerUnit?: FloatFilter<"PackagingComponent"> | number
+    variantItem?: XOR<ItemScalarRelationFilter, ItemWhereInput>
+    packagingItem?: XOR<ItemScalarRelationFilter, ItemWhereInput>
+  }, "id">
+
+  export type PackagingComponentOrderByWithAggregationInput = {
+    id?: SortOrder
+    variantItemId?: SortOrder
+    packagingItemId?: SortOrder
+    qtyPerUnit?: SortOrder
+    _count?: PackagingComponentCountOrderByAggregateInput
+    _avg?: PackagingComponentAvgOrderByAggregateInput
+    _max?: PackagingComponentMaxOrderByAggregateInput
+    _min?: PackagingComponentMinOrderByAggregateInput
+    _sum?: PackagingComponentSumOrderByAggregateInput
+  }
+
+  export type PackagingComponentScalarWhereWithAggregatesInput = {
+    AND?: PackagingComponentScalarWhereWithAggregatesInput | PackagingComponentScalarWhereWithAggregatesInput[]
+    OR?: PackagingComponentScalarWhereWithAggregatesInput[]
+    NOT?: PackagingComponentScalarWhereWithAggregatesInput | PackagingComponentScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PackagingComponent"> | string
+    variantItemId?: StringWithAggregatesFilter<"PackagingComponent"> | string
+    packagingItemId?: StringWithAggregatesFilter<"PackagingComponent"> | string
+    qtyPerUnit?: FloatWithAggregatesFilter<"PackagingComponent"> | number
   }
 
   export type InventoryTransactionWhereInput = {
@@ -6335,6 +7658,8 @@ export namespace Prisma {
     category?: CategoryCreateNestedOneWithoutItemsInput
     product?: ProductCreateNestedOneWithoutItemsInput
     transactions?: InventoryTransactionCreateNestedManyWithoutItemInput
+    packagingComponents?: PackagingComponentCreateNestedManyWithoutVariantItemInput
+    usedAsPackagingIn?: PackagingComponentCreateNestedManyWithoutPackagingItemInput
   }
 
   export type ItemUncheckedCreateInput = {
@@ -6351,6 +7676,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     transactions?: InventoryTransactionUncheckedCreateNestedManyWithoutItemInput
+    packagingComponents?: PackagingComponentUncheckedCreateNestedManyWithoutVariantItemInput
+    usedAsPackagingIn?: PackagingComponentUncheckedCreateNestedManyWithoutPackagingItemInput
   }
 
   export type ItemUpdateInput = {
@@ -6367,6 +7694,8 @@ export namespace Prisma {
     category?: CategoryUpdateOneWithoutItemsNestedInput
     product?: ProductUpdateOneWithoutItemsNestedInput
     transactions?: InventoryTransactionUpdateManyWithoutItemNestedInput
+    packagingComponents?: PackagingComponentUpdateManyWithoutVariantItemNestedInput
+    usedAsPackagingIn?: PackagingComponentUpdateManyWithoutPackagingItemNestedInput
   }
 
   export type ItemUncheckedUpdateInput = {
@@ -6383,6 +7712,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     transactions?: InventoryTransactionUncheckedUpdateManyWithoutItemNestedInput
+    packagingComponents?: PackagingComponentUncheckedUpdateManyWithoutVariantItemNestedInput
+    usedAsPackagingIn?: PackagingComponentUncheckedUpdateManyWithoutPackagingItemNestedInput
   }
 
   export type ItemCreateManyInput = {
@@ -6493,6 +7824,53 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PackagingComponentCreateInput = {
+    id: string
+    qtyPerUnit: number
+    variantItem: ItemCreateNestedOneWithoutPackagingComponentsInput
+    packagingItem: ItemCreateNestedOneWithoutUsedAsPackagingInInput
+  }
+
+  export type PackagingComponentUncheckedCreateInput = {
+    id: string
+    variantItemId: string
+    packagingItemId: string
+    qtyPerUnit: number
+  }
+
+  export type PackagingComponentUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    qtyPerUnit?: FloatFieldUpdateOperationsInput | number
+    variantItem?: ItemUpdateOneRequiredWithoutPackagingComponentsNestedInput
+    packagingItem?: ItemUpdateOneRequiredWithoutUsedAsPackagingInNestedInput
+  }
+
+  export type PackagingComponentUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    variantItemId?: StringFieldUpdateOperationsInput | string
+    packagingItemId?: StringFieldUpdateOperationsInput | string
+    qtyPerUnit?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type PackagingComponentCreateManyInput = {
+    id: string
+    variantItemId: string
+    packagingItemId: string
+    qtyPerUnit: number
+  }
+
+  export type PackagingComponentUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    qtyPerUnit?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type PackagingComponentUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    variantItemId?: StringFieldUpdateOperationsInput | string
+    packagingItemId?: StringFieldUpdateOperationsInput | string
+    qtyPerUnit?: FloatFieldUpdateOperationsInput | number
   }
 
   export type InventoryTransactionCreateInput = {
@@ -6746,7 +8124,17 @@ export namespace Prisma {
     none?: InventoryTransactionWhereInput
   }
 
+  export type PackagingComponentListRelationFilter = {
+    every?: PackagingComponentWhereInput
+    some?: PackagingComponentWhereInput
+    none?: PackagingComponentWhereInput
+  }
+
   export type InventoryTransactionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PackagingComponentOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -6866,6 +8254,67 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type ItemScalarRelationFilter = {
+    is?: ItemWhereInput
+    isNot?: ItemWhereInput
+  }
+
+  export type PackagingComponentCountOrderByAggregateInput = {
+    id?: SortOrder
+    variantItemId?: SortOrder
+    packagingItemId?: SortOrder
+    qtyPerUnit?: SortOrder
+  }
+
+  export type PackagingComponentAvgOrderByAggregateInput = {
+    qtyPerUnit?: SortOrder
+  }
+
+  export type PackagingComponentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    variantItemId?: SortOrder
+    packagingItemId?: SortOrder
+    qtyPerUnit?: SortOrder
+  }
+
+  export type PackagingComponentMinOrderByAggregateInput = {
+    id?: SortOrder
+    variantItemId?: SortOrder
+    packagingItemId?: SortOrder
+    qtyPerUnit?: SortOrder
+  }
+
+  export type PackagingComponentSumOrderByAggregateInput = {
+    qtyPerUnit?: SortOrder
+  }
+
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
   export type DecimalNullableFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
     in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
@@ -6875,11 +8324,6 @@ export namespace Prisma {
     gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
-  }
-
-  export type ItemScalarRelationFilter = {
-    is?: ItemWhereInput
-    isNot?: ItemWhereInput
   }
 
   export type InventoryTransactionCountOrderByAggregateInput = {
@@ -7017,11 +8461,39 @@ export namespace Prisma {
     connect?: InventoryTransactionWhereUniqueInput | InventoryTransactionWhereUniqueInput[]
   }
 
+  export type PackagingComponentCreateNestedManyWithoutVariantItemInput = {
+    create?: XOR<PackagingComponentCreateWithoutVariantItemInput, PackagingComponentUncheckedCreateWithoutVariantItemInput> | PackagingComponentCreateWithoutVariantItemInput[] | PackagingComponentUncheckedCreateWithoutVariantItemInput[]
+    connectOrCreate?: PackagingComponentCreateOrConnectWithoutVariantItemInput | PackagingComponentCreateOrConnectWithoutVariantItemInput[]
+    createMany?: PackagingComponentCreateManyVariantItemInputEnvelope
+    connect?: PackagingComponentWhereUniqueInput | PackagingComponentWhereUniqueInput[]
+  }
+
+  export type PackagingComponentCreateNestedManyWithoutPackagingItemInput = {
+    create?: XOR<PackagingComponentCreateWithoutPackagingItemInput, PackagingComponentUncheckedCreateWithoutPackagingItemInput> | PackagingComponentCreateWithoutPackagingItemInput[] | PackagingComponentUncheckedCreateWithoutPackagingItemInput[]
+    connectOrCreate?: PackagingComponentCreateOrConnectWithoutPackagingItemInput | PackagingComponentCreateOrConnectWithoutPackagingItemInput[]
+    createMany?: PackagingComponentCreateManyPackagingItemInputEnvelope
+    connect?: PackagingComponentWhereUniqueInput | PackagingComponentWhereUniqueInput[]
+  }
+
   export type InventoryTransactionUncheckedCreateNestedManyWithoutItemInput = {
     create?: XOR<InventoryTransactionCreateWithoutItemInput, InventoryTransactionUncheckedCreateWithoutItemInput> | InventoryTransactionCreateWithoutItemInput[] | InventoryTransactionUncheckedCreateWithoutItemInput[]
     connectOrCreate?: InventoryTransactionCreateOrConnectWithoutItemInput | InventoryTransactionCreateOrConnectWithoutItemInput[]
     createMany?: InventoryTransactionCreateManyItemInputEnvelope
     connect?: InventoryTransactionWhereUniqueInput | InventoryTransactionWhereUniqueInput[]
+  }
+
+  export type PackagingComponentUncheckedCreateNestedManyWithoutVariantItemInput = {
+    create?: XOR<PackagingComponentCreateWithoutVariantItemInput, PackagingComponentUncheckedCreateWithoutVariantItemInput> | PackagingComponentCreateWithoutVariantItemInput[] | PackagingComponentUncheckedCreateWithoutVariantItemInput[]
+    connectOrCreate?: PackagingComponentCreateOrConnectWithoutVariantItemInput | PackagingComponentCreateOrConnectWithoutVariantItemInput[]
+    createMany?: PackagingComponentCreateManyVariantItemInputEnvelope
+    connect?: PackagingComponentWhereUniqueInput | PackagingComponentWhereUniqueInput[]
+  }
+
+  export type PackagingComponentUncheckedCreateNestedManyWithoutPackagingItemInput = {
+    create?: XOR<PackagingComponentCreateWithoutPackagingItemInput, PackagingComponentUncheckedCreateWithoutPackagingItemInput> | PackagingComponentCreateWithoutPackagingItemInput[] | PackagingComponentUncheckedCreateWithoutPackagingItemInput[]
+    connectOrCreate?: PackagingComponentCreateOrConnectWithoutPackagingItemInput | PackagingComponentCreateOrConnectWithoutPackagingItemInput[]
+    createMany?: PackagingComponentCreateManyPackagingItemInputEnvelope
+    connect?: PackagingComponentWhereUniqueInput | PackagingComponentWhereUniqueInput[]
   }
 
   export type DecimalFieldUpdateOperationsInput = {
@@ -7074,6 +8546,34 @@ export namespace Prisma {
     deleteMany?: InventoryTransactionScalarWhereInput | InventoryTransactionScalarWhereInput[]
   }
 
+  export type PackagingComponentUpdateManyWithoutVariantItemNestedInput = {
+    create?: XOR<PackagingComponentCreateWithoutVariantItemInput, PackagingComponentUncheckedCreateWithoutVariantItemInput> | PackagingComponentCreateWithoutVariantItemInput[] | PackagingComponentUncheckedCreateWithoutVariantItemInput[]
+    connectOrCreate?: PackagingComponentCreateOrConnectWithoutVariantItemInput | PackagingComponentCreateOrConnectWithoutVariantItemInput[]
+    upsert?: PackagingComponentUpsertWithWhereUniqueWithoutVariantItemInput | PackagingComponentUpsertWithWhereUniqueWithoutVariantItemInput[]
+    createMany?: PackagingComponentCreateManyVariantItemInputEnvelope
+    set?: PackagingComponentWhereUniqueInput | PackagingComponentWhereUniqueInput[]
+    disconnect?: PackagingComponentWhereUniqueInput | PackagingComponentWhereUniqueInput[]
+    delete?: PackagingComponentWhereUniqueInput | PackagingComponentWhereUniqueInput[]
+    connect?: PackagingComponentWhereUniqueInput | PackagingComponentWhereUniqueInput[]
+    update?: PackagingComponentUpdateWithWhereUniqueWithoutVariantItemInput | PackagingComponentUpdateWithWhereUniqueWithoutVariantItemInput[]
+    updateMany?: PackagingComponentUpdateManyWithWhereWithoutVariantItemInput | PackagingComponentUpdateManyWithWhereWithoutVariantItemInput[]
+    deleteMany?: PackagingComponentScalarWhereInput | PackagingComponentScalarWhereInput[]
+  }
+
+  export type PackagingComponentUpdateManyWithoutPackagingItemNestedInput = {
+    create?: XOR<PackagingComponentCreateWithoutPackagingItemInput, PackagingComponentUncheckedCreateWithoutPackagingItemInput> | PackagingComponentCreateWithoutPackagingItemInput[] | PackagingComponentUncheckedCreateWithoutPackagingItemInput[]
+    connectOrCreate?: PackagingComponentCreateOrConnectWithoutPackagingItemInput | PackagingComponentCreateOrConnectWithoutPackagingItemInput[]
+    upsert?: PackagingComponentUpsertWithWhereUniqueWithoutPackagingItemInput | PackagingComponentUpsertWithWhereUniqueWithoutPackagingItemInput[]
+    createMany?: PackagingComponentCreateManyPackagingItemInputEnvelope
+    set?: PackagingComponentWhereUniqueInput | PackagingComponentWhereUniqueInput[]
+    disconnect?: PackagingComponentWhereUniqueInput | PackagingComponentWhereUniqueInput[]
+    delete?: PackagingComponentWhereUniqueInput | PackagingComponentWhereUniqueInput[]
+    connect?: PackagingComponentWhereUniqueInput | PackagingComponentWhereUniqueInput[]
+    update?: PackagingComponentUpdateWithWhereUniqueWithoutPackagingItemInput | PackagingComponentUpdateWithWhereUniqueWithoutPackagingItemInput[]
+    updateMany?: PackagingComponentUpdateManyWithWhereWithoutPackagingItemInput | PackagingComponentUpdateManyWithWhereWithoutPackagingItemInput[]
+    deleteMany?: PackagingComponentScalarWhereInput | PackagingComponentScalarWhereInput[]
+  }
+
   export type InventoryTransactionUncheckedUpdateManyWithoutItemNestedInput = {
     create?: XOR<InventoryTransactionCreateWithoutItemInput, InventoryTransactionUncheckedCreateWithoutItemInput> | InventoryTransactionCreateWithoutItemInput[] | InventoryTransactionUncheckedCreateWithoutItemInput[]
     connectOrCreate?: InventoryTransactionCreateOrConnectWithoutItemInput | InventoryTransactionCreateOrConnectWithoutItemInput[]
@@ -7086,6 +8586,34 @@ export namespace Prisma {
     update?: InventoryTransactionUpdateWithWhereUniqueWithoutItemInput | InventoryTransactionUpdateWithWhereUniqueWithoutItemInput[]
     updateMany?: InventoryTransactionUpdateManyWithWhereWithoutItemInput | InventoryTransactionUpdateManyWithWhereWithoutItemInput[]
     deleteMany?: InventoryTransactionScalarWhereInput | InventoryTransactionScalarWhereInput[]
+  }
+
+  export type PackagingComponentUncheckedUpdateManyWithoutVariantItemNestedInput = {
+    create?: XOR<PackagingComponentCreateWithoutVariantItemInput, PackagingComponentUncheckedCreateWithoutVariantItemInput> | PackagingComponentCreateWithoutVariantItemInput[] | PackagingComponentUncheckedCreateWithoutVariantItemInput[]
+    connectOrCreate?: PackagingComponentCreateOrConnectWithoutVariantItemInput | PackagingComponentCreateOrConnectWithoutVariantItemInput[]
+    upsert?: PackagingComponentUpsertWithWhereUniqueWithoutVariantItemInput | PackagingComponentUpsertWithWhereUniqueWithoutVariantItemInput[]
+    createMany?: PackagingComponentCreateManyVariantItemInputEnvelope
+    set?: PackagingComponentWhereUniqueInput | PackagingComponentWhereUniqueInput[]
+    disconnect?: PackagingComponentWhereUniqueInput | PackagingComponentWhereUniqueInput[]
+    delete?: PackagingComponentWhereUniqueInput | PackagingComponentWhereUniqueInput[]
+    connect?: PackagingComponentWhereUniqueInput | PackagingComponentWhereUniqueInput[]
+    update?: PackagingComponentUpdateWithWhereUniqueWithoutVariantItemInput | PackagingComponentUpdateWithWhereUniqueWithoutVariantItemInput[]
+    updateMany?: PackagingComponentUpdateManyWithWhereWithoutVariantItemInput | PackagingComponentUpdateManyWithWhereWithoutVariantItemInput[]
+    deleteMany?: PackagingComponentScalarWhereInput | PackagingComponentScalarWhereInput[]
+  }
+
+  export type PackagingComponentUncheckedUpdateManyWithoutPackagingItemNestedInput = {
+    create?: XOR<PackagingComponentCreateWithoutPackagingItemInput, PackagingComponentUncheckedCreateWithoutPackagingItemInput> | PackagingComponentCreateWithoutPackagingItemInput[] | PackagingComponentUncheckedCreateWithoutPackagingItemInput[]
+    connectOrCreate?: PackagingComponentCreateOrConnectWithoutPackagingItemInput | PackagingComponentCreateOrConnectWithoutPackagingItemInput[]
+    upsert?: PackagingComponentUpsertWithWhereUniqueWithoutPackagingItemInput | PackagingComponentUpsertWithWhereUniqueWithoutPackagingItemInput[]
+    createMany?: PackagingComponentCreateManyPackagingItemInputEnvelope
+    set?: PackagingComponentWhereUniqueInput | PackagingComponentWhereUniqueInput[]
+    disconnect?: PackagingComponentWhereUniqueInput | PackagingComponentWhereUniqueInput[]
+    delete?: PackagingComponentWhereUniqueInput | PackagingComponentWhereUniqueInput[]
+    connect?: PackagingComponentWhereUniqueInput | PackagingComponentWhereUniqueInput[]
+    update?: PackagingComponentUpdateWithWhereUniqueWithoutPackagingItemInput | PackagingComponentUpdateWithWhereUniqueWithoutPackagingItemInput[]
+    updateMany?: PackagingComponentUpdateManyWithWhereWithoutPackagingItemInput | PackagingComponentUpdateManyWithWhereWithoutPackagingItemInput[]
+    deleteMany?: PackagingComponentScalarWhereInput | PackagingComponentScalarWhereInput[]
   }
 
   export type ItemCreateNestedManyWithoutCategoryInput = {
@@ -7128,6 +8656,42 @@ export namespace Prisma {
     update?: ItemUpdateWithWhereUniqueWithoutCategoryInput | ItemUpdateWithWhereUniqueWithoutCategoryInput[]
     updateMany?: ItemUpdateManyWithWhereWithoutCategoryInput | ItemUpdateManyWithWhereWithoutCategoryInput[]
     deleteMany?: ItemScalarWhereInput | ItemScalarWhereInput[]
+  }
+
+  export type ItemCreateNestedOneWithoutPackagingComponentsInput = {
+    create?: XOR<ItemCreateWithoutPackagingComponentsInput, ItemUncheckedCreateWithoutPackagingComponentsInput>
+    connectOrCreate?: ItemCreateOrConnectWithoutPackagingComponentsInput
+    connect?: ItemWhereUniqueInput
+  }
+
+  export type ItemCreateNestedOneWithoutUsedAsPackagingInInput = {
+    create?: XOR<ItemCreateWithoutUsedAsPackagingInInput, ItemUncheckedCreateWithoutUsedAsPackagingInInput>
+    connectOrCreate?: ItemCreateOrConnectWithoutUsedAsPackagingInInput
+    connect?: ItemWhereUniqueInput
+  }
+
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type ItemUpdateOneRequiredWithoutPackagingComponentsNestedInput = {
+    create?: XOR<ItemCreateWithoutPackagingComponentsInput, ItemUncheckedCreateWithoutPackagingComponentsInput>
+    connectOrCreate?: ItemCreateOrConnectWithoutPackagingComponentsInput
+    upsert?: ItemUpsertWithoutPackagingComponentsInput
+    connect?: ItemWhereUniqueInput
+    update?: XOR<XOR<ItemUpdateToOneWithWhereWithoutPackagingComponentsInput, ItemUpdateWithoutPackagingComponentsInput>, ItemUncheckedUpdateWithoutPackagingComponentsInput>
+  }
+
+  export type ItemUpdateOneRequiredWithoutUsedAsPackagingInNestedInput = {
+    create?: XOR<ItemCreateWithoutUsedAsPackagingInInput, ItemUncheckedCreateWithoutUsedAsPackagingInInput>
+    connectOrCreate?: ItemCreateOrConnectWithoutUsedAsPackagingInInput
+    upsert?: ItemUpsertWithoutUsedAsPackagingInInput
+    connect?: ItemWhereUniqueInput
+    update?: XOR<XOR<ItemUpdateToOneWithWhereWithoutUsedAsPackagingInInput, ItemUpdateWithoutUsedAsPackagingInInput>, ItemUncheckedUpdateWithoutUsedAsPackagingInInput>
   }
 
   export type ItemCreateNestedOneWithoutTransactionsInput = {
@@ -7315,6 +8879,33 @@ export namespace Prisma {
     _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
   export type NestedDecimalNullableFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
     in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
@@ -7355,6 +8946,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     category?: CategoryCreateNestedOneWithoutItemsInput
     transactions?: InventoryTransactionCreateNestedManyWithoutItemInput
+    packagingComponents?: PackagingComponentCreateNestedManyWithoutVariantItemInput
+    usedAsPackagingIn?: PackagingComponentCreateNestedManyWithoutPackagingItemInput
   }
 
   export type ItemUncheckedCreateWithoutProductInput = {
@@ -7370,6 +8963,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     transactions?: InventoryTransactionUncheckedCreateNestedManyWithoutItemInput
+    packagingComponents?: PackagingComponentUncheckedCreateNestedManyWithoutVariantItemInput
+    usedAsPackagingIn?: PackagingComponentUncheckedCreateNestedManyWithoutPackagingItemInput
   }
 
   export type ItemCreateOrConnectWithoutProductInput = {
@@ -7492,6 +9087,50 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PackagingComponentCreateWithoutVariantItemInput = {
+    id: string
+    qtyPerUnit: number
+    packagingItem: ItemCreateNestedOneWithoutUsedAsPackagingInInput
+  }
+
+  export type PackagingComponentUncheckedCreateWithoutVariantItemInput = {
+    id: string
+    packagingItemId: string
+    qtyPerUnit: number
+  }
+
+  export type PackagingComponentCreateOrConnectWithoutVariantItemInput = {
+    where: PackagingComponentWhereUniqueInput
+    create: XOR<PackagingComponentCreateWithoutVariantItemInput, PackagingComponentUncheckedCreateWithoutVariantItemInput>
+  }
+
+  export type PackagingComponentCreateManyVariantItemInputEnvelope = {
+    data: PackagingComponentCreateManyVariantItemInput | PackagingComponentCreateManyVariantItemInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PackagingComponentCreateWithoutPackagingItemInput = {
+    id: string
+    qtyPerUnit: number
+    variantItem: ItemCreateNestedOneWithoutPackagingComponentsInput
+  }
+
+  export type PackagingComponentUncheckedCreateWithoutPackagingItemInput = {
+    id: string
+    variantItemId: string
+    qtyPerUnit: number
+  }
+
+  export type PackagingComponentCreateOrConnectWithoutPackagingItemInput = {
+    where: PackagingComponentWhereUniqueInput
+    create: XOR<PackagingComponentCreateWithoutPackagingItemInput, PackagingComponentUncheckedCreateWithoutPackagingItemInput>
+  }
+
+  export type PackagingComponentCreateManyPackagingItemInputEnvelope = {
+    data: PackagingComponentCreateManyPackagingItemInput | PackagingComponentCreateManyPackagingItemInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CategoryUpsertWithoutItemsInput = {
     update: XOR<CategoryUpdateWithoutItemsInput, CategoryUncheckedUpdateWithoutItemsInput>
     create: XOR<CategoryCreateWithoutItemsInput, CategoryUncheckedCreateWithoutItemsInput>
@@ -7579,6 +9218,48 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"InventoryTransaction"> | Date | string
   }
 
+  export type PackagingComponentUpsertWithWhereUniqueWithoutVariantItemInput = {
+    where: PackagingComponentWhereUniqueInput
+    update: XOR<PackagingComponentUpdateWithoutVariantItemInput, PackagingComponentUncheckedUpdateWithoutVariantItemInput>
+    create: XOR<PackagingComponentCreateWithoutVariantItemInput, PackagingComponentUncheckedCreateWithoutVariantItemInput>
+  }
+
+  export type PackagingComponentUpdateWithWhereUniqueWithoutVariantItemInput = {
+    where: PackagingComponentWhereUniqueInput
+    data: XOR<PackagingComponentUpdateWithoutVariantItemInput, PackagingComponentUncheckedUpdateWithoutVariantItemInput>
+  }
+
+  export type PackagingComponentUpdateManyWithWhereWithoutVariantItemInput = {
+    where: PackagingComponentScalarWhereInput
+    data: XOR<PackagingComponentUpdateManyMutationInput, PackagingComponentUncheckedUpdateManyWithoutVariantItemInput>
+  }
+
+  export type PackagingComponentScalarWhereInput = {
+    AND?: PackagingComponentScalarWhereInput | PackagingComponentScalarWhereInput[]
+    OR?: PackagingComponentScalarWhereInput[]
+    NOT?: PackagingComponentScalarWhereInput | PackagingComponentScalarWhereInput[]
+    id?: StringFilter<"PackagingComponent"> | string
+    variantItemId?: StringFilter<"PackagingComponent"> | string
+    packagingItemId?: StringFilter<"PackagingComponent"> | string
+    qtyPerUnit?: FloatFilter<"PackagingComponent"> | number
+  }
+
+  export type PackagingComponentUpsertWithWhereUniqueWithoutPackagingItemInput = {
+    where: PackagingComponentWhereUniqueInput
+    update: XOR<PackagingComponentUpdateWithoutPackagingItemInput, PackagingComponentUncheckedUpdateWithoutPackagingItemInput>
+    create: XOR<PackagingComponentCreateWithoutPackagingItemInput, PackagingComponentUncheckedCreateWithoutPackagingItemInput>
+  }
+
+  export type PackagingComponentUpdateWithWhereUniqueWithoutPackagingItemInput = {
+    where: PackagingComponentWhereUniqueInput
+    data: XOR<PackagingComponentUpdateWithoutPackagingItemInput, PackagingComponentUncheckedUpdateWithoutPackagingItemInput>
+  }
+
+  export type PackagingComponentUpdateManyWithWhereWithoutPackagingItemInput = {
+    where: PackagingComponentScalarWhereInput
+    data: XOR<PackagingComponentUpdateManyMutationInput, PackagingComponentUncheckedUpdateManyWithoutPackagingItemInput>
+  }
+
   export type ItemCreateWithoutCategoryInput = {
     id?: string
     name: string
@@ -7592,6 +9273,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     product?: ProductCreateNestedOneWithoutItemsInput
     transactions?: InventoryTransactionCreateNestedManyWithoutItemInput
+    packagingComponents?: PackagingComponentCreateNestedManyWithoutVariantItemInput
+    usedAsPackagingIn?: PackagingComponentCreateNestedManyWithoutPackagingItemInput
   }
 
   export type ItemUncheckedCreateWithoutCategoryInput = {
@@ -7607,6 +9290,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     transactions?: InventoryTransactionUncheckedCreateNestedManyWithoutItemInput
+    packagingComponents?: PackagingComponentUncheckedCreateNestedManyWithoutVariantItemInput
+    usedAsPackagingIn?: PackagingComponentUncheckedCreateNestedManyWithoutPackagingItemInput
   }
 
   export type ItemCreateOrConnectWithoutCategoryInput = {
@@ -7635,6 +9320,174 @@ export namespace Prisma {
     data: XOR<ItemUpdateManyMutationInput, ItemUncheckedUpdateManyWithoutCategoryInput>
   }
 
+  export type ItemCreateWithoutPackagingComponentsInput = {
+    id?: string
+    name: string
+    type: string
+    measureUnit: string
+    currentStock?: Decimal | DecimalJsLike | number | string
+    status?: string
+    unitWeightGm?: number | null
+    weightedAverageUnitPrice?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    category?: CategoryCreateNestedOneWithoutItemsInput
+    product?: ProductCreateNestedOneWithoutItemsInput
+    transactions?: InventoryTransactionCreateNestedManyWithoutItemInput
+    usedAsPackagingIn?: PackagingComponentCreateNestedManyWithoutPackagingItemInput
+  }
+
+  export type ItemUncheckedCreateWithoutPackagingComponentsInput = {
+    id?: string
+    name: string
+    type: string
+    measureUnit: string
+    currentStock?: Decimal | DecimalJsLike | number | string
+    categoryId?: string | null
+    productId?: string | null
+    status?: string
+    unitWeightGm?: number | null
+    weightedAverageUnitPrice?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    transactions?: InventoryTransactionUncheckedCreateNestedManyWithoutItemInput
+    usedAsPackagingIn?: PackagingComponentUncheckedCreateNestedManyWithoutPackagingItemInput
+  }
+
+  export type ItemCreateOrConnectWithoutPackagingComponentsInput = {
+    where: ItemWhereUniqueInput
+    create: XOR<ItemCreateWithoutPackagingComponentsInput, ItemUncheckedCreateWithoutPackagingComponentsInput>
+  }
+
+  export type ItemCreateWithoutUsedAsPackagingInInput = {
+    id?: string
+    name: string
+    type: string
+    measureUnit: string
+    currentStock?: Decimal | DecimalJsLike | number | string
+    status?: string
+    unitWeightGm?: number | null
+    weightedAverageUnitPrice?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    category?: CategoryCreateNestedOneWithoutItemsInput
+    product?: ProductCreateNestedOneWithoutItemsInput
+    transactions?: InventoryTransactionCreateNestedManyWithoutItemInput
+    packagingComponents?: PackagingComponentCreateNestedManyWithoutVariantItemInput
+  }
+
+  export type ItemUncheckedCreateWithoutUsedAsPackagingInInput = {
+    id?: string
+    name: string
+    type: string
+    measureUnit: string
+    currentStock?: Decimal | DecimalJsLike | number | string
+    categoryId?: string | null
+    productId?: string | null
+    status?: string
+    unitWeightGm?: number | null
+    weightedAverageUnitPrice?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    transactions?: InventoryTransactionUncheckedCreateNestedManyWithoutItemInput
+    packagingComponents?: PackagingComponentUncheckedCreateNestedManyWithoutVariantItemInput
+  }
+
+  export type ItemCreateOrConnectWithoutUsedAsPackagingInInput = {
+    where: ItemWhereUniqueInput
+    create: XOR<ItemCreateWithoutUsedAsPackagingInInput, ItemUncheckedCreateWithoutUsedAsPackagingInInput>
+  }
+
+  export type ItemUpsertWithoutPackagingComponentsInput = {
+    update: XOR<ItemUpdateWithoutPackagingComponentsInput, ItemUncheckedUpdateWithoutPackagingComponentsInput>
+    create: XOR<ItemCreateWithoutPackagingComponentsInput, ItemUncheckedCreateWithoutPackagingComponentsInput>
+    where?: ItemWhereInput
+  }
+
+  export type ItemUpdateToOneWithWhereWithoutPackagingComponentsInput = {
+    where?: ItemWhereInput
+    data: XOR<ItemUpdateWithoutPackagingComponentsInput, ItemUncheckedUpdateWithoutPackagingComponentsInput>
+  }
+
+  export type ItemUpdateWithoutPackagingComponentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    measureUnit?: StringFieldUpdateOperationsInput | string
+    currentStock?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: StringFieldUpdateOperationsInput | string
+    unitWeightGm?: NullableFloatFieldUpdateOperationsInput | number | null
+    weightedAverageUnitPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: CategoryUpdateOneWithoutItemsNestedInput
+    product?: ProductUpdateOneWithoutItemsNestedInput
+    transactions?: InventoryTransactionUpdateManyWithoutItemNestedInput
+    usedAsPackagingIn?: PackagingComponentUpdateManyWithoutPackagingItemNestedInput
+  }
+
+  export type ItemUncheckedUpdateWithoutPackagingComponentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    measureUnit?: StringFieldUpdateOperationsInput | string
+    currentStock?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    categoryId?: NullableStringFieldUpdateOperationsInput | string | null
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    unitWeightGm?: NullableFloatFieldUpdateOperationsInput | number | null
+    weightedAverageUnitPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    transactions?: InventoryTransactionUncheckedUpdateManyWithoutItemNestedInput
+    usedAsPackagingIn?: PackagingComponentUncheckedUpdateManyWithoutPackagingItemNestedInput
+  }
+
+  export type ItemUpsertWithoutUsedAsPackagingInInput = {
+    update: XOR<ItemUpdateWithoutUsedAsPackagingInInput, ItemUncheckedUpdateWithoutUsedAsPackagingInInput>
+    create: XOR<ItemCreateWithoutUsedAsPackagingInInput, ItemUncheckedCreateWithoutUsedAsPackagingInInput>
+    where?: ItemWhereInput
+  }
+
+  export type ItemUpdateToOneWithWhereWithoutUsedAsPackagingInInput = {
+    where?: ItemWhereInput
+    data: XOR<ItemUpdateWithoutUsedAsPackagingInInput, ItemUncheckedUpdateWithoutUsedAsPackagingInInput>
+  }
+
+  export type ItemUpdateWithoutUsedAsPackagingInInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    measureUnit?: StringFieldUpdateOperationsInput | string
+    currentStock?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: StringFieldUpdateOperationsInput | string
+    unitWeightGm?: NullableFloatFieldUpdateOperationsInput | number | null
+    weightedAverageUnitPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: CategoryUpdateOneWithoutItemsNestedInput
+    product?: ProductUpdateOneWithoutItemsNestedInput
+    transactions?: InventoryTransactionUpdateManyWithoutItemNestedInput
+    packagingComponents?: PackagingComponentUpdateManyWithoutVariantItemNestedInput
+  }
+
+  export type ItemUncheckedUpdateWithoutUsedAsPackagingInInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    measureUnit?: StringFieldUpdateOperationsInput | string
+    currentStock?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    categoryId?: NullableStringFieldUpdateOperationsInput | string | null
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    unitWeightGm?: NullableFloatFieldUpdateOperationsInput | number | null
+    weightedAverageUnitPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    transactions?: InventoryTransactionUncheckedUpdateManyWithoutItemNestedInput
+    packagingComponents?: PackagingComponentUncheckedUpdateManyWithoutVariantItemNestedInput
+  }
+
   export type ItemCreateWithoutTransactionsInput = {
     id?: string
     name: string
@@ -7648,6 +9501,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     category?: CategoryCreateNestedOneWithoutItemsInput
     product?: ProductCreateNestedOneWithoutItemsInput
+    packagingComponents?: PackagingComponentCreateNestedManyWithoutVariantItemInput
+    usedAsPackagingIn?: PackagingComponentCreateNestedManyWithoutPackagingItemInput
   }
 
   export type ItemUncheckedCreateWithoutTransactionsInput = {
@@ -7663,6 +9518,8 @@ export namespace Prisma {
     weightedAverageUnitPrice?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    packagingComponents?: PackagingComponentUncheckedCreateNestedManyWithoutVariantItemInput
+    usedAsPackagingIn?: PackagingComponentUncheckedCreateNestedManyWithoutPackagingItemInput
   }
 
   export type ItemCreateOrConnectWithoutTransactionsInput = {
@@ -7694,6 +9551,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     category?: CategoryUpdateOneWithoutItemsNestedInput
     product?: ProductUpdateOneWithoutItemsNestedInput
+    packagingComponents?: PackagingComponentUpdateManyWithoutVariantItemNestedInput
+    usedAsPackagingIn?: PackagingComponentUpdateManyWithoutPackagingItemNestedInput
   }
 
   export type ItemUncheckedUpdateWithoutTransactionsInput = {
@@ -7709,6 +9568,8 @@ export namespace Prisma {
     weightedAverageUnitPrice?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    packagingComponents?: PackagingComponentUncheckedUpdateManyWithoutVariantItemNestedInput
+    usedAsPackagingIn?: PackagingComponentUncheckedUpdateManyWithoutPackagingItemNestedInput
   }
 
   export type ItemCreateManyProductInput = {
@@ -7738,6 +9599,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     category?: CategoryUpdateOneWithoutItemsNestedInput
     transactions?: InventoryTransactionUpdateManyWithoutItemNestedInput
+    packagingComponents?: PackagingComponentUpdateManyWithoutVariantItemNestedInput
+    usedAsPackagingIn?: PackagingComponentUpdateManyWithoutPackagingItemNestedInput
   }
 
   export type ItemUncheckedUpdateWithoutProductInput = {
@@ -7753,6 +9616,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     transactions?: InventoryTransactionUncheckedUpdateManyWithoutItemNestedInput
+    packagingComponents?: PackagingComponentUncheckedUpdateManyWithoutVariantItemNestedInput
+    usedAsPackagingIn?: PackagingComponentUncheckedUpdateManyWithoutPackagingItemNestedInput
   }
 
   export type ItemUncheckedUpdateManyWithoutProductInput = {
@@ -7778,6 +9643,18 @@ export namespace Prisma {
     performedBy: string
     notes?: string | null
     createdAt?: Date | string
+  }
+
+  export type PackagingComponentCreateManyVariantItemInput = {
+    id: string
+    packagingItemId: string
+    qtyPerUnit: number
+  }
+
+  export type PackagingComponentCreateManyPackagingItemInput = {
+    id: string
+    variantItemId: string
+    qtyPerUnit: number
   }
 
   export type InventoryTransactionUpdateWithoutItemInput = {
@@ -7813,6 +9690,42 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PackagingComponentUpdateWithoutVariantItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    qtyPerUnit?: FloatFieldUpdateOperationsInput | number
+    packagingItem?: ItemUpdateOneRequiredWithoutUsedAsPackagingInNestedInput
+  }
+
+  export type PackagingComponentUncheckedUpdateWithoutVariantItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packagingItemId?: StringFieldUpdateOperationsInput | string
+    qtyPerUnit?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type PackagingComponentUncheckedUpdateManyWithoutVariantItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    packagingItemId?: StringFieldUpdateOperationsInput | string
+    qtyPerUnit?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type PackagingComponentUpdateWithoutPackagingItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    qtyPerUnit?: FloatFieldUpdateOperationsInput | number
+    variantItem?: ItemUpdateOneRequiredWithoutPackagingComponentsNestedInput
+  }
+
+  export type PackagingComponentUncheckedUpdateWithoutPackagingItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    variantItemId?: StringFieldUpdateOperationsInput | string
+    qtyPerUnit?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type PackagingComponentUncheckedUpdateManyWithoutPackagingItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    variantItemId?: StringFieldUpdateOperationsInput | string
+    qtyPerUnit?: FloatFieldUpdateOperationsInput | number
+  }
+
   export type ItemCreateManyCategoryInput = {
     id?: string
     name: string
@@ -7840,6 +9753,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     product?: ProductUpdateOneWithoutItemsNestedInput
     transactions?: InventoryTransactionUpdateManyWithoutItemNestedInput
+    packagingComponents?: PackagingComponentUpdateManyWithoutVariantItemNestedInput
+    usedAsPackagingIn?: PackagingComponentUpdateManyWithoutPackagingItemNestedInput
   }
 
   export type ItemUncheckedUpdateWithoutCategoryInput = {
@@ -7855,6 +9770,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     transactions?: InventoryTransactionUncheckedUpdateManyWithoutItemNestedInput
+    packagingComponents?: PackagingComponentUncheckedUpdateManyWithoutVariantItemNestedInput
+    usedAsPackagingIn?: PackagingComponentUncheckedUpdateManyWithoutPackagingItemNestedInput
   }
 
   export type ItemUncheckedUpdateManyWithoutCategoryInput = {

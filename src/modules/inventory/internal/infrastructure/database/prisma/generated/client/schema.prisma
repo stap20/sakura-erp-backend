@@ -33,9 +33,11 @@ model Item {
   createdAt                DateTime @default(now())
   updatedAt                DateTime @updatedAt
 
-  category     Category?              @relation(fields: [categoryId], references: [id])
-  product      Product?               @relation(fields: [productId], references: [id])
-  transactions InventoryTransaction[]
+  category            Category?              @relation(fields: [categoryId], references: [id])
+  product             Product?               @relation(fields: [productId], references: [id])
+  transactions        InventoryTransaction[]
+  packagingComponents PackagingComponent[]   @relation("VariantPackaging")
+  usedAsPackagingIn   PackagingComponent[]   @relation("PackagingItem")
 
   @@map("items")
 }
@@ -51,6 +53,18 @@ model Category {
   items Item[]
 
   @@map("categories")
+}
+
+model PackagingComponent {
+  id              String @id
+  variantItemId   String
+  packagingItemId String
+  qtyPerUnit      Float
+
+  variantItem   Item @relation("VariantPackaging", fields: [variantItemId], references: [id])
+  packagingItem Item @relation("PackagingItem", fields: [packagingItemId], references: [id])
+
+  @@map("packaging_components")
 }
 
 model InventoryTransaction {

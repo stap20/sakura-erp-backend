@@ -28,6 +28,9 @@ import { UpdateProductController } from '../internal/presentation/controllers/up
 import { GetProductByIdController } from '../internal/presentation/controllers/get-product-by-id.controller';
 import { GetAllProductsController } from '../internal/presentation/controllers/get-all-products.controller';
 
+// Controllers - PackagingBOM
+import { SetPackagingBomController } from '../internal/presentation/controllers/set-packaging-bom.controller';
+
 // Command Handlers - Items
 import { CreateItemHandler } from '../internal/application/commands/create-item/create-item.handler';
 import { UpdateItemHandler } from '../internal/application/commands/update-item/update-item.handler';
@@ -43,6 +46,9 @@ import { ArchiveCategoryHandler } from '../internal/application/commands/archive
 // Command Handlers - Products
 import { CreateProductHandler } from '../internal/application/commands/create-product/create-product.handler';
 import { UpdateProductHandler } from '../internal/application/commands/update-product/update-product.handler';
+
+// Command Handlers - PackagingBOM
+import { SetPackagingBomHandler } from '../internal/application/commands/set-packaging-bom/set-packaging-bom.handler';
 
 // Query Handler Interfaces
 import { IGetItemHandler } from '../internal/application/queries/get-item/get-item.handler.interface';
@@ -69,6 +75,8 @@ import { CategoryRepository } from '../internal/infrastructure/repositories/cate
 import { ReadCategoryRepository } from '../internal/infrastructure/repositories/read-category.repository';
 import { ProductRepository } from '../internal/infrastructure/repositories/product.repository';
 import { ReadProductRepository } from '../internal/infrastructure/repositories/read-product.repository';
+import { PackagingBomRepository } from '../internal/infrastructure/repositories/packaging-bom.repository';
+import { ReadPackagingBomRepository } from '../internal/infrastructure/repositories/read-packaging-bom.repository';
 
 // Mappers
 import { ItemMapper } from '../internal/infrastructure/database/mappers/item.mapper';
@@ -80,6 +88,7 @@ import { IInventoryPrismaClient } from '../internal/infrastructure/database/inve
 import { IItemRepository } from '../internal/domain/repositories/item.repo.interface';
 import { ICategoryRepository } from '../internal/domain/repositories/category.repo.interface';
 import { IProductRepository } from '../internal/domain/repositories/product.repo.interface';
+import { IPackagingBomRepository } from '../internal/domain/repositories/packaging-bom.repo.interface';
 
 // Shared
 import { ILogger } from 'src/shared/domain/contracts/logger.interface';
@@ -124,6 +133,9 @@ import { IInventoryFacade } from 'src/modules/inventory/shared/contracts/invento
         CreateProductHandler,
         UpdateProductHandler,
 
+        // Command Handlers - PackagingBOM
+        SetPackagingBomHandler,
+
         // Query Handler Bindings
         { provide: IGetItemHandler, useClass: GetItemHandler },
         { provide: IGetAllItemsHandler, useClass: GetAllItemsHandler },
@@ -137,9 +149,11 @@ import { IInventoryFacade } from 'src/modules/inventory/shared/contracts/invento
         { provide: IItemRepository, useClass: ItemRepository },
         { provide: ICategoryRepository, useClass: CategoryRepository },
         { provide: IProductRepository, useClass: ProductRepository },
+        { provide: IPackagingBomRepository, useClass: PackagingBomRepository },
         ReadItemRepository,
         ReadCategoryRepository,
         ReadProductRepository,
+        ReadPackagingBomRepository,
 
         // Mappers
         ItemMapper,
@@ -172,6 +186,7 @@ import { IInventoryFacade } from 'src/modules/inventory/shared/contracts/invento
         UpdateProductController,
         GetProductByIdController,
         GetAllProductsController,
+        SetPackagingBomController,
     ],
 })
 export class InventoryModule {}

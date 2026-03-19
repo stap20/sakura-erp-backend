@@ -1,3 +1,8 @@
+export interface PackagingComponentDto {
+    packagingItemId: string;
+    qtyPerUnit: number;
+}
+
 export class InventoryItemDto {
     constructor(
         public readonly id: string,
@@ -6,5 +11,6 @@ export class InventoryItemDto {
         public readonly measureUnit: string,
         public readonly unitWeightGm: number | null,
         public readonly weightedAverageUnitPrice: number | null,
+        public readonly packagingComponents: PackagingComponentDto[] = [],
     ) {}
 }
