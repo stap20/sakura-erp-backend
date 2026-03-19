@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model PurchaseOrder {
+  id                   String              @id
+  vendorId             String
+  vendorName           String
+  vendorPhone          String?
+  vendorContact        String?
+  status               String              @default("DRAFT")
+  notes                String?
+  expectedDeliveryDate DateTime?
+  receivedAt           DateTime?
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
+  lines                PurchaseOrderLine[]
+
+  @@index([vendorId])
+  @@index([status])
+  @@map("purchase_orders")
+}
+
+model PurchaseOrderLine {
+  id          String        @id
+  orderId     String
+  itemId      String
+  itemName    String
+  measureUnit String
+  quantity    Decimal
+  unitPrice   Decimal
+  order       PurchaseOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@unique([orderId, itemId])
+  @@map("purchase_order_lines")
+}
