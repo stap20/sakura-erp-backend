@@ -51,6 +51,9 @@ import { PurchaseOrderMapper } from '../internal/infrastructure/database/mappers
 import { IPurchasePrismaClient } from '../internal/infrastructure/database/purchase.prisma.client.interface';
 import { IPurchaseOrderRepository } from '../internal/domain/repositories/purchase-order.repo.interface';
 
+// Gateway
+import { InventoryGateway } from '../internal/application/gateways/inventory.gateway';
+
 // Shared
 import { ILogger } from 'src/shared/domain/contracts/logger.interface';
 import { NestLogger } from 'src/shared/infrastructure/logger/nest-logger';
@@ -70,6 +73,9 @@ import { NestLogger } from 'src/shared/infrastructure/logger/nest-logger';
             },
             inject: [ConfigService],
         },
+
+        // Gateway
+        InventoryGateway,
 
         // Command Handlers
         CreatePurchaseOrderHandler,

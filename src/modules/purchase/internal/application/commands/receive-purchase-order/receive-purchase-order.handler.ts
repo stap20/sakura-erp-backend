@@ -3,8 +3,8 @@ import { CommandHandlerBase } from 'src/shared/application/command.handler.base'
 import { IPurchaseOrderRepository } from '../../../domain/repositories/purchase-order.repo.interface';
 import { PurchaseOrderId } from '../../../domain/value-objects/purchase-order-id.vo';
 import { PurchaseOrderNotFoundError } from '../../../domain/errors/purchase.error';
-import { RestockItemHandler } from 'src/modules/inventory/internal/application/commands/restock-item/restock-item.handler';
-import { RestockItemCommand } from 'src/modules/inventory/internal/application/commands/restock-item/restock-item.command';
+import { InventoryGateway } from '../../gateways/inventory.gateway';
+import { RestockItemDto } from 'src/shared/contracts/inventory/restock-item.dto';
 import { ReceivePurchaseOrderCommand } from './receive-purchase-order.command';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class ReceivePurchaseOrderHandler extends CommandHandlerBase<ReceivePurch
     constructor(
         @Inject(IPurchaseOrderRepository)
         private readonly repo: IPurchaseOrderRepository,
-        private readonly restockItemHandler: RestockItemHandler,
+        private readonly inventoryGateway: InventoryGateway,
     ) {
         super();
     }
@@ -25,8 +25,8 @@ export class ReceivePurchaseOrderHandler extends CommandHandlerBase<ReceivePurch
         order.receive();
 
         for (const line of order.getLines()) {
-            await this.restockItemHandler.handle(
-                new RestockItemCommand(
+            await this.inventoryGateway.restockItem(
+                new RestockItemDto(
                     line.itemId,
                     line.quantity,
                     'PURCHASE_MODULE',

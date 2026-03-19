@@ -6,7 +6,7 @@ import { PurchaseOrderLine } from '../../../domain/entities/purchase-order-line.
 import { PurchaseOrderNotFoundError } from '../../../domain/errors/purchase.error';
 import { DomainError } from 'src/shared/domain/errors/domain.error';
 import { NotFoundDomainError } from 'src/shared/domain/errors/not-found.domain.error';
-import { ReadItemRepository } from 'src/modules/inventory/internal/infrastructure/repositories/read-item.repository';
+import { InventoryGateway } from '../../gateways/inventory.gateway';
 import { AddLineCommand } from './add-line.command';
 
 const ALLOWED_TYPES = ['RAW_MATERIAL', 'PACKAGING'];
@@ -28,7 +28,7 @@ export class AddLineHandler extends CommandHandlerBase<AddLineCommand, void> {
     constructor(
         @Inject(IPurchaseOrderRepository)
         private readonly repo: IPurchaseOrderRepository,
-        private readonly readItemRepo: ReadItemRepository,
+        private readonly inventoryGateway: InventoryGateway,
     ) {
         super();
     }
@@ -38,7 +38,7 @@ export class AddLineHandler extends CommandHandlerBase<AddLineCommand, void> {
         const order = await this.repo.getById(id);
         if (!order) throw new PurchaseOrderNotFoundError(command.orderId);
 
-        const item = await this.readItemRepo.getById(command.itemId);
+        const item = await this.inventoryGateway.getItem(command.itemId);
         if (!item) throw new ItemNotFoundForPurchaseError(command.itemId);
 
         if (!ALLOWED_TYPES.includes(item.type)) {

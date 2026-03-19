@@ -8,6 +8,7 @@ import { PrismaKnownExceptionFilter } from 'src/shared/infrastructure/filters/pr
 import { PrismaUnknownExceptionFilter } from 'src/shared/infrastructure/filters/prisma-unknown-exception.filter';
 import { IInventoryPrismaClient } from 'src/modules/inventory/internal/infrastructure/database/inventory.prisma.client.interface';
 import { IRecipePrismaClient } from 'src/modules/recipe/internal/infrastructure/database/recipe.prisma.client.interface';
+import { IPurchasePrismaClient } from 'src/modules/purchase/internal/infrastructure/database/purchase.prisma.client.interface';
 
 export async function createTestApp(): Promise<INestApplication> {
     const moduleRef = await Test.createTestingModule({
@@ -55,4 +56,10 @@ export async function cleanRecipeDb(app: INestApplication): Promise<void> {
     const prisma = app.get<IRecipePrismaClient>(IRecipePrismaClient);
     await prisma.recipeIngredient.deleteMany();
     await prisma.recipeVersion.deleteMany();
+}
+
+export async function cleanPurchaseDb(app: INestApplication): Promise<void> {
+    const prisma = app.get<IPurchasePrismaClient>(IPurchasePrismaClient);
+    await prisma.purchaseOrderLine.deleteMany();
+    await prisma.purchaseOrder.deleteMany();
 }
