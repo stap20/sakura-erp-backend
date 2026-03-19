@@ -116,6 +116,7 @@ import { SecurityModule } from 'src/modules/security/shared/security.module';
         // Logger
         { provide: ILogger, useClass: NestLogger },
     ],
+    exports: [ReadItemRepository, RestockItemHandler],
     controllers: [
         CreateItemController,
         UpdateItemController,

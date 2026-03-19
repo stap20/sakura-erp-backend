@@ -37,7 +37,7 @@ export class RestockItemHandler extends CommandHandlerBase<
             type: 'RESTOCK',
             quantity: quantity.value,
             vendorId: command.vendorId ?? null,
-            unitPrice: null,
+            unitPrice: command.unitPrice ?? null,
             performedBy: command.performedBy,
             notes: command.notes ?? null,
         });

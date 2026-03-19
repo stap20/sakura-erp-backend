@@ -9,6 +9,7 @@ import { AuthModule } from './modules/auth/shared/auth.module';
 import { VendorModule } from './modules/vendor/shared/vendor.module';
 import { InventoryModule } from './modules/inventory/shared/inventory.module';
 import { RecipeModule } from './modules/recipe/shared/recipe.module';
+import { PurchaseModule } from './modules/purchase/shared/purchase.module';
 
 import { AppController } from './app.controller';
 
@@ -22,6 +23,7 @@ import { AppController } from './app.controller';
         VendorModule,
         InventoryModule,
         RecipeModule,
+        PurchaseModule,
     ],
     controllers: [AppController],
 })

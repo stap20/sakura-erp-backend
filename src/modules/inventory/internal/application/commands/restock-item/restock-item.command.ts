@@ -4,6 +4,7 @@ export class RestockItemCommand {
         public readonly quantity: number,
         public readonly performedBy: string,
         public readonly vendorId?: string | null,
+        public readonly unitPrice?: number | null,
         public readonly notes?: string | null,
     ) {}
 }
