@@ -6,6 +6,8 @@ export class ItemEntity {
     currentStock: number;
     categoryId: string | null;
     status: string;
+    unitWeightGm: number | null;
+    weightedAverageUnitPrice: number | null;
     createdAt: Date;
     updatedAt: Date;
 

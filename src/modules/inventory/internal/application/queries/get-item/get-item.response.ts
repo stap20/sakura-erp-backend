@@ -9,5 +9,7 @@ export class GetItemResponse {
         public readonly status: string,
         public readonly createdAt: Date,
         public readonly updatedAt: Date,
+        public readonly unitWeightGm: number | null,
+        public readonly weightedAverageUnitPrice: number | null,
     ) {}
 }

@@ -28,6 +28,19 @@ export class RestockItemHandler extends CommandHandlerBase<
         }
 
         const quantity = Quantity.create(command.quantity);
+
+        // Update WAUP before restocking (uses pre-restock stock)
+        if (command.unitPrice != null) {
+            const oldStock = item.getCurrentStock();
+            const oldWAUP = item.getWeightedAverageUnitPrice();
+            const newWAUP =
+                oldWAUP != null && oldStock > 0
+                    ? (oldStock * oldWAUP + command.quantity * command.unitPrice) /
+                      (oldStock + command.quantity)
+                    : command.unitPrice;
+            item.updateWAUP(newWAUP);
+        }
+
         item.restock(quantity);
 
         const transactionId = crypto.randomUUID();

@@ -35,6 +35,7 @@ export class CreateItemHandler extends CommandHandlerBase<
             type: command.type,
             measureUnit: command.measureUnit,
             categoryId: command.categoryId,
+            unitWeightGm: command.unitWeightGm,
         });
 
         await this.itemRepository.save(item);
@@ -53,6 +54,8 @@ export class CreateItemHandler extends CommandHandlerBase<
             item.getCurrentStock(),
             item.getCategoryId(),
             item.getStatus().value,
+            item.getUnitWeightGm(),
+            item.getWeightedAverageUnitPrice(),
         );
     }
 

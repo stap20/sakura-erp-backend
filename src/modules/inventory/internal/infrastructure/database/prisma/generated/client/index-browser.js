@@ -128,6 +128,8 @@ exports.Prisma.ItemScalarFieldEnum = {
   currentStock: 'currentStock',
   categoryId: 'categoryId',
   status: 'status',
+  unitWeightGm: 'unitWeightGm',
+  weightedAverageUnitPrice: 'weightedAverageUnitPrice',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

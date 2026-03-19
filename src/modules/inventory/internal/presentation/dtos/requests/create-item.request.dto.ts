@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsOptional, IsEnum } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsEnum, IsNumber, Min } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { ItemTypeEnum } from '../../../domain/value-objects/item-type.vo';
 import { MeasureUnitEnum } from '../../../domain/value-objects/measure-unit.vo';
@@ -21,4 +21,10 @@ export class CreateItemRequestDto {
     @IsOptional()
     @IsString()
     categoryId?: string | null;
+
+    @ApiPropertyOptional({ example: 150, description: 'Weight in grams per unit (FINAL_PRODUCT only)' })
+    @IsOptional()
+    @IsNumber()
+    @Min(0)
+    unitWeightGm?: number | null;
 }
