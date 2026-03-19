@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model ProductionOrder {
+  id                  String                @id
+  productId           String
+  productName         String
+  unitWeightGm        Float
+  recipeVersionId     String
+  recipeVersionNumber Int
+  quantityUnits       Int
+  totalBatchWeightGm  Float
+  wastePercent        Float
+  status              String                @default("DRAFT")
+  notes               String?
+  totalMaterialCost   Float?
+  executedAt          DateTime?
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  lines               ProductionOrderLine[]
+
+  @@index([productId])
+  @@index([status])
+  @@map("production_orders")
+}
+
+model ProductionOrderLine {
+  id                 String          @id
+  orderId            String
+  itemId             String?
+  itemName           String
+  isAddOn            Boolean         @default(false)
+  ingredientCategory String?
+  recipePercent      Float
+  adjustedQuantityGm Float
+  unitPrice          Float?
+  lineCost           Float?
+  order              ProductionOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("production_order_lines")
+}
