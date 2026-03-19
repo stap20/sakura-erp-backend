@@ -49,6 +49,10 @@ import { RecipeVersionMapper } from '../internal/infrastructure/database/mappers
 // Interfaces
 import { IRecipePrismaClient } from '../internal/infrastructure/database/recipe.prisma.client.interface';
 import { IRecipeVersionRepository } from '../internal/domain/repositories/recipe-version.repo.interface';
+import { IRecipeFacade } from './contracts/recipe-facade.interface';
+
+// Facade
+import { RecipeFacade } from '../internal/infrastructure/facade/recipe.facade';
 
 // Shared
 import { ILogger } from 'src/shared/domain/contracts/logger.interface';
@@ -93,7 +97,11 @@ import { NestLogger } from 'src/shared/infrastructure/logger/nest-logger';
 
         // Logger
         { provide: ILogger, useClass: NestLogger },
+
+        // Facade
+        { provide: IRecipeFacade, useClass: RecipeFacade },
     ],
+    exports: [IRecipeFacade],
     controllers: [
         CreateRecipeVersionController,
         GetAllRecipeVersionsController,
