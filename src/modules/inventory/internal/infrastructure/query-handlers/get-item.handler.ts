@@ -28,6 +28,7 @@ export class GetItemHandler implements IGetItemHandler {
             item.updatedAt,
             item.unitWeightGm ?? null,
             item.weightedAverageUnitPrice ?? null,
+            item.productId ?? null,
         );
     }
 }

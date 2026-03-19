@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { IInventoryFacade } from 'src/modules/inventory/shared/contracts/inventory-facade.interface';
 import { InventoryItemDto } from 'src/modules/inventory/shared/contracts/inventory-item.dto';
+import { ProductFacadeDto } from 'src/modules/inventory/shared/contracts/product-facade.dto';
 import { RestockItemDto } from 'src/modules/inventory/shared/contracts/restock-item.dto';
 import { DeductItemDto } from 'src/modules/inventory/shared/contracts/deduct-item.dto';
 import { ReadItemRepository } from '../repositories/read-item.repository';
+import { ReadProductRepository } from '../repositories/read-product.repository';
 import { RestockItemHandler } from '../../application/commands/restock-item/restock-item.handler';
 import { RestockItemCommand } from '../../application/commands/restock-item/restock-item.command';
 import { DeductItemHandler } from '../../application/commands/deduct-item/deduct-item.handler';
@@ -13,6 +15,7 @@ import { DeductItemCommand } from '../../application/commands/deduct-item/deduct
 export class InventoryFacade implements IInventoryFacade {
     constructor(
         private readonly readItemRepository: ReadItemRepository,
+        private readonly readProductRepository: ReadProductRepository,
         private readonly restockItemHandler: RestockItemHandler,
         private readonly deductItemHandler: DeductItemHandler,
     ) {}
@@ -28,6 +31,12 @@ export class InventoryFacade implements IInventoryFacade {
             item.unitWeightGm ?? null,
             item.weightedAverageUnitPrice ?? null,
         );
+    }
+
+    async getProduct(productId: string): Promise<ProductFacadeDto | null> {
+        const product = await this.readProductRepository.getById(productId);
+        if (!product) return null;
+        return new ProductFacadeDto(product.id, product.name, product.description);
     }
 
     async restockItem(data: RestockItemDto): Promise<void> {

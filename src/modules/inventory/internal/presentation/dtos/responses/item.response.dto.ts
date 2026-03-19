@@ -28,6 +28,9 @@ export class ItemResponseDto {
     @ApiPropertyOptional({ example: 125.5, nullable: true, description: 'Weighted average unit price' })
     weightedAverageUnitPrice: number | null;
 
+    @ApiPropertyOptional({ example: 'clxyz0987654321', nullable: true, description: 'Product ID (FINAL_PRODUCT only)' })
+    productId: string | null;
+
     @ApiProperty({ type: 'string', format: 'date-time' })
     createdAt: Date;
 
@@ -46,6 +49,7 @@ export class ItemResponseDto {
         updatedAt?: Date,
         unitWeightGm?: number | null,
         weightedAverageUnitPrice?: number | null,
+        productId?: string | null,
     ) {
         this.id = id;
         this.name = name;
@@ -58,5 +62,6 @@ export class ItemResponseDto {
         if (updatedAt) this.updatedAt = updatedAt;
         this.unitWeightGm = unitWeightGm ?? null;
         this.weightedAverageUnitPrice = weightedAverageUnitPrice ?? null;
+        this.productId = productId ?? null;
     }
 }

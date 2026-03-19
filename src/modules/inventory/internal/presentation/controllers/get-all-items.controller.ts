@@ -43,6 +43,9 @@ export class GetAllItemsController {
                     item.status,
                     item.createdAt,
                     item.updatedAt,
+                    item.unitWeightGm,
+                    item.weightedAverageUnitPrice,
+                    item.productId,
                 ),
         );
     }

@@ -32,6 +32,7 @@ export class GetItemByIdController {
             result.updatedAt,
             result.unitWeightGm,
             result.weightedAverageUnitPrice,
+            result.productId,
         );
     }
 }

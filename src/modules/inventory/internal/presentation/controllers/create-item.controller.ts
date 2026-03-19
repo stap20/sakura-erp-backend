@@ -26,6 +26,7 @@ export class CreateItemController {
             dto.measureUnit,
             dto.categoryId,
             dto.unitWeightGm,
+            dto.productId,
         );
 
         const result = await this.createItemHandler.handle(command);
@@ -42,6 +43,7 @@ export class CreateItemController {
             undefined,
             result.unitWeightGm,
             result.weightedAverageUnitPrice,
+            result.productId,
         );
     }
 }

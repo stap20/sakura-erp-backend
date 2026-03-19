@@ -23,4 +23,9 @@ export class UpdateItemRequestDto {
     @IsNumber()
     @Min(0)
     unitWeightGm?: number | null;
+
+    @ApiPropertyOptional({ example: 'clxyz0987654321', nullable: true, description: 'Product ID (FINAL_PRODUCT only)' })
+    @IsOptional()
+    @IsString()
+    productId?: string | null;
 }

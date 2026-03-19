@@ -9,5 +9,6 @@ export class CreateItemResponse {
         public readonly status: string,
         public readonly unitWeightGm: number | null,
         public readonly weightedAverageUnitPrice: number | null,
+        public readonly productId: string | null,
     ) {}
 }

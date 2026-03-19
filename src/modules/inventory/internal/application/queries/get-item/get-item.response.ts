@@ -11,5 +11,6 @@ export class GetItemResponse {
         public readonly updatedAt: Date,
         public readonly unitWeightGm: number | null,
         public readonly weightedAverageUnitPrice: number | null,
+        public readonly productId: string | null,
     ) {}
 }
