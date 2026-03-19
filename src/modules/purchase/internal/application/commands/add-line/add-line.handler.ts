@@ -4,24 +4,11 @@ import { IPurchaseOrderRepository } from '../../../domain/repositories/purchase-
 import { PurchaseOrderId } from '../../../domain/value-objects/purchase-order-id.vo';
 import { PurchaseOrderLine } from '../../../domain/entities/purchase-order-line.entity';
 import { PurchaseOrderNotFoundError } from '../../../domain/errors/purchase.error';
-import { DomainError } from 'src/shared/domain/errors/domain.error';
-import { NotFoundDomainError } from 'src/shared/domain/errors/not-found.domain.error';
 import { InventoryGateway } from '../../../infrastructure/gateways/inventory.gateway';
+import { ItemNotFoundForPurchaseError, InvalidItemTypeForPurchaseError } from '../../errors/add-line.errors';
 import { AddLineCommand } from './add-line.command';
 
 const ALLOWED_TYPES = ['RAW_MATERIAL', 'PACKAGING'];
-
-class InvalidItemTypeError extends DomainError {
-    constructor(type: string) {
-        super(`Item type ${type} is not allowed in a purchase order. Must be RAW_MATERIAL or PACKAGING`);
-    }
-}
-
-class ItemNotFoundForPurchaseError extends NotFoundDomainError {
-    constructor(id: string) {
-        super(`Item with id ${id} not found`);
-    }
-}
 
 @Injectable()
 export class AddLineHandler extends CommandHandlerBase<AddLineCommand, void> {
@@ -42,7 +29,7 @@ export class AddLineHandler extends CommandHandlerBase<AddLineCommand, void> {
         if (!item) throw new ItemNotFoundForPurchaseError(command.itemId);
 
         if (!ALLOWED_TYPES.includes(item.type)) {
-            throw new InvalidItemTypeError(item.type);
+            throw new InvalidItemTypeForPurchaseError(item.type);
         }
 
         const line = new PurchaseOrderLine({
