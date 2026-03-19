@@ -71,6 +71,12 @@ npm run purchase:db:generate
 npm run purchase:db:migrate
 npm run purchase:db:deploy
 npm run purchase:db:studio
+
+# Production DB
+npm run production:db:generate
+npm run production:db:migrate
+npm run production:db:deploy
+npm run production:db:studio
 ```
 
 ## Architecture
@@ -125,7 +131,8 @@ Each module has its own PostgreSQL database and Prisma client:
 | Vendor    | `sakura_vendor_db`     | `VENDOR_DATABASE_URL`     |
 | Inventory | `sakura_inventory_db`  | `INVENTORY_DATABASE_URL`  |
 | Recipe    | `sakura_recipe_db`     | `RECIPE_DATABASE_URL`     |
-| Purchase  | `sakura_purchase_db`   | `PURCHASE_DATABASE_URL`   |
+| Purchase   | `sakura_purchase_db`    | `PURCHASE_DATABASE_URL`   |
+| Production | `sakura_production_db`  | `PRODUCTION_DATABASE_URL` |
 
 Prisma schemas and generated clients live inside each module's infrastructure directory, not at the project root.
 
@@ -161,11 +168,23 @@ Prisma schemas and generated clients live inside each module's infrastructure di
 - Swagger UI: Available at `/api` in development
 - Global `ValidationPipe` with `whitelist: true`, `transform: true`, `forbidNonWhitelisted: true`
 
+### Key Domain Concepts (refactor/product-filling branch)
+
+- **Product aggregate** (`inventory` module): Groups FINAL_PRODUCT size variants under one formula identity. Recipe links to `Product.id`, not to a specific Item. `Item.productId` FK (nullable) links each variant to its parent Product.
+- **PackagingBOM** (`inventory` module): `PackagingComponent` records per FINAL_PRODUCT variant define which PACKAGING items and qty per unit to deduct during FillingOrder execution. Managed via `PUT /inventory/items/:id/packaging-bom`.
+- **WAUP (Weighted Average Unit Price)**: Running average on Item, updated on each RESTOCK: `newWAUP = (oldStock × oldWAUP + newQty × newPrice) / (oldStock + newQty)`. Computed O(1) per restock, not on read.
+- **Two-phase production**:
+  - **Phase 1 — ProductionOrder** (bulk): deducts base ingredients (non-addOn) scaled by `batchWeightGm × (pct/100) × (1 + waste%)`, then upserts `BulkStock.availableGm += batchWeightGm`.
+  - **Phase 2 — FillingOrder** (fill): validates `bulkUsedGm ≤ BulkStock.availableGm`, deducts bulk, restocks variant items, and deducts PackagingBOM components per unit filled.
+- **BulkStock**: Per-Product entity in `production` DB tracking available bulk grams.
+- **SHIPPING_PACKAGING**: New ItemType (boxes, bags, shipping flyers) reserved for the future Sales module.
+
 ### Module Implementation Status
 
 - **Auth**: Complete (login, user CRUD)
 - **Vendor**: Complete (CRUD, activate/deactivate)
 - **Security**: Complete (JWT + RBAC)
-- **Inventory**: Complete — 3 item types (RAW_MATERIAL, PACKAGING, FINAL_PRODUCT), categories, restock/deduct with immutable transaction audit trail (vendorId + unitPrice), soft-delete (archive). E2E tested (28 tests).
-- **Recipe**: Complete — formula/BOM management with version lifecycle (DRAFT → ACTIVE → ARCHIVED), w/w% percentage quantities, add-on placeholders (fragrance/colorants), 100% base formula validation at activation. E2E tested (30 tests).
+- **Inventory**: Complete — 4 item types (RAW_MATERIAL, PACKAGING, FINAL_PRODUCT, SHIPPING_PACKAGING), categories, Product aggregate, PackagingBOM, restock/deduct with WAUP + immutable transaction audit trail, soft-delete (archive). E2E tested (28 tests).
+- **Recipe**: Complete — formula/BOM management with version lifecycle (DRAFT → ACTIVE → ARCHIVED), w/w% percentage quantities, add-on placeholders (fragrance/colorants), 100% base formula validation at activation. Links to Product aggregate (not Item). E2E tested (30 tests).
 - **Purchase**: Complete — procurement management with PO lifecycle (DRAFT → CONFIRMED → RECEIVED + CANCELLED), vendor snapshot, item validation (RAW_MATERIAL/PACKAGING only), auto-restock on receive with vendorId + unitPrice propagation to InventoryTransaction. Cross-module integration via `IInventoryFacade` (facade pattern). E2E tested (27 tests).
+- **Production**: Complete — two-phase production: ProductionOrder (bulk batch) + FillingOrder (fill into variants). BulkStock tracks available bulk grams per Product. Cross-module integration via `IInventoryFacade` + `IRecipeFacade`.

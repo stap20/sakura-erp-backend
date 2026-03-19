@@ -4,5 +4,7 @@ export class CreateItemCommand {
         public readonly type: string,
         public readonly measureUnit: string,
         public readonly categoryId?: string | null,
+        public readonly unitWeightGm?: number | null,
+        public readonly productId?: string | null,
     ) {}
 }

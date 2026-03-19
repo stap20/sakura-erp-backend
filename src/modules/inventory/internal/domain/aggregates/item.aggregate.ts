@@ -18,6 +18,8 @@ export interface CreateItemParams {
     type: string;
     measureUnit: string;
     categoryId?: string | null;
+    unitWeightGm?: number | null;
+    productId?: string | null;
 }
 
 export interface PersistenceItemParams {
@@ -27,13 +29,18 @@ export interface PersistenceItemParams {
     measureUnit: string;
     currentStock: number;
     categoryId: string | null;
+    productId: string | null;
     status: string;
+    unitWeightGm: number | null;
+    weightedAverageUnitPrice: number | null;
 }
 
 export interface UpdateItemParams {
     name?: string;
     measureUnit?: string;
     categoryId?: string | null;
+    unitWeightGm?: number | null;
+    productId?: string | null;
 }
 
 export class Item extends AggregateRoot<ItemId> {
@@ -42,7 +49,10 @@ export class Item extends AggregateRoot<ItemId> {
     private measureUnit: MeasureUnit;
     private currentStock: number;
     private categoryId: string | null;
+    private productId: string | null;
     private status: ItemStatus;
+    private unitWeightGm: number | null;
+    private weightedAverageUnitPrice: number | null;
 
     private constructor(
         id: ItemId,
@@ -51,7 +61,10 @@ export class Item extends AggregateRoot<ItemId> {
         measureUnit: MeasureUnit,
         currentStock: number,
         categoryId: string | null,
+        productId: string | null,
         status: ItemStatus,
+        unitWeightGm: number | null,
+        weightedAverageUnitPrice: number | null,
     ) {
         super(id);
         this.name = name;
@@ -59,7 +72,10 @@ export class Item extends AggregateRoot<ItemId> {
         this.measureUnit = measureUnit;
         this.currentStock = currentStock;
         this.categoryId = categoryId;
+        this.productId = productId;
         this.status = status;
+        this.unitWeightGm = unitWeightGm;
+        this.weightedAverageUnitPrice = weightedAverageUnitPrice;
     }
 
     public static create(params: CreateItemParams): Item {
@@ -80,7 +96,10 @@ export class Item extends AggregateRoot<ItemId> {
             measureUnit,
             0,
             params.categoryId ?? null,
+            params.productId ?? null,
             status,
+            params.unitWeightGm ?? null,
+            null,
         );
     }
 
@@ -98,7 +117,10 @@ export class Item extends AggregateRoot<ItemId> {
             measureUnit,
             params.currentStock,
             params.categoryId,
+            params.productId,
             status,
+            params.unitWeightGm,
+            params.weightedAverageUnitPrice,
         );
     }
 
@@ -115,6 +137,16 @@ export class Item extends AggregateRoot<ItemId> {
             }
             this.categoryId = params.categoryId;
         }
+        if (params.unitWeightGm !== undefined) {
+            this.unitWeightGm = params.unitWeightGm;
+        }
+        if (params.productId !== undefined) {
+            this.productId = params.productId;
+        }
+    }
+
+    public updateWAUP(waup: number): void {
+        this.weightedAverageUnitPrice = waup;
     }
 
     public restock(quantity: Quantity): void {
@@ -152,6 +184,18 @@ export class Item extends AggregateRoot<ItemId> {
         return this.type.isRawMaterial();
     }
 
+    public isFinalProduct(): boolean {
+        return this.type.isFinalProduct();
+    }
+
+    public getUnitWeightGm(): number | null {
+        return this.unitWeightGm;
+    }
+
+    public getWeightedAverageUnitPrice(): number | null {
+        return this.weightedAverageUnitPrice;
+    }
+
     public getName(): ItemName {
         return this.name;
     }
@@ -170,6 +214,10 @@ export class Item extends AggregateRoot<ItemId> {
 
     public getCategoryId(): string | null {
         return this.categoryId;
+    }
+
+    public getProductId(): string | null {
+        return this.productId;
     }
 
     public getStatus(): ItemStatus {

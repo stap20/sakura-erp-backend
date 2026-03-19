@@ -5,7 +5,10 @@ export class ItemEntity {
     measureUnit: string;
     currentStock: number;
     categoryId: string | null;
+    productId: string | null;
     status: string;
+    unitWeightGm: number | null;
+    weightedAverageUnitPrice: number | null;
     createdAt: Date;
     updatedAt: Date;
 

@@ -1,0 +1,67 @@
+generator client {
+  provider         = "prisma-client-js"
+  output           = "./generated/client"
+  moduleResolution = "bundler"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model ProductionOrder {
+  id            String    @id
+  productId     String
+  batchWeightGm Float
+  wastePercent  Float     @default(0)
+  notes         String?
+  status        String    @default("DRAFT")
+  performedBy   String?
+  executedAt    DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([productId])
+  @@index([status])
+  @@map("production_orders")
+}
+
+model FillingOrder {
+  id          String             @id
+  productId   String
+  bulkUsedGm  Float              @default(0)
+  notes       String?
+  status      String             @default("DRAFT")
+  performedBy String?
+  executedAt  DateTime?
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  lines FillingOrderLine[]
+
+  @@index([productId])
+  @@index([status])
+  @@map("filling_orders")
+}
+
+model FillingOrderLine {
+  id             String @id
+  fillingOrderId String
+  variantItemId  String
+  variantName    String
+  quantityUnits  Float
+  unitWeightGm   Float
+  bulkUsedGm     Float
+
+  fillingOrder FillingOrder @relation(fields: [fillingOrderId], references: [id])
+
+  @@map("filling_order_lines")
+}
+
+model BulkStock {
+  id          String   @id
+  productId   String   @unique
+  availableGm Float    @default(0)
+  updatedAt   DateTime @updatedAt
+
+  @@map("bulk_stocks")
+}

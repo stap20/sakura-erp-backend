@@ -5,12 +5,13 @@ export enum ItemTypeEnum {
     RAW_MATERIAL = 'RAW_MATERIAL',
     PACKAGING = 'PACKAGING',
     FINAL_PRODUCT = 'FINAL_PRODUCT',
+    SHIPPING_PACKAGING = 'SHIPPING_PACKAGING',
 }
 
 class InvalidItemTypeError extends DomainError {
     constructor(type: string) {
         super(
-            `Invalid item type: ${type}. Allowed: RAW_MATERIAL, PACKAGING, FINAL_PRODUCT`,
+            `Invalid item type: ${type}. Allowed: RAW_MATERIAL, PACKAGING, FINAL_PRODUCT, SHIPPING_PACKAGING`,
         );
     }
 }
@@ -29,5 +30,9 @@ export class ItemType extends ValueObject<string> {
 
     public isRawMaterial(): boolean {
         return this._value === ItemTypeEnum.RAW_MATERIAL;
+    }
+
+    public isFinalProduct(): boolean {
+        return this._value === ItemTypeEnum.FINAL_PRODUCT;
     }
 }

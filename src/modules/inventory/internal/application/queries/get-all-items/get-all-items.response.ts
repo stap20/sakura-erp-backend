@@ -8,6 +8,9 @@ export interface ItemSummary {
     status: string;
     createdAt: Date;
     updatedAt: Date;
+    unitWeightGm: number | null;
+    weightedAverageUnitPrice: number | null;
+    productId: string | null;
 }
 
 export class GetAllItemsResponse {

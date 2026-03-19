@@ -27,6 +27,9 @@ export class GetAllItemsHandler implements IGetAllItemsHandler {
                 status: item.status,
                 createdAt: item.createdAt,
                 updatedAt: item.updatedAt,
+                unitWeightGm: item.unitWeightGm ?? null,
+                weightedAverageUnitPrice: item.weightedAverageUnitPrice ?? null,
+                productId: item.productId ?? null,
             })),
         );
     }

@@ -39,6 +39,8 @@ export class UpdateItemHandler extends CommandHandlerBase<
             name: command.name,
             measureUnit: command.measureUnit,
             categoryId: command.categoryId,
+            unitWeightGm: command.unitWeightGm,
+            productId: command.productId,
         });
 
         await this.itemRepository.save(item);
@@ -53,6 +55,9 @@ export class UpdateItemHandler extends CommandHandlerBase<
             item.getCurrentStock(),
             item.getCategoryId(),
             item.getStatus().value,
+            item.getUnitWeightGm(),
+            item.getWeightedAverageUnitPrice(),
+            item.getProductId(),
         );
     }
 }

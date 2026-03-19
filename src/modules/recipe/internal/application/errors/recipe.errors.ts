@@ -5,3 +5,9 @@ export class RecipeVersionNotFoundApplicationError extends NotFoundError {
         super(`Recipe version with id ${id} not found`);
     }
 }
+
+export class ProductNotFoundForRecipeApplicationError extends NotFoundError {
+    constructor(productId: string) {
+        super(`Product with id ${productId} not found`);
+    }
+}

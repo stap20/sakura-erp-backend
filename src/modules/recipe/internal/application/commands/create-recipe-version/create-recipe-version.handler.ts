@@ -3,8 +3,10 @@ import { CommandHandlerBase } from 'src/shared/application/command.handler.base'
 import { IRecipeVersionRepository } from '../../../domain/repositories/recipe-version.repo.interface';
 import { RecipeVersion } from '../../../domain/aggregates/recipe-version.aggregate';
 import { ReadRecipeVersionRepository } from '../../../infrastructure/repositories/read-recipe-version.repository';
+import { InventoryGateway } from '../../../infrastructure/gateways/inventory.gateway';
 import { CreateRecipeVersionCommand } from './create-recipe-version.command';
 import { CreateRecipeVersionResponse } from './create-recipe-version.response';
+import { ProductNotFoundForRecipeApplicationError } from '../../errors/recipe.errors';
 
 @Injectable()
 export class CreateRecipeVersionHandler extends CommandHandlerBase<
@@ -15,11 +17,17 @@ export class CreateRecipeVersionHandler extends CommandHandlerBase<
         @Inject(IRecipeVersionRepository)
         private readonly repo: IRecipeVersionRepository,
         private readonly readRepo: ReadRecipeVersionRepository,
+        private readonly inventoryGateway: InventoryGateway,
     ) {
         super();
     }
 
     async handle(command: CreateRecipeVersionCommand): Promise<CreateRecipeVersionResponse> {
+        const product = await this.inventoryGateway.getProduct(command.productId);
+        if (!product) {
+            throw new ProductNotFoundForRecipeApplicationError(command.productId);
+        }
+
         const versionNumber = await this.readRepo.getNextVersionNumber(command.productId);
 
         const recipe = RecipeVersion.create({

@@ -7,7 +7,7 @@ export class ItemResponseDto {
     @ApiProperty({ example: 'Glycerin 99%' })
     name: string;
 
-    @ApiProperty({ example: 'RAW_MATERIAL', enum: ['RAW_MATERIAL', 'PACKAGING', 'FINAL_PRODUCT'] })
+    @ApiProperty({ example: 'RAW_MATERIAL', enum: ['RAW_MATERIAL', 'PACKAGING', 'FINAL_PRODUCT', 'SHIPPING_PACKAGING'] })
     type: string;
 
     @ApiProperty({ example: 'KG', enum: ['KG', 'G', 'L', 'ML', 'PCS'] })
@@ -21,6 +21,15 @@ export class ItemResponseDto {
 
     @ApiProperty({ example: 'ACTIVE', enum: ['ACTIVE', 'ARCHIVED'] })
     status: string;
+
+    @ApiPropertyOptional({ example: 150, nullable: true, description: 'Weight in grams per unit (FINAL_PRODUCT only)' })
+    unitWeightGm: number | null;
+
+    @ApiPropertyOptional({ example: 125.5, nullable: true, description: 'Weighted average unit price' })
+    weightedAverageUnitPrice: number | null;
+
+    @ApiPropertyOptional({ example: 'clxyz0987654321', nullable: true, description: 'Product ID (FINAL_PRODUCT only)' })
+    productId: string | null;
 
     @ApiProperty({ type: 'string', format: 'date-time' })
     createdAt: Date;
@@ -38,6 +47,9 @@ export class ItemResponseDto {
         status: string,
         createdAt?: Date,
         updatedAt?: Date,
+        unitWeightGm?: number | null,
+        weightedAverageUnitPrice?: number | null,
+        productId?: string | null,
     ) {
         this.id = id;
         this.name = name;
@@ -48,5 +60,8 @@ export class ItemResponseDto {
         this.status = status;
         if (createdAt) this.createdAt = createdAt;
         if (updatedAt) this.updatedAt = updatedAt;
+        this.unitWeightGm = unitWeightGm ?? null;
+        this.weightedAverageUnitPrice = weightedAverageUnitPrice ?? null;
+        this.productId = productId ?? null;
     }
 }

@@ -4,5 +4,7 @@ export class UpdateItemCommand {
         public readonly name?: string,
         public readonly measureUnit?: string,
         public readonly categoryId?: string | null,
+        public readonly unitWeightGm?: number | null,
+        public readonly productId?: string | null,
     ) {}
 }

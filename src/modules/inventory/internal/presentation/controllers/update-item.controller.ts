@@ -27,6 +27,8 @@ export class UpdateItemController {
             dto.name,
             dto.measureUnit,
             dto.categoryId,
+            dto.unitWeightGm,
+            dto.productId,
         );
 
         const result = await this.updateItemHandler.handle(command);
@@ -39,6 +41,11 @@ export class UpdateItemController {
             result.currentStock,
             result.categoryId,
             result.status,
+            undefined,
+            undefined,
+            result.unitWeightGm,
+            result.weightedAverageUnitPrice,
+            result.productId,
         );
     }
 }
