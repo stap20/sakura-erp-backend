@@ -27,6 +27,7 @@ export class RestockItemController {
             dto.quantity,
             dto.performedBy,
             dto.vendorId,
+            null,
             dto.notes,
         );
 

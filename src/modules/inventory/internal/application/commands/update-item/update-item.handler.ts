@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@nestjs/common';
 import { CommandHandlerBase } from 'src/shared/application/command.handler.base';
 import { IItemRepository } from '../../../domain/repositories/item.repo.interface';
 import { ItemId } from '../../../domain/value-objects/item-id.vo';
-import { ItemNotFoundError, MeasureUnitLockedError } from '../../../domain/errors/item.error';
+import { ItemNotFoundApplicationError, MeasureUnitLockedApplicationError } from '../../errors/item.errors';
 import { UpdateItemCommand } from './update-item.command';
 import { UpdateItemResponse } from './update-item.response';
 import { ReadItemRepository } from '../../../infrastructure/repositories/read-item.repository';
@@ -25,13 +25,13 @@ export class UpdateItemHandler extends CommandHandlerBase<
         const item = await this.itemRepository.getById(idVO);
 
         if (!item) {
-            throw new ItemNotFoundError(command.id);
+            throw new ItemNotFoundApplicationError(command.id);
         }
 
         if (command.measureUnit !== undefined && command.measureUnit !== item.getMeasureUnit().value) {
             const hasTransactions = await this.readItemRepository.hasTransactions(command.id);
             if (hasTransactions) {
-                throw new MeasureUnitLockedError();
+                throw new MeasureUnitLockedApplicationError();
             }
         }
 

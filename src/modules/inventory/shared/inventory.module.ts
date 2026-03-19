@@ -68,6 +68,10 @@ import { ILogger } from 'src/shared/domain/contracts/logger.interface';
 import { NestLogger } from 'src/shared/infrastructure/logger/nest-logger';
 import { SecurityModule } from 'src/modules/security/shared/security.module';
 
+// Facade
+import { InventoryFacade } from '../internal/infrastructure/facade/inventory.facade';
+import { IInventoryFacade } from 'src/modules/inventory/shared/contracts/inventory-facade.interface';
+
 @Module({
     imports: [SecurityModule],
     providers: [
@@ -115,7 +119,12 @@ import { SecurityModule } from 'src/modules/security/shared/security.module';
 
         // Logger
         { provide: ILogger, useClass: NestLogger },
+
+        // Facade
+        InventoryFacade,
+        { provide: IInventoryFacade, useClass: InventoryFacade },
     ],
+    exports: [{ provide: IInventoryFacade, useClass: InventoryFacade }],
     controllers: [
         CreateItemController,
         UpdateItemController,

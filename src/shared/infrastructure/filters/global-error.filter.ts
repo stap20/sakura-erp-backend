@@ -11,6 +11,7 @@ import { NotFoundDomainError } from '../../domain/errors/not-found.domain.error'
 import { ApplicationError } from '../../application/errors/application.error';
 import { InfrastructureError } from '../errors/infrastructure.error';
 import { BadRequestError } from '../../application/errors/bad-request.error';
+import { ConflictError } from '../../application/errors/conflict.error';
 import { UnauthorizedError } from '../../application/errors/unauthorized.error';
 import { NotFoundError } from '../../application/errors/notfound.error';
 import { ILogger } from '../../domain/contracts/logger.interface';
@@ -38,6 +39,8 @@ export class GlobalErrorFilter implements ExceptionFilter {
         if (error instanceof NotFoundDomainError) {
             status = HttpStatus.NOT_FOUND;
         } else if (error instanceof DomainError) {
+            status = HttpStatus.CONFLICT;
+        } else if (error instanceof ConflictError) {
             status = HttpStatus.CONFLICT;
         } else if (error instanceof BadRequestError) {
             status = HttpStatus.BAD_REQUEST;

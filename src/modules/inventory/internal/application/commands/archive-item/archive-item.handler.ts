@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@nestjs/common';
 import { CommandHandlerBase } from 'src/shared/application/command.handler.base';
 import { IItemRepository } from '../../../domain/repositories/item.repo.interface';
 import { ItemId } from '../../../domain/value-objects/item-id.vo';
-import { ItemNotFoundError } from '../../../domain/errors/item.error';
+import { ItemNotFoundApplicationError } from '../../errors/item.errors';
 import { ArchiveItemCommand } from './archive-item.command';
 
 @Injectable()
@@ -22,7 +22,7 @@ export class ArchiveItemHandler extends CommandHandlerBase<
         const item = await this.itemRepository.getById(idVO);
 
         if (!item) {
-            throw new ItemNotFoundError(command.id);
+            throw new ItemNotFoundApplicationError(command.id);
         }
 
         item.archive();
