@@ -10,6 +10,7 @@ import { VendorModule } from './modules/vendor/shared/vendor.module';
 import { InventoryModule } from './modules/inventory/shared/inventory.module';
 import { RecipeModule } from './modules/recipe/shared/recipe.module';
 import { PurchaseModule } from './modules/purchase/shared/purchase.module';
+import { ProductionModule } from './modules/production/shared/production.module';
 
 import { AppController } from './app.controller';
 
@@ -24,6 +25,7 @@ import { AppController } from './app.controller';
         InventoryModule,
         RecipeModule,
         PurchaseModule,
+        ProductionModule,
     ],
     controllers: [AppController],
 })
