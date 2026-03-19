@@ -36,6 +36,10 @@ npx jest --config test/jest-e2e.json --testPathPatterns=purchases         # Purc
 
 E2E tests use the real databases and clean relevant tables before each suite. Test files live in `test/inventory/`, `test/recipe/`, and `test/purchase/`. The helper `test/helpers/app.setup.ts` bootstraps the full `AppModule` with identical global setup to `main.ts` and exports `cleanInventoryDb()`, `cleanRecipeDb()`, and `cleanPurchaseDb()`.
 
+**Important**: The `test:e2e` script runs with `--runInBand` (all suites in one process, sequentially). This is required because all suites share the same real databases — parallel execution causes `cleanXxxDb()` calls from one suite to corrupt in-flight data of another. Do not remove `--runInBand`.
+
+Current totals: **85 tests** — 28 inventory (19 items + 9 categories) + 30 recipe + 27 purchase.
+
 ### Database (Prisma — per module)
 ```bash
 # Auth DB
@@ -79,26 +83,32 @@ Every feature module lives under `src/modules/{module}/` and is split into:
 
 ```
 {module}/
-├── shared/                    # NestJS module definition
-│   └── {module}.module.ts
+├── shared/                    # NestJS module definition + public contracts
+│   ├── {module}.module.ts
+│   └── contracts/             # Public interface + DTOs for cross-module consumption
+│       ├── {module}-facade.interface.ts
+│       └── *.dto.ts
 └── internal/
     ├── application/
     │   ├── commands/          # Write use cases (one folder per command)
     │   │   └── {command}/
     │   │       ├── {command}.command.ts
     │   │       └── {command}.handler.ts
-    │   └── queries/           # Read use cases (one folder per query)
+    │   ├── queries/           # Read use cases (one folder per query)
+    │   └── errors/            # Application-layer errors (extend ApplicationError)
     ├── domain/
     │   ├── aggregates/        # Aggregate root (business logic)
     │   ├── entities/
     │   ├── value-objects/
     │   ├── events/            # Domain events
-    │   ├── errors/            # Domain-specific errors
+    │   ├── errors/            # Domain-specific errors (aggregate-internal use only)
     │   └── repositories/      # Repository interfaces (contracts only)
     ├── infrastructure/
     │   ├── database/prisma/   # Prisma schema + generated client
     │   ├── repositories/      # Read + Write repository implementations
     │   ├── mappers/           # Domain ↔ DB entity conversion
+    │   ├── facade/            # Facade implementation (when this module is consumed by others)
+    │   ├── gateways/          # Outbound gateways (when this module consumes other modules)
     │   └── events/            # Event publisher implementations
     └── presentation/
         ├── controllers/       # One controller per endpoint
@@ -122,14 +132,20 @@ Prisma schemas and generated clients live inside each module's infrastructure di
 ### Shared Abstractions (`src/shared/`)
 
 - `domain/`: Base classes — `AggregateRoot<T>`, `Entity<T>`, `ValueObject<T>`, `DomainEvent`, `IntegrationEvent`; contracts — `IEventBus`, `ILogger`, `IIdGenerator`; error base classes — `DomainError`, `NotFoundDomainError` (maps to HTTP 404)
-- `application/`: `CommandHandlerBase`, `ServiceBase`, `FacadeBase`; error hierarchy — `ApplicationError`, `BadRequestError`, `NotFoundError`, `UnauthorizedError`
+- `application/`: `CommandHandlerBase`, `ServiceBase`, `FacadeBase`; error hierarchy — `ApplicationError`, `BadRequestError`, `NotFoundError`, `ConflictError` (→ 409), `UnauthorizedError`. **Module-level contracts** (facade interfaces + shared DTOs) live in `{module}/shared/contracts/`, not here.
 - `infrastructure/`: `NestLogger`, `UuidGenerator`, global error filters
 
 ### Key Patterns
 
 - **CQRS**: Commands (write) and Queries (read) have separate handlers and separate repository implementations (`UserRepository` vs `ReadUserRepository`).
 - **Value Objects**: All domain primitives are wrapped (e.g., `VendorName`, `Email`, `Password`) with validation at construction time.
-- **Domain Errors**: Business rule violations throw typed domain errors (e.g., `VendorAlreadyExistsError`), not raw HTTP exceptions. "Not found" errors extend `NotFoundDomainError` (→ 404); all other domain errors extend `DomainError` (→ 409).
+- **Domain Errors**: Business rule violations inside aggregates/entities throw typed domain errors (e.g., `PurchaseOrderNotEditableError`). These propagate naturally through the global filter: `NotFoundDomainError` → 404, `DomainError` → 409. Domain errors are **aggregate-internal only** — application handlers never import or throw them.
+- **Application-Layer Errors**: Every module has `internal/application/errors/` with module-specific classes extending `NotFoundError` (→ 404) or `ConflictError` (→ 409). Handlers are orchestrators and must only throw `ApplicationError` subclasses for orchestration concerns (entity-not-found checks, duplicate guards, etc.).
+- **Cross-Module Communication (Facade Pattern)**: When Module A needs to call Module B:
+  1. Module B publishes `IXxxFacade` interface + shared DTOs in `shared/contracts/`
+  2. Module B implements `XxxFacade` in `internal/infrastructure/facade/` and exports only the interface token
+  3. Module A creates `XxxGateway` in `internal/infrastructure/gateways/` that injects `IXxxFacade`
+  4. Module A's application handlers use the gateway — zero direct dependency on Module B internals
 - **Dependency Injection via interfaces**: Handlers depend on repository/service *interfaces* (e.g., `IVendorRepository`), not concrete classes.
 
 ### Security (`src/modules/security/`)
@@ -152,4 +168,4 @@ Prisma schemas and generated clients live inside each module's infrastructure di
 - **Security**: Complete (JWT + RBAC)
 - **Inventory**: Complete — 3 item types (RAW_MATERIAL, PACKAGING, FINAL_PRODUCT), categories, restock/deduct with immutable transaction audit trail (vendorId + unitPrice), soft-delete (archive). E2E tested (28 tests).
 - **Recipe**: Complete — formula/BOM management with version lifecycle (DRAFT → ACTIVE → ARCHIVED), w/w% percentage quantities, add-on placeholders (fragrance/colorants), 100% base formula validation at activation. E2E tested (30 tests).
-- **Purchase**: Complete — procurement management with PO lifecycle (DRAFT → CONFIRMED → RECEIVED + CANCELLED), vendor snapshot, item validation (RAW_MATERIAL/PACKAGING only), auto-restock on receive with vendorId + unitPrice propagation to InventoryTransaction. E2E tested.
+- **Purchase**: Complete — procurement management with PO lifecycle (DRAFT → CONFIRMED → RECEIVED + CANCELLED), vendor snapshot, item validation (RAW_MATERIAL/PACKAGING only), auto-restock on receive with vendorId + unitPrice propagation to InventoryTransaction. Cross-module integration via `IInventoryFacade` (facade pattern). E2E tested (27 tests).
