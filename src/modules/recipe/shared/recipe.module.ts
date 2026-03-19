@@ -54,7 +54,12 @@ import { IRecipeVersionRepository } from '../internal/domain/repositories/recipe
 import { ILogger } from 'src/shared/domain/contracts/logger.interface';
 import { NestLogger } from 'src/shared/infrastructure/logger/nest-logger';
 
+// Gateway
+import { InventoryGateway } from '../internal/infrastructure/gateways/inventory.gateway';
+import { InventoryModule } from 'src/modules/inventory/shared/inventory.module';
+
 @Module({
+    imports: [InventoryModule],
     providers: [
         {
             provide: IRecipePrismaClient,
@@ -93,6 +98,9 @@ import { NestLogger } from 'src/shared/infrastructure/logger/nest-logger';
 
         // Logger
         { provide: ILogger, useClass: NestLogger },
+
+        // Gateway
+        InventoryGateway,
     ],
     controllers: [
         CreateRecipeVersionController,
