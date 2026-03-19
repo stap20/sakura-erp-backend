@@ -11,7 +11,6 @@ import {
     ProductItemMissingUnitWeightApplicationError,
     ActiveRecipeNotFoundApplicationError,
 } from '../../errors/production.errors';
-import { IIdGenerator } from 'src/shared/domain/contracts/id-generator.interface';
 import { ILogger } from 'src/shared/domain/contracts/logger.interface';
 
 @Injectable()
@@ -21,7 +20,6 @@ export class CreateProductionOrderHandler {
         private readonly repo: IProductionOrderRepository,
         private readonly inventoryGateway: InventoryGateway,
         private readonly recipeGateway: RecipeGateway,
-        @Inject(IIdGenerator) private readonly idGenerator: IIdGenerator,
         @Inject(ILogger) private readonly logger: ILogger,
     ) {}
 
@@ -52,7 +50,7 @@ export class CreateProductionOrderHandler {
                 : ingredient.itemId;
 
             return {
-                id: this.idGenerator.generate(),
+                id: crypto.randomUUID(),
                 itemId: resolvedItemId,
                 itemName: ingredient.itemId ?? `Add-on (${ingredient.ingredientCategory})`,
                 isAddOn: ingredient.isAddOn,
@@ -63,7 +61,7 @@ export class CreateProductionOrderHandler {
         });
 
         const order = ProductionOrder.create({
-            id: cmd.id,
+            id: crypto.randomUUID(),
             productId: cmd.productId,
             productName: product.name,
             unitWeightGm: product.unitWeightGm,

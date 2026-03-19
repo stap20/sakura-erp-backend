@@ -1,6 +1,5 @@
 export class CreateProductionOrderCommand {
     constructor(
-        public readonly id: string,
         public readonly productId: string,
         public readonly quantityUnits: number,
         public readonly wastePercent: number,
