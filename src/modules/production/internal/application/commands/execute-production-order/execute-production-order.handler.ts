@@ -6,7 +6,6 @@ import { InventoryGateway } from '../../../infrastructure/gateways/inventory.gat
 import { ProductionOrderNotFoundApplicationError } from '../../errors/production.errors';
 import { DeductItemDto } from 'src/modules/inventory/shared/contracts/deduct-item.dto';
 import { RestockItemDto } from 'src/modules/inventory/shared/contracts/restock-item.dto';
-import { IIdGenerator } from 'src/shared/domain/contracts/id-generator.interface';
 import { ILogger } from 'src/shared/domain/contracts/logger.interface';
 
 @Injectable()
@@ -15,7 +14,6 @@ export class ExecuteProductionOrderHandler {
         @Inject(IProductionOrderRepository)
         private readonly repo: IProductionOrderRepository,
         private readonly inventoryGateway: InventoryGateway,
-        @Inject(IIdGenerator) private readonly idGenerator: IIdGenerator,
         @Inject(ILogger) private readonly logger: ILogger,
     ) {}
 
