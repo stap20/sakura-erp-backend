@@ -27,12 +27,13 @@ npm run format          # Prettier format
 
 ### E2E Tests
 ```bash
-npm run test:e2e                                                        # Run all e2e tests
-npx jest --config test/jest-e2e.json --testPathPattern=items            # Items suite only
-npx jest --config test/jest-e2e.json --testPathPattern=categories       # Categories suite only
+npm run test:e2e                                                          # Run all e2e tests (58 tests)
+npx jest --config test/jest-e2e.json --testPathPatterns=items            # Items suite only
+npx jest --config test/jest-e2e.json --testPathPatterns=categories       # Categories suite only
+npx jest --config test/jest-e2e.json --testPathPatterns=recipes          # Recipes suite only
 ```
 
-E2E tests use the real database and clean all inventory tables before each suite (`cleanInventoryDb()`). Test files live in `test/inventory/`. The helper `test/helpers/app.setup.ts` bootstraps the full `AppModule` with identical global setup to `main.ts`.
+E2E tests use the real databases and clean relevant tables before each suite. Test files live in `test/inventory/` and `test/recipe/`. The helper `test/helpers/app.setup.ts` bootstraps the full `AppModule` with identical global setup to `main.ts` and exports `cleanInventoryDb()` and `cleanRecipeDb()`.
 
 ### Database (Prisma — per module)
 ```bash
@@ -142,4 +143,4 @@ Prisma schemas and generated clients live inside each module's infrastructure di
 - **Vendor**: Complete (CRUD, activate/deactivate)
 - **Security**: Complete (JWT + RBAC)
 - **Inventory**: Complete — 3 item types (RAW_MATERIAL, PACKAGING, FINAL_PRODUCT), categories, restock/deduct with immutable transaction audit trail, soft-delete (archive). E2E tested (28 tests).
-- **Recipe**: Complete — formula/BOM management with version lifecycle (DRAFT → ACTIVE → ARCHIVED), w/w% percentage quantities, add-on placeholders (fragrance/colorants), 100% base formula validation at activation. E2E tested.
+- **Recipe**: Complete — formula/BOM management with version lifecycle (DRAFT → ACTIVE → ARCHIVED), w/w% percentage quantities, add-on placeholders (fragrance/colorants), 100% base formula validation at activation. E2E tested (30 tests).
