@@ -21,6 +21,8 @@ erDiagram
         string id PK
         string vendorId "denormalized ref to Vendor"
         string vendorName "snapshot at creation"
+        string vendorPhone "snapshot at creation (optional)"
+        string vendorContact "snapshot at creation — email/WhatsApp/link (optional)"
         string status "DRAFT | CONFIRMED | RECEIVED | CANCELLED"
         string notes
         datetime expectedDeliveryDate
@@ -34,16 +36,18 @@ erDiagram
         string orderId FK
         string itemId "denormalized ref to Inventory Item"
         string itemName "snapshot from Inventory at add-line time"
-        decimal quantity "units ordered"
+        string measureUnit "snapshot from Inventory — KG/G/L/ML/PCS"
+        decimal quantity "units to order"
         decimal unitPrice "price per unit"
     }
 
     PurchaseOrder ||--o{ PurchaseOrderLine : "contains"
 ```
 
-> **Cross-module references**: `vendorId` is a string reference to Vendor module (client-provided
-> snapshot of `vendorName`). `itemId` is validated against Inventory at write time and `itemName`
-> is snapshotted automatically.
+> **Cross-module references**: `vendorId` is a string reference to Vendor module. `vendorName`,
+> `vendorPhone`, and `vendorContact` are client-provided snapshots at PO creation — the PO stays
+> readable even if the vendor record changes later. `itemId` is validated against Inventory at
+> write time; `itemName` and `measureUnit` are snapshotted automatically at add-line time.
 
 ---
 
@@ -189,17 +193,18 @@ graph LR
         RECV[ReceivePurchaseOrderHandler]
     end
 
-    PO -->|vendorId + vendorName\nclient-provided snapshot| VEN
+    PO -->|vendorId + vendorName + vendorPhone\n+ vendorContact — client snapshot| VEN
     POL -->|itemId ref| INV_ITEM
 
-    ADD -->|validate item type\nget itemName snapshot| INV_READ
+    ADD -->|validate item type\nget itemName + measureUnit snapshot| INV_READ
     RECV -->|restock per line\nwith vendorId + unitPrice| INV_RESTOCK
     INV_RESTOCK --> INV_TX
 ```
 
-> **Design**: `vendorName` is client-provided snapshot (no Vendor validation).
-> `itemName` is auto-fetched from Inventory at add-line time (validated + snapshotted).
-> No cross-module calls at read time — all data is self-contained in Purchase DB.
+> **Design**: `vendorName`, `vendorPhone`, and `vendorContact` are client-provided snapshots (no
+> Vendor module validation at write time). `itemName` and `measureUnit` are auto-fetched from
+> Inventory at add-line time (validated + snapshotted). No cross-module calls at read time — all
+> data is self-contained in Purchase DB.
 
 ---
 
@@ -247,3 +252,24 @@ Small backwards-compatible additions:
 | `inventory.module.ts` | Add `exports: [ReadItemRepository, RestockItemHandler]` |
 
 Existing callers are unaffected — `unitPrice` defaults to null.
+
+---
+
+## 10. Cost Model — Decision Log
+
+**Question**: When the Production module calculates manufacturing cost, should it use
+the **last purchase price** or **Weighted Average Cost (WAC)** of raw materials?
+
+**Last purchase price** — simple. Uses the most recent `unitPrice` from the last PO
+received for that item. If prices fluctuate, older cheaper batches are ignored, which
+can over- or understate the true cost of stock on hand.
+
+**WAC** — more accurate. Blends all historical purchases:
+`(currentStock × avgCost + qty × unitPrice) / (currentStock + qty)`. Reflects what the
+mixed stock in the warehouse actually cost on average.
+
+**Decision**: **Deferred to Production module design.**
+
+Both methods are fully computable from the `unitPrice` already captured on every
+`InventoryTransaction`. No data will be lost by deciding later. The Purchase module's
+only responsibility is to record `unitPrice` faithfully on each receipt.
