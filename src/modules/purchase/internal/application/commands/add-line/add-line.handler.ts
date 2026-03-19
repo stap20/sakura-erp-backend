@@ -6,7 +6,7 @@ import { PurchaseOrderLine } from '../../../domain/entities/purchase-order-line.
 import { PurchaseOrderNotFoundError } from '../../../domain/errors/purchase.error';
 import { DomainError } from 'src/shared/domain/errors/domain.error';
 import { NotFoundDomainError } from 'src/shared/domain/errors/not-found.domain.error';
-import { InventoryGateway } from '../../gateways/inventory.gateway';
+import { InventoryGateway } from '../../../infrastructure/gateways/inventory.gateway';
 import { AddLineCommand } from './add-line.command';
 
 const ALLOWED_TYPES = ['RAW_MATERIAL', 'PACKAGING'];

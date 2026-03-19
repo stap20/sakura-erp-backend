@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { IInventoryFacade } from 'src/shared/contracts/inventory/inventory-facade.interface';
 import { InventoryItemDto } from 'src/shared/contracts/inventory/inventory-item.dto';
 import { RestockItemDto } from 'src/shared/contracts/inventory/restock-item.dto';
-import { ReadItemRepository } from '../../internal/infrastructure/repositories/read-item.repository';
-import { RestockItemHandler } from '../../internal/application/commands/restock-item/restock-item.handler';
-import { RestockItemCommand } from '../../internal/application/commands/restock-item/restock-item.command';
+import { ReadItemRepository } from '../repositories/read-item.repository';
+import { RestockItemHandler } from '../../application/commands/restock-item/restock-item.handler';
+import { RestockItemCommand } from '../../application/commands/restock-item/restock-item.command';
 
 @Injectable()
 export class InventoryFacade implements IInventoryFacade {

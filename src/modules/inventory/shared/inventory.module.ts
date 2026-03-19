@@ -69,7 +69,7 @@ import { NestLogger } from 'src/shared/infrastructure/logger/nest-logger';
 import { SecurityModule } from 'src/modules/security/shared/security.module';
 
 // Facade
-import { InventoryFacade } from './facade/inventory.facade';
+import { InventoryFacade } from '../internal/infrastructure/facade/inventory.facade';
 import { IInventoryFacade } from 'src/shared/contracts/inventory/inventory-facade.interface';
 
 @Module({

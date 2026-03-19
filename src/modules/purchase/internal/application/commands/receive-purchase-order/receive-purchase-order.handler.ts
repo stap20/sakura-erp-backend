@@ -3,7 +3,7 @@ import { CommandHandlerBase } from 'src/shared/application/command.handler.base'
 import { IPurchaseOrderRepository } from '../../../domain/repositories/purchase-order.repo.interface';
 import { PurchaseOrderId } from '../../../domain/value-objects/purchase-order-id.vo';
 import { PurchaseOrderNotFoundError } from '../../../domain/errors/purchase.error';
-import { InventoryGateway } from '../../gateways/inventory.gateway';
+import { InventoryGateway } from '../../../infrastructure/gateways/inventory.gateway';
 import { RestockItemDto } from 'src/shared/contracts/inventory/restock-item.dto';
 import { ReceivePurchaseOrderCommand } from './receive-purchase-order.command';
 

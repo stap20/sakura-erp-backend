@@ -52,7 +52,7 @@ import { IPurchasePrismaClient } from '../internal/infrastructure/database/purch
 import { IPurchaseOrderRepository } from '../internal/domain/repositories/purchase-order.repo.interface';
 
 // Gateway
-import { InventoryGateway } from '../internal/application/gateways/inventory.gateway';
+import { InventoryGateway } from '../internal/infrastructure/gateways/inventory.gateway';
 
 // Shared
 import { ILogger } from 'src/shared/domain/contracts/logger.interface';
