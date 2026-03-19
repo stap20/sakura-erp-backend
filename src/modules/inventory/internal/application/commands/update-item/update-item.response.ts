@@ -7,5 +7,6 @@ export class UpdateItemResponse {
         public readonly currentStock: number,
         public readonly categoryId: string | null,
         public readonly status: string,
+        public readonly unitWeightGm: number | null,
     ) {}
 }

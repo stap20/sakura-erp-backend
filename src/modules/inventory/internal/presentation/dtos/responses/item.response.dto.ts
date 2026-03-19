@@ -22,6 +22,9 @@ export class ItemResponseDto {
     @ApiProperty({ example: 'ACTIVE', enum: ['ACTIVE', 'ARCHIVED'] })
     status: string;
 
+    @ApiPropertyOptional({ example: 125, nullable: true, description: 'Net weight per unit in grams (FINAL_PRODUCT only)' })
+    unitWeightGm: number | null;
+
     @ApiProperty({ type: 'string', format: 'date-time' })
     createdAt: Date;
 
@@ -38,6 +41,7 @@ export class ItemResponseDto {
         status: string,
         createdAt?: Date,
         updatedAt?: Date,
+        unitWeightGm?: number | null,
     ) {
         this.id = id;
         this.name = name;
@@ -46,6 +50,7 @@ export class ItemResponseDto {
         this.currentStock = currentStock;
         this.categoryId = categoryId;
         this.status = status;
+        this.unitWeightGm = unitWeightGm ?? null;
         if (createdAt) this.createdAt = createdAt;
         if (updatedAt) this.updatedAt = updatedAt;
     }

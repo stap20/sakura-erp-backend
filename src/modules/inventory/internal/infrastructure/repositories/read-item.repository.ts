@@ -10,11 +10,29 @@ export class ReadItemRepository {
     ) {}
 
     async getById(id: string): Promise<ItemEntity | null> {
-        const item = await this.prisma.item.findUnique({ where: { id } });
+        const item = await this.prisma.item.findUnique({
+            where: { id },
+            include: {
+                transactions: {
+                    where: { type: 'RESTOCK', unitPrice: { not: null } },
+                    orderBy: { createdAt: 'desc' },
+                    take: 1,
+                },
+            },
+        });
 
         if (!item) return null;
 
-        return new ItemEntity({ ...item, currentStock: Number(item.currentStock) });
+        const lastUnitPrice = item.transactions[0]?.unitPrice
+            ? Number(item.transactions[0].unitPrice)
+            : null;
+
+        return new ItemEntity({
+            ...item,
+            currentStock: Number(item.currentStock),
+            unitWeightGm: item.unitWeightGm ?? null,
+            lastUnitPrice,
+        });
     }
 
     async search(
@@ -31,7 +49,12 @@ export class ReadItemRepository {
 
         return items.map(
             (item) =>
-                new ItemEntity({ ...item, currentStock: Number(item.currentStock) }),
+                new ItemEntity({
+                    ...item,
+                    currentStock: Number(item.currentStock),
+                    unitWeightGm: item.unitWeightGm ?? null,
+                    lastUnitPrice: null,
+                }),
         );
     }
 

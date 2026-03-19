@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsEnum } from 'class-validator';
+import { IsString, IsOptional, IsEnum, IsNumber, IsPositive } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { MeasureUnitEnum } from '../../../domain/value-objects/measure-unit.vo';
 
@@ -17,4 +17,10 @@ export class UpdateItemRequestDto {
     @IsOptional()
     @IsString()
     categoryId?: string | null;
+
+    @ApiPropertyOptional({ example: 125, description: 'Net weight per unit in grams — only for FINAL_PRODUCT', nullable: true })
+    @IsOptional()
+    @IsNumber()
+    @IsPositive()
+    unitWeightGm?: number | null;
 }

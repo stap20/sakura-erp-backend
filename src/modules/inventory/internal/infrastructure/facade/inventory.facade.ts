@@ -2,21 +2,32 @@ import { Injectable } from '@nestjs/common';
 import { IInventoryFacade } from 'src/modules/inventory/shared/contracts/inventory-facade.interface';
 import { InventoryItemDto } from 'src/modules/inventory/shared/contracts/inventory-item.dto';
 import { RestockItemDto } from 'src/modules/inventory/shared/contracts/restock-item.dto';
+import { DeductItemDto } from 'src/modules/inventory/shared/contracts/deduct-item.dto';
 import { ReadItemRepository } from '../repositories/read-item.repository';
 import { RestockItemHandler } from '../../application/commands/restock-item/restock-item.handler';
 import { RestockItemCommand } from '../../application/commands/restock-item/restock-item.command';
+import { DeductItemHandler } from '../../application/commands/deduct-item/deduct-item.handler';
+import { DeductItemCommand } from '../../application/commands/deduct-item/deduct-item.command';
 
 @Injectable()
 export class InventoryFacade implements IInventoryFacade {
     constructor(
         private readonly readItemRepository: ReadItemRepository,
         private readonly restockItemHandler: RestockItemHandler,
+        private readonly deductItemHandler: DeductItemHandler,
     ) {}
 
     async getItem(itemId: string): Promise<InventoryItemDto | null> {
         const item = await this.readItemRepository.getById(itemId);
         if (!item) return null;
-        return new InventoryItemDto(item.id, item.name, item.type, item.measureUnit);
+        return new InventoryItemDto(
+            item.id,
+            item.name,
+            item.type,
+            item.measureUnit,
+            item.unitWeightGm ?? null,
+            item.lastUnitPrice ?? null,
+        );
     }
 
     async restockItem(data: RestockItemDto): Promise<void> {
@@ -27,6 +38,17 @@ export class InventoryFacade implements IInventoryFacade {
                 data.performedBy,
                 data.vendorId,
                 data.unitPrice,
+                data.notes,
+            ),
+        );
+    }
+
+    async deductItem(data: DeductItemDto): Promise<void> {
+        await this.deductItemHandler.handle(
+            new DeductItemCommand(
+                data.itemId,
+                data.quantity,
+                data.performedBy,
                 data.notes,
             ),
         );

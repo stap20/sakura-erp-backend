@@ -26,6 +26,7 @@ export class GetItemHandler implements IGetItemHandler {
             item.status,
             item.createdAt,
             item.updatedAt,
+            item.unitWeightGm ?? null,
         );
     }
 }

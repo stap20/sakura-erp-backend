@@ -187,6 +187,10 @@ export class Item extends AggregateRoot<ItemId> {
         return this.status;
     }
 
+    public getUnitWeightGm(): number | null {
+        return this.unitWeightGm;
+    }
+
     public equals(other: Item): boolean {
         if (!(other instanceof Item)) return false;
         return this.name.equals(other.name);

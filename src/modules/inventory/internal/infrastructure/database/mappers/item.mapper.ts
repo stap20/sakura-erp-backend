@@ -4,7 +4,7 @@ import { ItemEntity } from '../entities/item.entity';
 
 @Injectable()
 export class ItemMapper {
-    toDomain(entity: ItemEntity): Item {
+    toDomain(entity: Omit<ItemEntity, 'lastUnitPrice'>): Item {
         return Item.createFromPersistence({
             id: entity.id,
             name: entity.name,
@@ -13,12 +13,13 @@ export class ItemMapper {
             currentStock: Number(entity.currentStock),
             categoryId: entity.categoryId,
             status: entity.status,
+            unitWeightGm: entity.unitWeightGm ?? null,
         });
     }
 
     toPersistence(
         item: Item,
-    ): Omit<ItemEntity, 'createdAt' | 'updatedAt'> {
+    ): Omit<ItemEntity, 'createdAt' | 'updatedAt' | 'lastUnitPrice'> {
         return {
             id: item.getId().value,
             name: item.getName().value,
@@ -26,6 +27,7 @@ export class ItemMapper {
             measureUnit: item.getMeasureUnit().value,
             currentStock: item.getCurrentStock(),
             categoryId: item.getCategoryId(),
+            unitWeightGm: item.getUnitWeightGm(),
             status: item.getStatus().value,
         };
     }

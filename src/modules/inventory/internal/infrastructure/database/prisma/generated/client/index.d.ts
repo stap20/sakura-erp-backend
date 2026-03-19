@@ -1123,10 +1123,12 @@ export namespace Prisma {
 
   export type ItemAvgAggregateOutputType = {
     currentStock: Decimal | null
+    unitWeightGm: number | null
   }
 
   export type ItemSumAggregateOutputType = {
     currentStock: Decimal | null
+    unitWeightGm: number | null
   }
 
   export type ItemMinAggregateOutputType = {
@@ -1136,6 +1138,7 @@ export namespace Prisma {
     measureUnit: string | null
     currentStock: Decimal | null
     categoryId: string | null
+    unitWeightGm: number | null
     status: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -1148,6 +1151,7 @@ export namespace Prisma {
     measureUnit: string | null
     currentStock: Decimal | null
     categoryId: string | null
+    unitWeightGm: number | null
     status: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -1160,6 +1164,7 @@ export namespace Prisma {
     measureUnit: number
     currentStock: number
     categoryId: number
+    unitWeightGm: number
     status: number
     createdAt: number
     updatedAt: number
@@ -1169,10 +1174,12 @@ export namespace Prisma {
 
   export type ItemAvgAggregateInputType = {
     currentStock?: true
+    unitWeightGm?: true
   }
 
   export type ItemSumAggregateInputType = {
     currentStock?: true
+    unitWeightGm?: true
   }
 
   export type ItemMinAggregateInputType = {
@@ -1182,6 +1189,7 @@ export namespace Prisma {
     measureUnit?: true
     currentStock?: true
     categoryId?: true
+    unitWeightGm?: true
     status?: true
     createdAt?: true
     updatedAt?: true
@@ -1194,6 +1202,7 @@ export namespace Prisma {
     measureUnit?: true
     currentStock?: true
     categoryId?: true
+    unitWeightGm?: true
     status?: true
     createdAt?: true
     updatedAt?: true
@@ -1206,6 +1215,7 @@ export namespace Prisma {
     measureUnit?: true
     currentStock?: true
     categoryId?: true
+    unitWeightGm?: true
     status?: true
     createdAt?: true
     updatedAt?: true
@@ -1305,6 +1315,7 @@ export namespace Prisma {
     measureUnit: string
     currentStock: Decimal
     categoryId: string | null
+    unitWeightGm: number | null
     status: string
     createdAt: Date
     updatedAt: Date
@@ -1336,6 +1347,7 @@ export namespace Prisma {
     measureUnit?: boolean
     currentStock?: boolean
     categoryId?: boolean
+    unitWeightGm?: boolean
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -1351,6 +1363,7 @@ export namespace Prisma {
     measureUnit?: boolean
     currentStock?: boolean
     categoryId?: boolean
+    unitWeightGm?: boolean
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -1364,6 +1377,7 @@ export namespace Prisma {
     measureUnit?: boolean
     currentStock?: boolean
     categoryId?: boolean
+    unitWeightGm?: boolean
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -1377,12 +1391,13 @@ export namespace Prisma {
     measureUnit?: boolean
     currentStock?: boolean
     categoryId?: boolean
+    unitWeightGm?: boolean
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "type" | "measureUnit" | "currentStock" | "categoryId" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["item"]>
+  export type ItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "type" | "measureUnit" | "currentStock" | "categoryId" | "unitWeightGm" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["item"]>
   export type ItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     category?: boolean | Item$categoryArgs<ExtArgs>
     transactions?: boolean | Item$transactionsArgs<ExtArgs>
@@ -1408,6 +1423,7 @@ export namespace Prisma {
       measureUnit: string
       currentStock: Prisma.Decimal
       categoryId: string | null
+      unitWeightGm: number | null
       status: string
       createdAt: Date
       updatedAt: Date
@@ -1842,6 +1858,7 @@ export namespace Prisma {
     readonly measureUnit: FieldRef<"Item", 'String'>
     readonly currentStock: FieldRef<"Item", 'Decimal'>
     readonly categoryId: FieldRef<"Item", 'String'>
+    readonly unitWeightGm: FieldRef<"Item", 'Float'>
     readonly status: FieldRef<"Item", 'String'>
     readonly createdAt: FieldRef<"Item", 'DateTime'>
     readonly updatedAt: FieldRef<"Item", 'DateTime'>
@@ -4554,6 +4571,7 @@ export namespace Prisma {
     measureUnit: 'measureUnit',
     currentStock: 'currentStock',
     categoryId: 'categoryId',
+    unitWeightGm: 'unitWeightGm',
     status: 'status',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -4647,6 +4665,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -4687,6 +4719,7 @@ export namespace Prisma {
     measureUnit?: StringFilter<"Item"> | string
     currentStock?: DecimalFilter<"Item"> | Decimal | DecimalJsLike | number | string
     categoryId?: StringNullableFilter<"Item"> | string | null
+    unitWeightGm?: FloatNullableFilter<"Item"> | number | null
     status?: StringFilter<"Item"> | string
     createdAt?: DateTimeFilter<"Item"> | Date | string
     updatedAt?: DateTimeFilter<"Item"> | Date | string
@@ -4701,6 +4734,7 @@ export namespace Prisma {
     measureUnit?: SortOrder
     currentStock?: SortOrder
     categoryId?: SortOrderInput | SortOrder
+    unitWeightGm?: SortOrderInput | SortOrder
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -4718,6 +4752,7 @@ export namespace Prisma {
     measureUnit?: StringFilter<"Item"> | string
     currentStock?: DecimalFilter<"Item"> | Decimal | DecimalJsLike | number | string
     categoryId?: StringNullableFilter<"Item"> | string | null
+    unitWeightGm?: FloatNullableFilter<"Item"> | number | null
     status?: StringFilter<"Item"> | string
     createdAt?: DateTimeFilter<"Item"> | Date | string
     updatedAt?: DateTimeFilter<"Item"> | Date | string
@@ -4732,6 +4767,7 @@ export namespace Prisma {
     measureUnit?: SortOrder
     currentStock?: SortOrder
     categoryId?: SortOrderInput | SortOrder
+    unitWeightGm?: SortOrderInput | SortOrder
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -4752,6 +4788,7 @@ export namespace Prisma {
     measureUnit?: StringWithAggregatesFilter<"Item"> | string
     currentStock?: DecimalWithAggregatesFilter<"Item"> | Decimal | DecimalJsLike | number | string
     categoryId?: StringNullableWithAggregatesFilter<"Item"> | string | null
+    unitWeightGm?: FloatNullableWithAggregatesFilter<"Item"> | number | null
     status?: StringWithAggregatesFilter<"Item"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Item"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Item"> | Date | string
@@ -4900,6 +4937,7 @@ export namespace Prisma {
     type: string
     measureUnit: string
     currentStock?: Decimal | DecimalJsLike | number | string
+    unitWeightGm?: number | null
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -4914,6 +4952,7 @@ export namespace Prisma {
     measureUnit: string
     currentStock?: Decimal | DecimalJsLike | number | string
     categoryId?: string | null
+    unitWeightGm?: number | null
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -4926,6 +4965,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     measureUnit?: StringFieldUpdateOperationsInput | string
     currentStock?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitWeightGm?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -4940,6 +4980,7 @@ export namespace Prisma {
     measureUnit?: StringFieldUpdateOperationsInput | string
     currentStock?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
+    unitWeightGm?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -4953,6 +4994,7 @@ export namespace Prisma {
     measureUnit: string
     currentStock?: Decimal | DecimalJsLike | number | string
     categoryId?: string | null
+    unitWeightGm?: number | null
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -4964,6 +5006,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     measureUnit?: StringFieldUpdateOperationsInput | string
     currentStock?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitWeightGm?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -4976,6 +5019,7 @@ export namespace Prisma {
     measureUnit?: StringFieldUpdateOperationsInput | string
     currentStock?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
+    unitWeightGm?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -5172,6 +5216,17 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -5210,6 +5265,7 @@ export namespace Prisma {
     measureUnit?: SortOrder
     currentStock?: SortOrder
     categoryId?: SortOrder
+    unitWeightGm?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -5217,6 +5273,7 @@ export namespace Prisma {
 
   export type ItemAvgOrderByAggregateInput = {
     currentStock?: SortOrder
+    unitWeightGm?: SortOrder
   }
 
   export type ItemMaxOrderByAggregateInput = {
@@ -5226,6 +5283,7 @@ export namespace Prisma {
     measureUnit?: SortOrder
     currentStock?: SortOrder
     categoryId?: SortOrder
+    unitWeightGm?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -5238,6 +5296,7 @@ export namespace Prisma {
     measureUnit?: SortOrder
     currentStock?: SortOrder
     categoryId?: SortOrder
+    unitWeightGm?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -5245,6 +5304,7 @@ export namespace Prisma {
 
   export type ItemSumOrderByAggregateInput = {
     currentStock?: SortOrder
+    unitWeightGm?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -5297,6 +5357,22 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -5460,6 +5536,14 @@ export namespace Prisma {
     divide?: Decimal | DecimalJsLike | number | string
   }
 
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
   }
@@ -5609,6 +5693,17 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -5690,6 +5785,22 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -5854,6 +5965,7 @@ export namespace Prisma {
     type: string
     measureUnit: string
     currentStock?: Decimal | DecimalJsLike | number | string
+    unitWeightGm?: number | null
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -5866,6 +5978,7 @@ export namespace Prisma {
     type: string
     measureUnit: string
     currentStock?: Decimal | DecimalJsLike | number | string
+    unitWeightGm?: number | null
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -5908,6 +6021,7 @@ export namespace Prisma {
     measureUnit?: StringFilter<"Item"> | string
     currentStock?: DecimalFilter<"Item"> | Decimal | DecimalJsLike | number | string
     categoryId?: StringNullableFilter<"Item"> | string | null
+    unitWeightGm?: FloatNullableFilter<"Item"> | number | null
     status?: StringFilter<"Item"> | string
     createdAt?: DateTimeFilter<"Item"> | Date | string
     updatedAt?: DateTimeFilter<"Item"> | Date | string
@@ -5919,6 +6033,7 @@ export namespace Prisma {
     type: string
     measureUnit: string
     currentStock?: Decimal | DecimalJsLike | number | string
+    unitWeightGm?: number | null
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -5932,6 +6047,7 @@ export namespace Prisma {
     measureUnit: string
     currentStock?: Decimal | DecimalJsLike | number | string
     categoryId?: string | null
+    unitWeightGm?: number | null
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -5959,6 +6075,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     measureUnit?: StringFieldUpdateOperationsInput | string
     currentStock?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitWeightGm?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -5972,6 +6089,7 @@ export namespace Prisma {
     measureUnit?: StringFieldUpdateOperationsInput | string
     currentStock?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
+    unitWeightGm?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6027,6 +6145,7 @@ export namespace Prisma {
     type: string
     measureUnit: string
     currentStock?: Decimal | DecimalJsLike | number | string
+    unitWeightGm?: number | null
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -6038,6 +6157,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     measureUnit?: StringFieldUpdateOperationsInput | string
     currentStock?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitWeightGm?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6050,6 +6170,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     measureUnit?: StringFieldUpdateOperationsInput | string
     currentStock?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitWeightGm?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6062,6 +6183,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     measureUnit?: StringFieldUpdateOperationsInput | string
     currentStock?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitWeightGm?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

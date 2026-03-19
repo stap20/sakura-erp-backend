@@ -127,6 +127,7 @@ exports.Prisma.ItemScalarFieldEnum = {
   measureUnit: 'measureUnit',
   currentStock: 'currentStock',
   categoryId: 'categoryId',
+  unitWeightGm: 'unitWeightGm',
   status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

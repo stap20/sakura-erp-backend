@@ -5,6 +5,8 @@ export class ItemEntity {
     measureUnit: string;
     currentStock: number;
     categoryId: string | null;
+    unitWeightGm: number | null;
+    lastUnitPrice: number | null;
     status: string;
     createdAt: Date;
     updatedAt: Date;

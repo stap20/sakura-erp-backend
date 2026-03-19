@@ -50,6 +50,7 @@ export class ItemRepository implements IItemRepository {
                 measureUnit: data.measureUnit,
                 currentStock: data.currentStock,
                 categoryId: data.categoryId,
+                unitWeightGm: data.unitWeightGm,
                 status: data.status,
                 updatedAt: new Date(),
             },
