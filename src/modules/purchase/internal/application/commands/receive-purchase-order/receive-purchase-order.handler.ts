@@ -4,7 +4,7 @@ import { IPurchaseOrderRepository } from '../../../domain/repositories/purchase-
 import { PurchaseOrderId } from '../../../domain/value-objects/purchase-order-id.vo';
 import { PurchaseOrderNotFoundError } from '../../../domain/errors/purchase.error';
 import { InventoryGateway } from '../../../infrastructure/gateways/inventory.gateway';
-import { RestockItemDto } from 'src/shared/contracts/inventory/restock-item.dto';
+import { RestockItemDto } from 'src/modules/inventory/shared/contracts/restock-item.dto';
 import { ReceivePurchaseOrderCommand } from './receive-purchase-order.command';
 
 @Injectable()

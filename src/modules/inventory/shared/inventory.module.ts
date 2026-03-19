@@ -70,7 +70,7 @@ import { SecurityModule } from 'src/modules/security/shared/security.module';
 
 // Facade
 import { InventoryFacade } from '../internal/infrastructure/facade/inventory.facade';
-import { IInventoryFacade } from 'src/shared/contracts/inventory/inventory-facade.interface';
+import { IInventoryFacade } from 'src/modules/inventory/shared/contracts/inventory-facade.interface';
 
 @Module({
     imports: [SecurityModule],
