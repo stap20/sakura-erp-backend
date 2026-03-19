@@ -27,12 +27,14 @@ npm run format          # Prettier format
 
 ### E2E Tests
 ```bash
-npm run test:e2e                                                        # Run all e2e tests
-npx jest --config test/jest-e2e.json --testPathPattern=items            # Items suite only
-npx jest --config test/jest-e2e.json --testPathPattern=categories       # Categories suite only
+npm run test:e2e                                                           # Run all e2e tests
+npx jest --config test/jest-e2e.json --testPathPatterns=items             # Items suite only
+npx jest --config test/jest-e2e.json --testPathPatterns=categories        # Categories suite only
+npx jest --config test/jest-e2e.json --testPathPatterns=recipes           # Recipes suite only
+npx jest --config test/jest-e2e.json --testPathPatterns=purchases         # Purchases suite only
 ```
 
-E2E tests use the real database and clean all inventory tables before each suite (`cleanInventoryDb()`). Test files live in `test/inventory/`. The helper `test/helpers/app.setup.ts` bootstraps the full `AppModule` with identical global setup to `main.ts`.
+E2E tests use the real databases and clean relevant tables before each suite. Test files live in `test/inventory/`, `test/recipe/`, and `test/purchase/`. The helper `test/helpers/app.setup.ts` bootstraps the full `AppModule` with identical global setup to `main.ts` and exports `cleanInventoryDb()`, `cleanRecipeDb()`, and `cleanPurchaseDb()`.
 
 ### Database (Prisma — per module)
 ```bash
@@ -59,6 +61,12 @@ npm run recipe:db:generate
 npm run recipe:db:migrate
 npm run recipe:db:deploy
 npm run recipe:db:studio
+
+# Purchase DB
+npm run purchase:db:generate
+npm run purchase:db:migrate
+npm run purchase:db:deploy
+npm run purchase:db:studio
 ```
 
 ## Architecture
@@ -101,12 +109,13 @@ Every feature module lives under `src/modules/{module}/` and is split into:
 
 Each module has its own PostgreSQL database and Prisma client:
 
-| Module    | Database              | Env Var                  |
-|-----------|-----------------------|--------------------------|
-| Auth      | `sakura_users_db`     | `AUTH_DATABASE_URL`      |
-| Vendor    | `sakura_vendor_db`    | `VENDOR_DATABASE_URL`    |
-| Inventory | `sakura_inventory_db` | `INVENTORY_DATABASE_URL` |
-| Recipe    | `sakura_recipe_db`    | `RECIPE_DATABASE_URL`    |
+| Module    | Database               | Env Var                   |
+|-----------|------------------------|---------------------------|
+| Auth      | `sakura_users_db`      | `AUTH_DATABASE_URL`       |
+| Vendor    | `sakura_vendor_db`     | `VENDOR_DATABASE_URL`     |
+| Inventory | `sakura_inventory_db`  | `INVENTORY_DATABASE_URL`  |
+| Recipe    | `sakura_recipe_db`     | `RECIPE_DATABASE_URL`     |
+| Purchase  | `sakura_purchase_db`   | `PURCHASE_DATABASE_URL`   |
 
 Prisma schemas and generated clients live inside each module's infrastructure directory, not at the project root.
 
@@ -141,5 +150,6 @@ Prisma schemas and generated clients live inside each module's infrastructure di
 - **Auth**: Complete (login, user CRUD)
 - **Vendor**: Complete (CRUD, activate/deactivate)
 - **Security**: Complete (JWT + RBAC)
-- **Inventory**: Complete — 3 item types (RAW_MATERIAL, PACKAGING, FINAL_PRODUCT), categories, restock/deduct with immutable transaction audit trail, soft-delete (archive). E2E tested (28 tests).
-- **Recipe**: Complete — formula/BOM management with version lifecycle (DRAFT → ACTIVE → ARCHIVED), w/w% percentage quantities, add-on placeholders (fragrance/colorants), 100% base formula validation at activation. E2E tested.
+- **Inventory**: Complete — 3 item types (RAW_MATERIAL, PACKAGING, FINAL_PRODUCT), categories, restock/deduct with immutable transaction audit trail (vendorId + unitPrice), soft-delete (archive). E2E tested (28 tests).
+- **Recipe**: Complete — formula/BOM management with version lifecycle (DRAFT → ACTIVE → ARCHIVED), w/w% percentage quantities, add-on placeholders (fragrance/colorants), 100% base formula validation at activation. E2E tested (30 tests).
+- **Purchase**: Complete — procurement management with PO lifecycle (DRAFT → CONFIRMED → RECEIVED + CANCELLED), vendor snapshot, item validation (RAW_MATERIAL/PACKAGING only), auto-restock on receive with vendorId + unitPrice propagation to InventoryTransaction. E2E tested.

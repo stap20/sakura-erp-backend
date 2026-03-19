@@ -4,10 +4,7 @@ import { UpdateVendorCommand } from './update-vendor.command';
 import { UpdateVendorResponse } from './update-vendor.response';
 import { VendorId } from '../../../domain/value-objects/vendor-id.vo';
 import { VendorName } from '../../../domain/value-objects/vendor-name.vo';
-import {
-    VendorNotFoundError,
-    VendorAlreadyExistsError,
-} from '../../../domain/errors/vendor.error';
+import { VendorNotFoundApplicationError, VendorAlreadyExistsApplicationError } from '../../errors/vendor.errors';
 import { CommandHandlerBase } from 'src/shared/application/command.handler.base';
 
 @Injectable()
@@ -27,7 +24,7 @@ export class UpdateVendorHandler extends CommandHandlerBase<
         const vendor = await this.vendorRepository.getById(vendorIdVO);
 
         if (!vendor) {
-            throw new VendorNotFoundError(command.vendorId);
+            throw new VendorNotFoundApplicationError(command.vendorId);
         }
 
         if (command.name !== undefined) {
@@ -35,7 +32,7 @@ export class UpdateVendorHandler extends CommandHandlerBase<
             const existingVendor = await this.vendorRepository.getByName(nameVO);
 
             if (existingVendor && !existingVendor.getId().equals(vendor.getId())) {
-                throw new VendorAlreadyExistsError(command.name);
+                throw new VendorAlreadyExistsApplicationError(command.name);
             }
         }
 
