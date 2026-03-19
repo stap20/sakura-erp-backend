@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@nestjs/common';
 import { IVendorRepository } from '../../../domain/repositories/vendor.repo.interface';
 import { DeactivateVendorCommand } from './deactivate-vendor.command';
 import { VendorId } from '../../../domain/value-objects/vendor-id.vo';
-import { VendorNotFoundError } from '../../../domain/errors/vendor.error';
+import { VendorNotFoundApplicationError } from '../../errors/vendor.errors';
 import { CommandHandlerBase } from 'src/shared/application/command.handler.base';
 
 @Injectable()
@@ -22,7 +22,7 @@ export class DeactivateVendorHandler extends CommandHandlerBase<
         const vendor = await this.vendorRepository.getById(vendorIdVO);
 
         if (!vendor) {
-            throw new VendorNotFoundError(command.vendorId);
+            throw new VendorNotFoundApplicationError(command.vendorId);
         }
 
         vendor.deactivate();

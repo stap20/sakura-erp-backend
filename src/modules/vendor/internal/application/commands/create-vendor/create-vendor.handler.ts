@@ -4,7 +4,7 @@ import { CreateVendorCommand } from './create-vendor.command';
 import { CreateVendorResponse } from './create-vendor.response';
 import { Vendor } from '../../../domain/entities/vendor.aggregate';
 import { VendorName } from '../../../domain/value-objects/vendor-name.vo';
-import { VendorAlreadyExistsError } from '../../../domain/errors/vendor.error';
+import { VendorAlreadyExistsApplicationError } from '../../errors/vendor.errors';
 import { CommandHandlerBase } from 'src/shared/application/command.handler.base';
 
 @Injectable()
@@ -24,7 +24,7 @@ export class CreateVendorHandler extends CommandHandlerBase<
         const existingVendor = await this.vendorRepository.getByName(nameVO);
 
         if (existingVendor) {
-            throw new VendorAlreadyExistsError(command.name);
+            throw new VendorAlreadyExistsApplicationError(command.name);
         }
 
         const id = this.generateId();

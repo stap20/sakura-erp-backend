@@ -3,7 +3,7 @@ import { CommandHandlerBase } from 'src/shared/application/command.handler.base'
 import { IPurchaseOrderRepository } from '../../../domain/repositories/purchase-order.repo.interface';
 import { PurchaseOrderId } from '../../../domain/value-objects/purchase-order-id.vo';
 import { PurchaseOrderLine } from '../../../domain/entities/purchase-order-line.entity';
-import { PurchaseOrderNotFoundError } from '../../../domain/errors/purchase.error';
+import { PurchaseOrderNotFoundApplicationError } from '../../errors/purchase-order.errors';
 import { InventoryGateway } from '../../../infrastructure/gateways/inventory.gateway';
 import { ItemNotFoundForPurchaseError, InvalidItemTypeForPurchaseError } from '../../errors/add-line.errors';
 import { AddLineCommand } from './add-line.command';
@@ -23,7 +23,7 @@ export class AddLineHandler extends CommandHandlerBase<AddLineCommand, void> {
     async handle(command: AddLineCommand): Promise<void> {
         const id = PurchaseOrderId.create(command.orderId);
         const order = await this.repo.getById(id);
-        if (!order) throw new PurchaseOrderNotFoundError(command.orderId);
+        if (!order) throw new PurchaseOrderNotFoundApplicationError(command.orderId);
 
         const item = await this.inventoryGateway.getItem(command.itemId);
         if (!item) throw new ItemNotFoundForPurchaseError(command.itemId);

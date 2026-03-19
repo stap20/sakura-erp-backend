@@ -3,7 +3,7 @@ import { CommandHandlerBase } from 'src/shared/application/command.handler.base'
 import { IRecipeVersionRepository } from '../../../domain/repositories/recipe-version.repo.interface';
 import { RecipeVersionId } from '../../../domain/value-objects/recipe-version-id.vo';
 import { RecipeIngredient } from '../../../domain/entities/recipe-ingredient.entity';
-import { RecipeVersionNotFoundError } from '../../../domain/errors/recipe.error';
+import { RecipeVersionNotFoundApplicationError } from '../../errors/recipe.errors';
 import { AddIngredientCommand } from './add-ingredient.command';
 import { AddIngredientResponse } from './add-ingredient.response';
 
@@ -22,7 +22,7 @@ export class AddIngredientHandler extends CommandHandlerBase<
     async handle(command: AddIngredientCommand): Promise<AddIngredientResponse> {
         const id = RecipeVersionId.create(command.recipeVersionId);
         const recipe = await this.repo.getById(id);
-        if (!recipe) throw new RecipeVersionNotFoundError(command.recipeVersionId);
+        if (!recipe) throw new RecipeVersionNotFoundApplicationError(command.recipeVersionId);
 
         const ingredient = new RecipeIngredient({
             id: crypto.randomUUID(),

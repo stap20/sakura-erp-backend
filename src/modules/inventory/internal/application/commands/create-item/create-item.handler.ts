@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@nestjs/common';
 import { CommandHandlerBase } from 'src/shared/application/command.handler.base';
 import { IItemRepository } from '../../../domain/repositories/item.repo.interface';
 import { ItemName } from '../../../domain/value-objects/item-name.vo';
-import { ItemAlreadyExistsError } from '../../../domain/errors/item.error';
+import { ItemAlreadyExistsApplicationError } from '../../errors/item.errors';
 import { Item } from '../../../domain/aggregates/item.aggregate';
 import { CreateItemCommand } from './create-item.command';
 import { CreateItemResponse } from './create-item.response';
@@ -24,7 +24,7 @@ export class CreateItemHandler extends CommandHandlerBase<
         const existing = await this.itemRepository.getByName(nameVO);
 
         if (existing) {
-            throw new ItemAlreadyExistsError(command.name);
+            throw new ItemAlreadyExistsApplicationError(command.name);
         }
 
         const id = this.generateId();

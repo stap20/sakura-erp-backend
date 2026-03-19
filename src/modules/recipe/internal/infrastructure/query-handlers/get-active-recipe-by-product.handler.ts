@@ -3,7 +3,7 @@ import { IGetActiveRecipeByProductHandler } from '../../application/queries/get-
 import { GetActiveRecipeByProductQuery } from '../../application/queries/get-active-recipe-by-product/get-active-recipe-by-product.query';
 import { GetActiveRecipeByProductResponse } from '../../application/queries/get-active-recipe-by-product/get-active-recipe-by-product.response';
 import { ReadRecipeVersionRepository } from '../repositories/read-recipe-version.repository';
-import { RecipeVersionNotFoundError } from '../../domain/errors/recipe.error';
+import { RecipeVersionNotFoundApplicationError } from '../../application/errors/recipe.errors';
 import { mapToRecipeVersionResponse } from './get-recipe-version.handler';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class GetActiveRecipeByProductHandler implements IGetActiveRecipeByProduc
 
     async handle(query: GetActiveRecipeByProductQuery): Promise<GetActiveRecipeByProductResponse> {
         const entity = await this.readRepo.getActiveByProductId(query.productId);
-        if (!entity) throw new RecipeVersionNotFoundError(query.productId);
+        if (!entity) throw new RecipeVersionNotFoundApplicationError(query.productId);
         return mapToRecipeVersionResponse(entity) as GetActiveRecipeByProductResponse;
     }
 }

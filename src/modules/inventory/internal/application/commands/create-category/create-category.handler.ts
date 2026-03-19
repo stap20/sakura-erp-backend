@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@nestjs/common';
 import { CommandHandlerBase } from 'src/shared/application/command.handler.base';
 import { ICategoryRepository } from '../../../domain/repositories/category.repo.interface';
 import { CategoryName } from '../../../domain/value-objects/category-name.vo';
-import { CategoryAlreadyExistsError } from '../../../domain/errors/category.error';
+import { CategoryAlreadyExistsApplicationError } from '../../errors/category.errors';
 import { Category } from '../../../domain/aggregates/category.aggregate';
 import { CreateCategoryCommand } from './create-category.command';
 import { CreateCategoryResponse } from './create-category.response';
@@ -26,7 +26,7 @@ export class CreateCategoryHandler extends CommandHandlerBase<
         const existing = await this.categoryRepository.getByName(nameVO);
 
         if (existing) {
-            throw new CategoryAlreadyExistsError(command.name);
+            throw new CategoryAlreadyExistsApplicationError(command.name);
         }
 
         const id = crypto.randomUUID();

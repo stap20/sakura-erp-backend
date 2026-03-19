@@ -3,7 +3,7 @@ import { IGetCategoryHandler } from '../../application/queries/get-category/get-
 import { GetCategoryQuery } from '../../application/queries/get-category/get-category.query';
 import { GetCategoryResponse } from '../../application/queries/get-category/get-category.response';
 import { ReadCategoryRepository } from '../repositories/read-category.repository';
-import { CategoryNotFoundError } from '../../domain/errors/category.error';
+import { CategoryNotFoundApplicationError } from '../../application/errors/category.errors';
 
 @Injectable()
 export class GetCategoryHandler implements IGetCategoryHandler {
@@ -15,7 +15,7 @@ export class GetCategoryHandler implements IGetCategoryHandler {
         const category = await this.readCategoryRepository.getById(query.id);
 
         if (!category) {
-            throw new CategoryNotFoundError(query.id);
+            throw new CategoryNotFoundApplicationError(query.id);
         }
 
         return new GetCategoryResponse(

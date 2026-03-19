@@ -3,7 +3,7 @@ import { IGetRecipeVersionHandler } from '../../application/queries/get-recipe-v
 import { GetRecipeVersionQuery } from '../../application/queries/get-recipe-version/get-recipe-version.query';
 import { GetRecipeVersionResponse } from '../../application/queries/get-recipe-version/get-recipe-version.response';
 import { ReadRecipeVersionRepository } from '../repositories/read-recipe-version.repository';
-import { RecipeVersionNotFoundError } from '../../domain/errors/recipe.error';
+import { RecipeVersionNotFoundApplicationError } from '../../application/errors/recipe.errors';
 import { RecipeVersionEntity } from '../database/entities/recipe-version.entity';
 
 export function mapToRecipeVersionResponse(entity: RecipeVersionEntity): GetRecipeVersionResponse {
@@ -33,7 +33,7 @@ export class GetRecipeVersionHandler implements IGetRecipeVersionHandler {
 
     async handle(query: GetRecipeVersionQuery): Promise<GetRecipeVersionResponse> {
         const entity = await this.readRepo.getById(query.id);
-        if (!entity) throw new RecipeVersionNotFoundError(query.id);
+        if (!entity) throw new RecipeVersionNotFoundApplicationError(query.id);
         return mapToRecipeVersionResponse(entity);
     }
 }

@@ -3,7 +3,7 @@ import { CommandHandlerBase } from 'src/shared/application/command.handler.base'
 import { IItemRepository } from '../../../domain/repositories/item.repo.interface';
 import { ItemId } from '../../../domain/value-objects/item-id.vo';
 import { Quantity } from '../../../domain/value-objects/quantity.vo';
-import { ItemNotFoundError } from '../../../domain/errors/item.error';
+import { ItemNotFoundApplicationError } from '../../errors/item.errors';
 import { DeductItemCommand } from './deduct-item.command';
 import { DeductItemResponse } from './deduct-item.response';
 
@@ -24,7 +24,7 @@ export class DeductItemHandler extends CommandHandlerBase<
         const item = await this.itemRepository.getById(idVO);
 
         if (!item) {
-            throw new ItemNotFoundError(command.id);
+            throw new ItemNotFoundApplicationError(command.id);
         }
 
         const quantity = Quantity.create(command.quantity);

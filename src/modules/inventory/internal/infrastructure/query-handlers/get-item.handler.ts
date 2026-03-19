@@ -3,7 +3,7 @@ import { IGetItemHandler } from '../../application/queries/get-item/get-item.han
 import { GetItemQuery } from '../../application/queries/get-item/get-item.query';
 import { GetItemResponse } from '../../application/queries/get-item/get-item.response';
 import { ReadItemRepository } from '../repositories/read-item.repository';
-import { ItemNotFoundError } from '../../domain/errors/item.error';
+import { ItemNotFoundApplicationError } from '../../application/errors/item.errors';
 
 @Injectable()
 export class GetItemHandler implements IGetItemHandler {
@@ -13,7 +13,7 @@ export class GetItemHandler implements IGetItemHandler {
         const item = await this.readItemRepository.getById(query.id);
 
         if (!item) {
-            throw new ItemNotFoundError(query.id);
+            throw new ItemNotFoundApplicationError(query.id);
         }
 
         return new GetItemResponse(

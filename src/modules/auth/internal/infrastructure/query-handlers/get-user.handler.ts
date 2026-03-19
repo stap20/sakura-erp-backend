@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { UserNotFoundError } from '../../domain/errors/user.error';
+import { UserNotFoundApplicationError } from '../../application/errors/user.errors';
 import { IGetUserHandler } from '../../application/queries/get-user/get-user.handler.interface';
 import { GetUserQuery } from '../../application/queries/get-user/get-user.query';
 import { GetUserResponse } from '../../application/queries/get-user/get-user.response';
@@ -15,7 +15,7 @@ export class GetUserHandler implements IGetUserHandler {
     const user = await this.readUserRepo.getById(query.userId);
 
     if (!user) {
-      throw new UserNotFoundError(query.userId);
+      throw new UserNotFoundApplicationError(query.userId);
     }
 
     return new GetUserResponse(
