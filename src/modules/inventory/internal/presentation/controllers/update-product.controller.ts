@@ -22,8 +22,8 @@ export class UpdateProductController {
         @Body() dto: UpdateProductRequestDto,
     ): Promise<ProductResponseDto> {
         const result = await this.updateProductHandler.handle(
-            new UpdateProductCommand(id, dto.name, dto.description),
+            new UpdateProductCommand(id, dto.name, dto.description, dto.referenceBatchGm, dto.referenceDurationMin),
         );
-        return new ProductResponseDto(result.id, result.name, result.description);
+        return new ProductResponseDto(result.id, result.name, result.description, result.referenceBatchGm, result.referenceDurationMin);
     }
 }

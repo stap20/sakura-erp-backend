@@ -20,7 +20,7 @@ export class GetAllProductsController {
     async getAll(@Query('search') search?: string): Promise<ProductResponseDto[]> {
         const result = await this.getAllProductsHandler.handle(new GetAllProductsQuery(search));
         return result.products.map(
-            (p) => new ProductResponseDto(p.id, p.name, p.description, p.createdAt, p.updatedAt),
+            (p) => new ProductResponseDto(p.id, p.name, p.description, p.referenceBatchGm, p.referenceDurationMin, p.createdAt, p.updatedAt),
         );
     }
 }

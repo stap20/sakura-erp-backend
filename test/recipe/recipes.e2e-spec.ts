@@ -1,11 +1,11 @@
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { createTestApp, cleanRecipeDb } from '../helpers/app.setup';
+import { createTestApp, cleanRecipeDb, cleanInventoryDb } from '../helpers/app.setup';
 
 describe('Recipes (e2e)', () => {
     let app: INestApplication;
 
-    const productId = 'product-test-001';
+    let productId: string;
     let versionId: string;
     let versionId2: string;
     let ingredientId: string;
@@ -14,6 +14,14 @@ describe('Recipes (e2e)', () => {
     beforeAll(async () => {
         app = await createTestApp();
         await cleanRecipeDb(app);
+        await cleanInventoryDb(app);
+
+        // Recipe now validates that the Product exists in inventory — create one first
+        const productRes = await request(app.getHttpServer())
+            .post('/api/v1/inventory/products')
+            .send({ name: 'Test Formula Product' })
+            .expect(201);
+        productId = productRes.body.id;
     });
 
     afterAll(async () => {

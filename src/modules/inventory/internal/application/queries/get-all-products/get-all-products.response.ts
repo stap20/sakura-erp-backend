@@ -2,6 +2,8 @@ export interface ProductSummary {
     id: string;
     name: string;
     description: string | null;
+    referenceBatchGm: number | null;
+    referenceDurationMin: number | null;
     createdAt: Date;
     updatedAt: Date;
 }

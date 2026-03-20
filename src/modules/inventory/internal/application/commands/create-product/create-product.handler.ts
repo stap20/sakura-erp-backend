@@ -28,6 +28,8 @@ export class CreateProductHandler extends CommandHandlerBase<
             id: crypto.randomUUID(),
             name: command.name,
             description: command.description,
+            referenceBatchGm: command.referenceBatchGm,
+            referenceDurationMin: command.referenceDurationMin,
         });
 
         await this.productRepository.save(product);
@@ -38,6 +40,8 @@ export class CreateProductHandler extends CommandHandlerBase<
             product.getId().value,
             product.getName(),
             product.getDescription(),
+            product.getReferenceBatchGm(),
+            product.getReferenceDurationMin(),
         );
     }
 }

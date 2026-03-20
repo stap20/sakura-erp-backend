@@ -29,8 +29,8 @@ export class ProductRepository implements IProductRepository {
         const data = this.productMapper.toPersistence(product);
         await this.prisma.product.upsert({
             where: { id: data.id },
-            update: { name: data.name, description: data.description },
-            create: { id: data.id, name: data.name, description: data.description },
+            update: { name: data.name, description: data.description, referenceBatchGm: data.referenceBatchGm, referenceDurationMin: data.referenceDurationMin },
+            create: { id: data.id, name: data.name, description: data.description, referenceBatchGm: data.referenceBatchGm, referenceDurationMin: data.referenceDurationMin },
         });
     }
 }

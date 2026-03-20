@@ -9,6 +9,8 @@ export class ProductMapper {
             id: entity.id,
             name: entity.name,
             description: entity.description,
+            referenceBatchGm: entity.referenceBatchGm,
+            referenceDurationMin: entity.referenceDurationMin,
         });
     }
 
@@ -17,6 +19,8 @@ export class ProductMapper {
             id: product.getId().value,
             name: product.getName(),
             description: product.getDescription(),
+            referenceBatchGm: product.getReferenceBatchGm(),
+            referenceDurationMin: product.getReferenceDurationMin(),
         };
     }
 }

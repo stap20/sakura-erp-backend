@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsOptional, MinLength } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, MinLength, IsNumber, Min } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateProductRequestDto {
@@ -12,4 +12,16 @@ export class CreateProductRequestDto {
     @IsOptional()
     @IsString()
     description?: string | null;
+
+    @ApiPropertyOptional({ example: 1000, description: 'Reference batch size in grams', nullable: true })
+    @IsOptional()
+    @IsNumber()
+    @Min(1)
+    referenceBatchGm?: number | null;
+
+    @ApiPropertyOptional({ example: 360, description: 'Minutes to produce referenceBatchGm', nullable: true })
+    @IsOptional()
+    @IsNumber()
+    @Min(1)
+    referenceDurationMin?: number | null;
 }

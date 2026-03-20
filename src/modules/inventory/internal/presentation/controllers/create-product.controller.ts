@@ -20,8 +20,8 @@ export class CreateProductController {
     @ApiResponse({ status: 201, type: ProductResponseDto })
     async create(@Body() dto: CreateProductRequestDto): Promise<ProductResponseDto> {
         const result = await this.createProductHandler.handle(
-            new CreateProductCommand(dto.name, dto.description),
+            new CreateProductCommand(dto.name, dto.description, dto.referenceBatchGm, dto.referenceDurationMin),
         );
-        return new ProductResponseDto(result.id, result.name, result.description);
+        return new ProductResponseDto(result.id, result.name, result.description, result.referenceBatchGm, result.referenceDurationMin);
     }
 }

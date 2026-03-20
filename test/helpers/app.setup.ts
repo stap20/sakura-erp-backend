@@ -48,8 +48,10 @@ export async function createTestApp(): Promise<INestApplication> {
 export async function cleanInventoryDb(app: INestApplication): Promise<void> {
     const prisma = app.get<IInventoryPrismaClient>(IInventoryPrismaClient);
     await prisma.inventoryTransaction.deleteMany();
+    await prisma.packagingComponent.deleteMany();
     await prisma.item.deleteMany();
     await prisma.category.deleteMany();
+    await prisma.product.deleteMany();
 }
 
 export async function cleanRecipeDb(app: INestApplication): Promise<void> {
