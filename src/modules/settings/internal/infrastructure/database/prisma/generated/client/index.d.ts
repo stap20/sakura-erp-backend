@@ -882,12 +882,14 @@ export namespace Prisma {
     monthlySalary: number | null
     monthlyWorkingHours: number | null
     depreciationPerMinute: number | null
+    defaultMarginPercent: number | null
   }
 
   export type CostConfigSumAggregateOutputType = {
     monthlySalary: number | null
     monthlyWorkingHours: number | null
     depreciationPerMinute: number | null
+    defaultMarginPercent: number | null
   }
 
   export type CostConfigMinAggregateOutputType = {
@@ -895,6 +897,7 @@ export namespace Prisma {
     monthlySalary: number | null
     monthlyWorkingHours: number | null
     depreciationPerMinute: number | null
+    defaultMarginPercent: number | null
     updatedAt: Date | null
   }
 
@@ -903,6 +906,7 @@ export namespace Prisma {
     monthlySalary: number | null
     monthlyWorkingHours: number | null
     depreciationPerMinute: number | null
+    defaultMarginPercent: number | null
     updatedAt: Date | null
   }
 
@@ -911,6 +915,7 @@ export namespace Prisma {
     monthlySalary: number
     monthlyWorkingHours: number
     depreciationPerMinute: number
+    defaultMarginPercent: number
     updatedAt: number
     _all: number
   }
@@ -920,12 +925,14 @@ export namespace Prisma {
     monthlySalary?: true
     monthlyWorkingHours?: true
     depreciationPerMinute?: true
+    defaultMarginPercent?: true
   }
 
   export type CostConfigSumAggregateInputType = {
     monthlySalary?: true
     monthlyWorkingHours?: true
     depreciationPerMinute?: true
+    defaultMarginPercent?: true
   }
 
   export type CostConfigMinAggregateInputType = {
@@ -933,6 +940,7 @@ export namespace Prisma {
     monthlySalary?: true
     monthlyWorkingHours?: true
     depreciationPerMinute?: true
+    defaultMarginPercent?: true
     updatedAt?: true
   }
 
@@ -941,6 +949,7 @@ export namespace Prisma {
     monthlySalary?: true
     monthlyWorkingHours?: true
     depreciationPerMinute?: true
+    defaultMarginPercent?: true
     updatedAt?: true
   }
 
@@ -949,6 +958,7 @@ export namespace Prisma {
     monthlySalary?: true
     monthlyWorkingHours?: true
     depreciationPerMinute?: true
+    defaultMarginPercent?: true
     updatedAt?: true
     _all?: true
   }
@@ -1044,6 +1054,7 @@ export namespace Prisma {
     monthlySalary: number
     monthlyWorkingHours: number
     depreciationPerMinute: number
+    defaultMarginPercent: number
     updatedAt: Date
     _count: CostConfigCountAggregateOutputType | null
     _avg: CostConfigAvgAggregateOutputType | null
@@ -1071,6 +1082,7 @@ export namespace Prisma {
     monthlySalary?: boolean
     monthlyWorkingHours?: boolean
     depreciationPerMinute?: boolean
+    defaultMarginPercent?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["costConfig"]>
 
@@ -1079,6 +1091,7 @@ export namespace Prisma {
     monthlySalary?: boolean
     monthlyWorkingHours?: boolean
     depreciationPerMinute?: boolean
+    defaultMarginPercent?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["costConfig"]>
 
@@ -1087,6 +1100,7 @@ export namespace Prisma {
     monthlySalary?: boolean
     monthlyWorkingHours?: boolean
     depreciationPerMinute?: boolean
+    defaultMarginPercent?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["costConfig"]>
 
@@ -1095,10 +1109,11 @@ export namespace Prisma {
     monthlySalary?: boolean
     monthlyWorkingHours?: boolean
     depreciationPerMinute?: boolean
+    defaultMarginPercent?: boolean
     updatedAt?: boolean
   }
 
-  export type CostConfigOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "monthlySalary" | "monthlyWorkingHours" | "depreciationPerMinute" | "updatedAt", ExtArgs["result"]["costConfig"]>
+  export type CostConfigOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "monthlySalary" | "monthlyWorkingHours" | "depreciationPerMinute" | "defaultMarginPercent" | "updatedAt", ExtArgs["result"]["costConfig"]>
 
   export type $CostConfigPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "CostConfig"
@@ -1108,6 +1123,7 @@ export namespace Prisma {
       monthlySalary: number
       monthlyWorkingHours: number
       depreciationPerMinute: number
+      defaultMarginPercent: number
       updatedAt: Date
     }, ExtArgs["result"]["costConfig"]>
     composites: {}
@@ -1536,6 +1552,7 @@ export namespace Prisma {
     readonly monthlySalary: FieldRef<"CostConfig", 'Float'>
     readonly monthlyWorkingHours: FieldRef<"CostConfig", 'Float'>
     readonly depreciationPerMinute: FieldRef<"CostConfig", 'Float'>
+    readonly defaultMarginPercent: FieldRef<"CostConfig", 'Float'>
     readonly updatedAt: FieldRef<"CostConfig", 'DateTime'>
   }
     
@@ -1922,6 +1939,7 @@ export namespace Prisma {
     monthlySalary: 'monthlySalary',
     monthlyWorkingHours: 'monthlyWorkingHours',
     depreciationPerMinute: 'depreciationPerMinute',
+    defaultMarginPercent: 'defaultMarginPercent',
     updatedAt: 'updatedAt'
   };
 
@@ -2016,6 +2034,7 @@ export namespace Prisma {
     monthlySalary?: FloatFilter<"CostConfig"> | number
     monthlyWorkingHours?: FloatFilter<"CostConfig"> | number
     depreciationPerMinute?: FloatFilter<"CostConfig"> | number
+    defaultMarginPercent?: FloatFilter<"CostConfig"> | number
     updatedAt?: DateTimeFilter<"CostConfig"> | Date | string
   }
 
@@ -2024,6 +2043,7 @@ export namespace Prisma {
     monthlySalary?: SortOrder
     monthlyWorkingHours?: SortOrder
     depreciationPerMinute?: SortOrder
+    defaultMarginPercent?: SortOrder
     updatedAt?: SortOrder
   }
 
@@ -2035,6 +2055,7 @@ export namespace Prisma {
     monthlySalary?: FloatFilter<"CostConfig"> | number
     monthlyWorkingHours?: FloatFilter<"CostConfig"> | number
     depreciationPerMinute?: FloatFilter<"CostConfig"> | number
+    defaultMarginPercent?: FloatFilter<"CostConfig"> | number
     updatedAt?: DateTimeFilter<"CostConfig"> | Date | string
   }, "id">
 
@@ -2043,6 +2064,7 @@ export namespace Prisma {
     monthlySalary?: SortOrder
     monthlyWorkingHours?: SortOrder
     depreciationPerMinute?: SortOrder
+    defaultMarginPercent?: SortOrder
     updatedAt?: SortOrder
     _count?: CostConfigCountOrderByAggregateInput
     _avg?: CostConfigAvgOrderByAggregateInput
@@ -2059,6 +2081,7 @@ export namespace Prisma {
     monthlySalary?: FloatWithAggregatesFilter<"CostConfig"> | number
     monthlyWorkingHours?: FloatWithAggregatesFilter<"CostConfig"> | number
     depreciationPerMinute?: FloatWithAggregatesFilter<"CostConfig"> | number
+    defaultMarginPercent?: FloatWithAggregatesFilter<"CostConfig"> | number
     updatedAt?: DateTimeWithAggregatesFilter<"CostConfig"> | Date | string
   }
 
@@ -2067,6 +2090,7 @@ export namespace Prisma {
     monthlySalary: number
     monthlyWorkingHours: number
     depreciationPerMinute: number
+    defaultMarginPercent?: number
     updatedAt?: Date | string
   }
 
@@ -2075,6 +2099,7 @@ export namespace Prisma {
     monthlySalary: number
     monthlyWorkingHours: number
     depreciationPerMinute: number
+    defaultMarginPercent?: number
     updatedAt?: Date | string
   }
 
@@ -2083,6 +2108,7 @@ export namespace Prisma {
     monthlySalary?: FloatFieldUpdateOperationsInput | number
     monthlyWorkingHours?: FloatFieldUpdateOperationsInput | number
     depreciationPerMinute?: FloatFieldUpdateOperationsInput | number
+    defaultMarginPercent?: FloatFieldUpdateOperationsInput | number
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -2091,6 +2117,7 @@ export namespace Prisma {
     monthlySalary?: FloatFieldUpdateOperationsInput | number
     monthlyWorkingHours?: FloatFieldUpdateOperationsInput | number
     depreciationPerMinute?: FloatFieldUpdateOperationsInput | number
+    defaultMarginPercent?: FloatFieldUpdateOperationsInput | number
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -2099,6 +2126,7 @@ export namespace Prisma {
     monthlySalary: number
     monthlyWorkingHours: number
     depreciationPerMinute: number
+    defaultMarginPercent?: number
     updatedAt?: Date | string
   }
 
@@ -2107,6 +2135,7 @@ export namespace Prisma {
     monthlySalary?: FloatFieldUpdateOperationsInput | number
     monthlyWorkingHours?: FloatFieldUpdateOperationsInput | number
     depreciationPerMinute?: FloatFieldUpdateOperationsInput | number
+    defaultMarginPercent?: FloatFieldUpdateOperationsInput | number
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -2115,6 +2144,7 @@ export namespace Prisma {
     monthlySalary?: FloatFieldUpdateOperationsInput | number
     monthlyWorkingHours?: FloatFieldUpdateOperationsInput | number
     depreciationPerMinute?: FloatFieldUpdateOperationsInput | number
+    defaultMarginPercent?: FloatFieldUpdateOperationsInput | number
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -2160,6 +2190,7 @@ export namespace Prisma {
     monthlySalary?: SortOrder
     monthlyWorkingHours?: SortOrder
     depreciationPerMinute?: SortOrder
+    defaultMarginPercent?: SortOrder
     updatedAt?: SortOrder
   }
 
@@ -2167,6 +2198,7 @@ export namespace Prisma {
     monthlySalary?: SortOrder
     monthlyWorkingHours?: SortOrder
     depreciationPerMinute?: SortOrder
+    defaultMarginPercent?: SortOrder
   }
 
   export type CostConfigMaxOrderByAggregateInput = {
@@ -2174,6 +2206,7 @@ export namespace Prisma {
     monthlySalary?: SortOrder
     monthlyWorkingHours?: SortOrder
     depreciationPerMinute?: SortOrder
+    defaultMarginPercent?: SortOrder
     updatedAt?: SortOrder
   }
 
@@ -2182,6 +2215,7 @@ export namespace Prisma {
     monthlySalary?: SortOrder
     monthlyWorkingHours?: SortOrder
     depreciationPerMinute?: SortOrder
+    defaultMarginPercent?: SortOrder
     updatedAt?: SortOrder
   }
 
@@ -2189,6 +2223,7 @@ export namespace Prisma {
     monthlySalary?: SortOrder
     monthlyWorkingHours?: SortOrder
     depreciationPerMinute?: SortOrder
+    defaultMarginPercent?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {

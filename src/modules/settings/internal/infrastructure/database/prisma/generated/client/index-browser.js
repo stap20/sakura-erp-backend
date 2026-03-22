@@ -125,6 +125,7 @@ exports.Prisma.CostConfigScalarFieldEnum = {
   monthlySalary: 'monthlySalary',
   monthlyWorkingHours: 'monthlyWorkingHours',
   depreciationPerMinute: 'depreciationPerMinute',
+  defaultMarginPercent: 'defaultMarginPercent',
   updatedAt: 'updatedAt'
 };
 

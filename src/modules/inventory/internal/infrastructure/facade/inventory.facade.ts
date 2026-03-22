@@ -34,13 +34,21 @@ export class InventoryFacade implements IInventoryFacade {
             item.unitWeightGm ?? null,
             item.weightedAverageUnitPrice ?? null,
             components.map((c) => ({ packagingItemId: c.packagingItemId, qtyPerUnit: c.qtyPerUnit })),
+            item.productId ?? null,
         );
     }
 
     async getProduct(productId: string): Promise<ProductFacadeDto | null> {
         const product = await this.readProductRepository.getById(productId);
         if (!product) return null;
-        return new ProductFacadeDto(product.id, product.name, product.description);
+        return new ProductFacadeDto(
+            product.id,
+            product.name,
+            product.description,
+            product.referenceBatchGm,
+            product.referenceDurationMin,
+            product.referenceWastePercent,
+        );
     }
 
     async restockItem(data: RestockItemDto): Promise<void> {

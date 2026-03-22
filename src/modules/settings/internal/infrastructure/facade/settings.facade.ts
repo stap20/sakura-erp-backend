@@ -17,6 +17,7 @@ export class SettingsFacade implements ISettingsFacade {
             monthlySalary: config.monthlySalary,
             monthlyWorkingHours: config.monthlyWorkingHours,
             depreciationPerMinute: config.depreciationPerMinute,
+            defaultMarginPercent: config.defaultMarginPercent,
             updatedAt: config.updatedAt,
         };
     }

@@ -19,6 +19,7 @@ export class UpsertCostConfigHandler extends CommandHandlerBase<UpsertCostConfig
             monthlySalary: command.monthlySalary,
             monthlyWorkingHours: command.monthlyWorkingHours,
             depreciationPerMinute: command.depreciationPerMinute,
+            defaultMarginPercent: command.defaultMarginPercent,
         });
 
         await this.costConfigRepository.save(config);

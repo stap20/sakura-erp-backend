@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model SalesOrder {
+  id              String          @id
+  customerName    String
+  customerPhone   String?
+  customerContact String?
+  status          String          @default("DRAFT")
+  notes           String?
+  shippedAt       DateTime?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  lines           SalesOrderLine[]
+
+  @@index([status])
+  @@map("sales_orders")
+}
+
+model SalesOrderLine {
+  id          String     @id
+  orderId     String
+  itemId      String
+  itemName    String
+  measureUnit String
+  quantity    Decimal
+  unitPrice   Decimal
+  order       SalesOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@unique([orderId, itemId])
+  @@map("sales_order_lines")
+}

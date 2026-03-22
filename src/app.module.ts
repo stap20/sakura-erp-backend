@@ -12,6 +12,7 @@ import { RecipeModule } from './modules/recipe/shared/recipe.module';
 import { PurchaseModule } from './modules/purchase/shared/purchase.module';
 import { ProductionModule } from './modules/production/shared/production.module';
 import { SettingsModule } from './modules/settings/shared/settings.module';
+import { SalesModule } from './modules/sales/shared/sales.module';
 
 import { AppController } from './app.controller';
 
@@ -28,6 +29,7 @@ import { AppController } from './app.controller';
         PurchaseModule,
         ProductionModule,
         SettingsModule,
+        SalesModule,
     ],
     controllers: [AppController],
 })

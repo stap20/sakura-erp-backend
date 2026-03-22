@@ -2,6 +2,7 @@ export interface CostConfigFacadeDto {
     monthlySalary: number;
     monthlyWorkingHours: number;
     depreciationPerMinute: number;
+    defaultMarginPercent: number;
     updatedAt: Date;
 }
 

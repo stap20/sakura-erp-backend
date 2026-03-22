@@ -23,6 +23,7 @@ export class GetCostConfigController {
             result.monthlySalary,
             result.monthlyWorkingHours,
             result.depreciationPerMinute,
+            result.defaultMarginPercent,
             result.updatedAt,
         );
     }

@@ -20,6 +20,7 @@ export class GetCostConfigHandler implements IGetCostConfigHandler {
             config.monthlySalary,
             config.monthlyWorkingHours,
             config.depreciationPerMinute,
+            config.defaultMarginPercent,
             config.updatedAt,
         );
     }
