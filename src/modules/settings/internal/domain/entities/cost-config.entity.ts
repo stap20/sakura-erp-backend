@@ -3,6 +3,7 @@ export class CostConfigEntity {
     monthlySalary: number;
     monthlyWorkingHours: number;
     depreciationPerMinute: number;
+    defaultMarginPercent: number;
     updatedAt: Date;
 
     constructor(data: Partial<CostConfigEntity>) {

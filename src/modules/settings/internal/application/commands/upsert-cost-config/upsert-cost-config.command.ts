@@ -3,5 +3,6 @@ export class UpsertCostConfigCommand {
         public readonly monthlySalary: number,
         public readonly monthlyWorkingHours: number,
         public readonly depreciationPerMinute: number,
+        public readonly defaultMarginPercent: number,
     ) {}
 }

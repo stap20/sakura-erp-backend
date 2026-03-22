@@ -19,7 +19,7 @@ export class UpsertCostConfigController {
     @ApiResponse({ status: 200, description: 'Cost config saved' })
     async upsert(@Body() dto: UpsertCostConfigRequestDto): Promise<void> {
         await this.upsertCostConfigHandler.handle(
-            new UpsertCostConfigCommand(dto.monthlySalary, dto.monthlyWorkingHours, dto.depreciationPerMinute),
+            new UpsertCostConfigCommand(dto.monthlySalary, dto.monthlyWorkingHours, dto.depreciationPerMinute, dto.defaultMarginPercent),
         );
     }
 }

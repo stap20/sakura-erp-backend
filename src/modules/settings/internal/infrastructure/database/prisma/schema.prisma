@@ -12,6 +12,7 @@ model CostConfig {
   monthlySalary         Float
   monthlyWorkingHours   Float
   depreciationPerMinute Float
+  defaultMarginPercent  Float    @default(0)
   updatedAt             DateTime @updatedAt
 
   @@map("cost_config")

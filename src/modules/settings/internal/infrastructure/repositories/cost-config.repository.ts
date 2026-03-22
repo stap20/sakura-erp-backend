@@ -29,12 +29,14 @@ export class CostConfigRepository implements ICostConfigRepository {
                 monthlySalary: config.monthlySalary,
                 monthlyWorkingHours: config.monthlyWorkingHours,
                 depreciationPerMinute: config.depreciationPerMinute,
+                defaultMarginPercent: config.defaultMarginPercent,
             },
             create: {
                 id: 'singleton',
                 monthlySalary: config.monthlySalary,
                 monthlyWorkingHours: config.monthlyWorkingHours,
                 depreciationPerMinute: config.depreciationPerMinute,
+                defaultMarginPercent: config.defaultMarginPercent,
             },
         });
     }

@@ -12,5 +12,6 @@ export class InventoryItemDto {
         public readonly unitWeightGm: number | null,
         public readonly weightedAverageUnitPrice: number | null,
         public readonly packagingComponents: PackagingComponentDto[] = [],
+        public readonly productId: string | null = null,
     ) {}
 }

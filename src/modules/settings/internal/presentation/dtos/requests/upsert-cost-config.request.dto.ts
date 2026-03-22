@@ -16,4 +16,9 @@ export class UpsertCostConfigRequestDto {
     @IsNumber()
     @Min(0)
     depreciationPerMinute: number;
+
+    @ApiProperty({ example: 30, description: 'Default margin percentage for pricing (0 = no margin)' })
+    @IsNumber()
+    @Min(0)
+    defaultMarginPercent: number;
 }
