@@ -10,6 +10,7 @@ import { IInventoryPrismaClient } from 'src/modules/inventory/internal/infrastru
 import { IRecipePrismaClient } from 'src/modules/recipe/internal/infrastructure/database/recipe.prisma.client.interface';
 import { IPurchasePrismaClient } from 'src/modules/purchase/internal/infrastructure/database/purchase.prisma.client.interface';
 import { ISettingsPrismaClient } from 'src/modules/settings/internal/infrastructure/database/settings.prisma.client.interface';
+import { ISalesPrismaClient } from 'src/modules/sales/internal/infrastructure/database/sales.prisma.client.interface';
 
 export async function createTestApp(): Promise<INestApplication> {
     const moduleRef = await Test.createTestingModule({
@@ -70,4 +71,10 @@ export async function cleanPurchaseDb(app: INestApplication): Promise<void> {
 export async function cleanSettingsDb(app: INestApplication): Promise<void> {
     const prisma = app.get<ISettingsPrismaClient>(ISettingsPrismaClient);
     await prisma.costConfig.deleteMany();
+}
+
+export async function cleanSalesDb(app: INestApplication): Promise<void> {
+    const prisma = app.get<ISalesPrismaClient>(ISalesPrismaClient);
+    await prisma.salesOrderLine.deleteMany();
+    await prisma.salesOrder.deleteMany();
 }
