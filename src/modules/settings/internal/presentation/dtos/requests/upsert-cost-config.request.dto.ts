@@ -1,5 +1,5 @@
-import { IsNumber, Min } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { IsNumber, Min, IsOptional } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class UpsertCostConfigRequestDto {
     @ApiProperty({ example: 3000, description: 'Monthly salary in currency units' })
@@ -17,8 +17,9 @@ export class UpsertCostConfigRequestDto {
     @Min(0)
     depreciationPerMinute: number;
 
-    @ApiProperty({ example: 30, description: 'Default margin percentage for pricing (0 = no margin)' })
+    @ApiPropertyOptional({ example: 30, description: 'Default margin percentage for pricing (0 = no margin)', default: 0 })
+    @IsOptional()
     @IsNumber()
     @Min(0)
-    defaultMarginPercent: number;
+    defaultMarginPercent?: number;
 }

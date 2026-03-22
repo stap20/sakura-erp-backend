@@ -66,7 +66,13 @@ describe('Sales (e2e)', () => {
         // Restock final product item so ship can deduct
         await request(app.getHttpServer())
             .post(`/api/v1/inventory/items/${finalProductItemId}/restock`)
-            .send({ quantity: 100, performedBy: 'TEST_SETUP', unitPrice: 50 })
+            .send({ quantity: 100, performedBy: 'TEST_SETUP' })
+            .expect(201);
+
+        // Restock shipping packaging item so ship can deduct
+        await request(app.getHttpServer())
+            .post(`/api/v1/inventory/items/${shippingPackagingItemId}/restock`)
+            .send({ quantity: 50, performedBy: 'TEST_SETUP' })
             .expect(201);
     });
 
