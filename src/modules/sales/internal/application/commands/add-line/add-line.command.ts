@@ -4,5 +4,6 @@ export class AddLineCommand {
         public readonly itemId: string,
         public readonly quantity: number,
         public readonly unitPrice: number,
+        public readonly isGift?: boolean,
     ) {}
 }

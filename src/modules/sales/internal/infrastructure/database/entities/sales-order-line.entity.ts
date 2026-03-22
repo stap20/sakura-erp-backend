@@ -6,6 +6,7 @@ export class SalesOrderLineEntity {
     measureUnit: string;
     quantity: number | string;
     unitPrice: number | string;
+    isGift: boolean;
 
     constructor(data: Partial<SalesOrderLineEntity>) {
         Object.assign(this, data);

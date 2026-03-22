@@ -139,7 +139,8 @@ exports.Prisma.SalesOrderLineScalarFieldEnum = {
   itemName: 'itemName',
   measureUnit: 'measureUnit',
   quantity: 'quantity',
-  unitPrice: 'unitPrice'
+  unitPrice: 'unitPrice',
+  isGift: 'isGift'
 };
 
 exports.Prisma.SortOrder = {

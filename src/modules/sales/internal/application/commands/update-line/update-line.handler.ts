@@ -19,7 +19,7 @@ export class UpdateLineHandler extends CommandHandlerBase<UpdateLineCommand, voi
         const order = await this.repo.getById(id);
         if (!order) throw new SalesOrderNotFoundApplicationError(command.orderId);
 
-        order.updateLine(command.lineId, command.quantity, command.unitPrice);
+        order.updateLine(command.lineId, command.quantity, command.unitPrice, command.isGift);
         await this.repo.save(order);
     }
 }

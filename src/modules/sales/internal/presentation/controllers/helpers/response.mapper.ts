@@ -20,6 +20,7 @@ export function toSalesOrderResponseDto(response: GetSalesOrderResponse): SalesO
         measureUnit: l.measureUnit,
         quantity: l.quantity,
         unitPrice: l.unitPrice,
+        isGift: l.isGift,
     }));
     dto.createdAt = response.createdAt;
     dto.updatedAt = response.updatedAt;

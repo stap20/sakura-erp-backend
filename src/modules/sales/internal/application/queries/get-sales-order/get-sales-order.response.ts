@@ -5,6 +5,7 @@ export class SalesOrderLineResponse {
     measureUnit: string;
     quantity: number;
     unitPrice: number;
+    isGift: boolean;
 }
 
 export class GetSalesOrderResponse {

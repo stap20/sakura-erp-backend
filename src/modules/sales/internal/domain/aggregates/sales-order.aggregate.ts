@@ -151,13 +151,13 @@ export class SalesOrder extends AggregateRoot<SalesOrderId> {
         this.updatedAt = new Date();
     }
 
-    public updateLine(lineId: string, quantity?: number, unitPrice?: number): void {
+    public updateLine(lineId: string, quantity?: number, unitPrice?: number, isGift?: boolean): void {
         if (!this.status.isDraft()) {
             throw new SalesOrderNotEditableError();
         }
         const line = this.lines.find((l) => l.id === lineId);
         if (!line) throw new SalesOrderLineNotFoundError(lineId);
-        line.update(quantity, unitPrice);
+        line.update(quantity, unitPrice, isGift);
         this.updatedAt = new Date();
     }
 
@@ -167,6 +167,12 @@ export class SalesOrder extends AggregateRoot<SalesOrderId> {
         }
         this.notes = notes;
         this.updatedAt = new Date();
+    }
+
+    public getLineSubtotal(): number {
+        return this.lines
+            .filter((l) => !l.isGift)
+            .reduce((sum, l) => sum + l.quantity * l.unitPrice, 0);
     }
 
     public getCustomerName(): string { return this.customerName; }

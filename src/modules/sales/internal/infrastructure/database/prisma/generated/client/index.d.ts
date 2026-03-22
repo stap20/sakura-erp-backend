@@ -2139,6 +2139,7 @@ export namespace Prisma {
     measureUnit: string | null
     quantity: Decimal | null
     unitPrice: Decimal | null
+    isGift: boolean | null
   }
 
   export type SalesOrderLineMaxAggregateOutputType = {
@@ -2149,6 +2150,7 @@ export namespace Prisma {
     measureUnit: string | null
     quantity: Decimal | null
     unitPrice: Decimal | null
+    isGift: boolean | null
   }
 
   export type SalesOrderLineCountAggregateOutputType = {
@@ -2159,6 +2161,7 @@ export namespace Prisma {
     measureUnit: number
     quantity: number
     unitPrice: number
+    isGift: number
     _all: number
   }
 
@@ -2181,6 +2184,7 @@ export namespace Prisma {
     measureUnit?: true
     quantity?: true
     unitPrice?: true
+    isGift?: true
   }
 
   export type SalesOrderLineMaxAggregateInputType = {
@@ -2191,6 +2195,7 @@ export namespace Prisma {
     measureUnit?: true
     quantity?: true
     unitPrice?: true
+    isGift?: true
   }
 
   export type SalesOrderLineCountAggregateInputType = {
@@ -2201,6 +2206,7 @@ export namespace Prisma {
     measureUnit?: true
     quantity?: true
     unitPrice?: true
+    isGift?: true
     _all?: true
   }
 
@@ -2298,6 +2304,7 @@ export namespace Prisma {
     measureUnit: string
     quantity: Decimal
     unitPrice: Decimal
+    isGift: boolean
     _count: SalesOrderLineCountAggregateOutputType | null
     _avg: SalesOrderLineAvgAggregateOutputType | null
     _sum: SalesOrderLineSumAggregateOutputType | null
@@ -2327,6 +2334,7 @@ export namespace Prisma {
     measureUnit?: boolean
     quantity?: boolean
     unitPrice?: boolean
+    isGift?: boolean
     order?: boolean | SalesOrderDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["salesOrderLine"]>
 
@@ -2338,6 +2346,7 @@ export namespace Prisma {
     measureUnit?: boolean
     quantity?: boolean
     unitPrice?: boolean
+    isGift?: boolean
     order?: boolean | SalesOrderDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["salesOrderLine"]>
 
@@ -2349,6 +2358,7 @@ export namespace Prisma {
     measureUnit?: boolean
     quantity?: boolean
     unitPrice?: boolean
+    isGift?: boolean
     order?: boolean | SalesOrderDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["salesOrderLine"]>
 
@@ -2360,9 +2370,10 @@ export namespace Prisma {
     measureUnit?: boolean
     quantity?: boolean
     unitPrice?: boolean
+    isGift?: boolean
   }
 
-  export type SalesOrderLineOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderId" | "itemId" | "itemName" | "measureUnit" | "quantity" | "unitPrice", ExtArgs["result"]["salesOrderLine"]>
+  export type SalesOrderLineOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderId" | "itemId" | "itemName" | "measureUnit" | "quantity" | "unitPrice" | "isGift", ExtArgs["result"]["salesOrderLine"]>
   export type SalesOrderLineInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     order?: boolean | SalesOrderDefaultArgs<ExtArgs>
   }
@@ -2386,6 +2397,7 @@ export namespace Prisma {
       measureUnit: string
       quantity: Prisma.Decimal
       unitPrice: Prisma.Decimal
+      isGift: boolean
     }, ExtArgs["result"]["salesOrderLine"]>
     composites: {}
   }
@@ -2817,6 +2829,7 @@ export namespace Prisma {
     readonly measureUnit: FieldRef<"SalesOrderLine", 'String'>
     readonly quantity: FieldRef<"SalesOrderLine", 'Decimal'>
     readonly unitPrice: FieldRef<"SalesOrderLine", 'Decimal'>
+    readonly isGift: FieldRef<"SalesOrderLine", 'Boolean'>
   }
     
 
@@ -3267,7 +3280,8 @@ export namespace Prisma {
     itemName: 'itemName',
     measureUnit: 'measureUnit',
     quantity: 'quantity',
-    unitPrice: 'unitPrice'
+    unitPrice: 'unitPrice',
+    isGift: 'isGift'
   };
 
   export type SalesOrderLineScalarFieldEnum = (typeof SalesOrderLineScalarFieldEnum)[keyof typeof SalesOrderLineScalarFieldEnum]
@@ -3341,6 +3355,13 @@ export namespace Prisma {
    * Reference to a field of type 'Decimal[]'
    */
   export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -3447,6 +3468,7 @@ export namespace Prisma {
     measureUnit?: StringFilter<"SalesOrderLine"> | string
     quantity?: DecimalFilter<"SalesOrderLine"> | Decimal | DecimalJsLike | number | string
     unitPrice?: DecimalFilter<"SalesOrderLine"> | Decimal | DecimalJsLike | number | string
+    isGift?: BoolFilter<"SalesOrderLine"> | boolean
     order?: XOR<SalesOrderScalarRelationFilter, SalesOrderWhereInput>
   }
 
@@ -3458,6 +3480,7 @@ export namespace Prisma {
     measureUnit?: SortOrder
     quantity?: SortOrder
     unitPrice?: SortOrder
+    isGift?: SortOrder
     order?: SalesOrderOrderByWithRelationInput
   }
 
@@ -3473,6 +3496,7 @@ export namespace Prisma {
     measureUnit?: StringFilter<"SalesOrderLine"> | string
     quantity?: DecimalFilter<"SalesOrderLine"> | Decimal | DecimalJsLike | number | string
     unitPrice?: DecimalFilter<"SalesOrderLine"> | Decimal | DecimalJsLike | number | string
+    isGift?: BoolFilter<"SalesOrderLine"> | boolean
     order?: XOR<SalesOrderScalarRelationFilter, SalesOrderWhereInput>
   }, "id" | "orderId_itemId">
 
@@ -3484,6 +3508,7 @@ export namespace Prisma {
     measureUnit?: SortOrder
     quantity?: SortOrder
     unitPrice?: SortOrder
+    isGift?: SortOrder
     _count?: SalesOrderLineCountOrderByAggregateInput
     _avg?: SalesOrderLineAvgOrderByAggregateInput
     _max?: SalesOrderLineMaxOrderByAggregateInput
@@ -3502,6 +3527,7 @@ export namespace Prisma {
     measureUnit?: StringWithAggregatesFilter<"SalesOrderLine"> | string
     quantity?: DecimalWithAggregatesFilter<"SalesOrderLine"> | Decimal | DecimalJsLike | number | string
     unitPrice?: DecimalWithAggregatesFilter<"SalesOrderLine"> | Decimal | DecimalJsLike | number | string
+    isGift?: BoolWithAggregatesFilter<"SalesOrderLine"> | boolean
   }
 
   export type SalesOrderCreateInput = {
@@ -3599,6 +3625,7 @@ export namespace Prisma {
     measureUnit: string
     quantity: Decimal | DecimalJsLike | number | string
     unitPrice: Decimal | DecimalJsLike | number | string
+    isGift?: boolean
     order: SalesOrderCreateNestedOneWithoutLinesInput
   }
 
@@ -3610,6 +3637,7 @@ export namespace Prisma {
     measureUnit: string
     quantity: Decimal | DecimalJsLike | number | string
     unitPrice: Decimal | DecimalJsLike | number | string
+    isGift?: boolean
   }
 
   export type SalesOrderLineUpdateInput = {
@@ -3619,6 +3647,7 @@ export namespace Prisma {
     measureUnit?: StringFieldUpdateOperationsInput | string
     quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isGift?: BoolFieldUpdateOperationsInput | boolean
     order?: SalesOrderUpdateOneRequiredWithoutLinesNestedInput
   }
 
@@ -3630,6 +3659,7 @@ export namespace Prisma {
     measureUnit?: StringFieldUpdateOperationsInput | string
     quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isGift?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SalesOrderLineCreateManyInput = {
@@ -3640,6 +3670,7 @@ export namespace Prisma {
     measureUnit: string
     quantity: Decimal | DecimalJsLike | number | string
     unitPrice: Decimal | DecimalJsLike | number | string
+    isGift?: boolean
   }
 
   export type SalesOrderLineUpdateManyMutationInput = {
@@ -3649,6 +3680,7 @@ export namespace Prisma {
     measureUnit?: StringFieldUpdateOperationsInput | string
     quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isGift?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SalesOrderLineUncheckedUpdateManyInput = {
@@ -3659,6 +3691,7 @@ export namespace Prisma {
     measureUnit?: StringFieldUpdateOperationsInput | string
     quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isGift?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -3839,6 +3872,11 @@ export namespace Prisma {
     not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type SalesOrderScalarRelationFilter = {
     is?: SalesOrderWhereInput
     isNot?: SalesOrderWhereInput
@@ -3857,6 +3895,7 @@ export namespace Prisma {
     measureUnit?: SortOrder
     quantity?: SortOrder
     unitPrice?: SortOrder
+    isGift?: SortOrder
   }
 
   export type SalesOrderLineAvgOrderByAggregateInput = {
@@ -3872,6 +3911,7 @@ export namespace Prisma {
     measureUnit?: SortOrder
     quantity?: SortOrder
     unitPrice?: SortOrder
+    isGift?: SortOrder
   }
 
   export type SalesOrderLineMinOrderByAggregateInput = {
@@ -3882,6 +3922,7 @@ export namespace Prisma {
     measureUnit?: SortOrder
     quantity?: SortOrder
     unitPrice?: SortOrder
+    isGift?: SortOrder
   }
 
   export type SalesOrderLineSumOrderByAggregateInput = {
@@ -3903,6 +3944,14 @@ export namespace Prisma {
     _sum?: NestedDecimalFilter<$PrismaModel>
     _min?: NestedDecimalFilter<$PrismaModel>
     _max?: NestedDecimalFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type SalesOrderLineCreateNestedManyWithoutOrderInput = {
@@ -3975,6 +4024,10 @@ export namespace Prisma {
     decrement?: Decimal | DecimalJsLike | number | string
     multiply?: Decimal | DecimalJsLike | number | string
     divide?: Decimal | DecimalJsLike | number | string
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type SalesOrderUpdateOneRequiredWithoutLinesNestedInput = {
@@ -4130,6 +4183,11 @@ export namespace Prisma {
     not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
@@ -4146,6 +4204,14 @@ export namespace Prisma {
     _max?: NestedDecimalFilter<$PrismaModel>
   }
 
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type SalesOrderLineCreateWithoutOrderInput = {
     id: string
     itemId: string
@@ -4153,6 +4219,7 @@ export namespace Prisma {
     measureUnit: string
     quantity: Decimal | DecimalJsLike | number | string
     unitPrice: Decimal | DecimalJsLike | number | string
+    isGift?: boolean
   }
 
   export type SalesOrderLineUncheckedCreateWithoutOrderInput = {
@@ -4162,6 +4229,7 @@ export namespace Prisma {
     measureUnit: string
     quantity: Decimal | DecimalJsLike | number | string
     unitPrice: Decimal | DecimalJsLike | number | string
+    isGift?: boolean
   }
 
   export type SalesOrderLineCreateOrConnectWithoutOrderInput = {
@@ -4201,6 +4269,7 @@ export namespace Prisma {
     measureUnit?: StringFilter<"SalesOrderLine"> | string
     quantity?: DecimalFilter<"SalesOrderLine"> | Decimal | DecimalJsLike | number | string
     unitPrice?: DecimalFilter<"SalesOrderLine"> | Decimal | DecimalJsLike | number | string
+    isGift?: BoolFilter<"SalesOrderLine"> | boolean
   }
 
   export type SalesOrderCreateWithoutLinesInput = {
@@ -4274,6 +4343,7 @@ export namespace Prisma {
     measureUnit: string
     quantity: Decimal | DecimalJsLike | number | string
     unitPrice: Decimal | DecimalJsLike | number | string
+    isGift?: boolean
   }
 
   export type SalesOrderLineUpdateWithoutOrderInput = {
@@ -4283,6 +4353,7 @@ export namespace Prisma {
     measureUnit?: StringFieldUpdateOperationsInput | string
     quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isGift?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SalesOrderLineUncheckedUpdateWithoutOrderInput = {
@@ -4292,6 +4363,7 @@ export namespace Prisma {
     measureUnit?: StringFieldUpdateOperationsInput | string
     quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isGift?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SalesOrderLineUncheckedUpdateManyWithoutOrderInput = {
@@ -4301,6 +4373,7 @@ export namespace Prisma {
     measureUnit?: StringFieldUpdateOperationsInput | string
     quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     unitPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isGift?: BoolFieldUpdateOperationsInput | boolean
   }
 
 

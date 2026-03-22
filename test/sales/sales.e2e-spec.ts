@@ -304,4 +304,62 @@ describe('Sales (e2e)', () => {
             expect(updatedLine.unitPrice).toBe(120);
         });
     });
+
+    // ─── Gift Lines ───────────────────────────────────────────────────────────────
+
+    describe('Gift line support', () => {
+        it('adds a line with isGift=true → 201, isGift reflected in response', async () => {
+            const createRes = await request(app.getHttpServer())
+                .post('/api/v1/sales')
+                .send({ customerName: 'Gift Test Customer' })
+                .expect(201);
+
+            const giftOrderId = createRes.body.id;
+
+            const addRes = await request(app.getHttpServer())
+                .post(`/api/v1/sales/${giftOrderId}/lines`)
+                .send({ itemId: finalProductItemId, quantity: 1, unitPrice: 150, isGift: true })
+                .expect(201);
+
+            const line = addRes.body.lines[0];
+            expect(line.isGift).toBe(true);
+            expect(line.itemId).toBe(finalProductItemId);
+        });
+
+        it('adds a non-gift line → isGift defaults to false', async () => {
+            const createRes = await request(app.getHttpServer())
+                .post('/api/v1/sales')
+                .send({ customerName: 'Non-Gift Test' })
+                .expect(201);
+
+            const addRes = await request(app.getHttpServer())
+                .post(`/api/v1/sales/${createRes.body.id}/lines`)
+                .send({ itemId: shippingPackagingItemId, quantity: 2, unitPrice: 10 })
+                .expect(201);
+
+            expect(addRes.body.lines[0].isGift).toBe(false);
+        });
+
+        it('updates isGift on a line → isGift toggled to true', async () => {
+            const createRes = await request(app.getHttpServer())
+                .post('/api/v1/sales')
+                .send({ customerName: 'Toggle Gift Test' })
+                .expect(201);
+
+            const addRes = await request(app.getHttpServer())
+                .post(`/api/v1/sales/${createRes.body.id}/lines`)
+                .send({ itemId: finalProductItemId, quantity: 1, unitPrice: 100 })
+                .expect(201);
+
+            const lineId = addRes.body.lines[0].id;
+
+            const updateRes = await request(app.getHttpServer())
+                .patch(`/api/v1/sales/${createRes.body.id}/lines/${lineId}`)
+                .send({ isGift: true })
+                .expect(200);
+
+            const updated = updateRes.body.lines.find((l: any) => l.id === lineId);
+            expect(updated.isGift).toBe(true);
+        });
+    });
 });

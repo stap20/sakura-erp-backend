@@ -10,6 +10,7 @@ export function mapToGetSalesOrderResponse(entity: SalesOrderEntity): GetSalesOr
         measureUnit: l.measureUnit,
         quantity: Number(l.quantity),
         unitPrice: Number(l.unitPrice),
+        isGift: (l as any).isGift ?? false,
     }));
 
     return new GetSalesOrderResponse(

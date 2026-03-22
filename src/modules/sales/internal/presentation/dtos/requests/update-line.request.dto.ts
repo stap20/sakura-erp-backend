@@ -1,4 +1,4 @@
-import { IsPositive, IsOptional } from 'class-validator';
+import { IsPositive, IsOptional, IsBoolean } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class UpdateLineRequestDto {
@@ -11,4 +11,9 @@ export class UpdateLineRequestDto {
     @IsOptional()
     @IsPositive()
     unitPrice?: number;
+
+    @ApiPropertyOptional({ example: false })
+    @IsOptional()
+    @IsBoolean()
+    isGift?: boolean;
 }

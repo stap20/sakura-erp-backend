@@ -31,6 +31,7 @@ model SalesOrderLine {
   measureUnit String
   quantity    Decimal
   unitPrice   Decimal
+  isGift      Boolean    @default(false)
   order       SalesOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   @@unique([orderId, itemId])

@@ -16,6 +16,7 @@ export class SalesOrderMapper {
                     measureUnit: l.measureUnit,
                     quantity: Number(l.quantity),
                     unitPrice: Number(l.unitPrice),
+                    isGift: l.isGift,
                 }),
         );
 
@@ -42,6 +43,7 @@ export class SalesOrderMapper {
             measureUnit: line.measureUnit,
             quantity: line.quantity,
             unitPrice: line.unitPrice,
+            isGift: line.isGift,
         } as SalesOrderLineEntity;
     }
 }

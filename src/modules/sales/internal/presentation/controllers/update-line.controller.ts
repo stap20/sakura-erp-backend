@@ -27,7 +27,7 @@ export class UpdateLineController {
         @Param('lineId') lineId: string,
         @Body() dto: UpdateLineRequestDto,
     ): Promise<SalesOrderResponseDto> {
-        await this.handler.handle(new UpdateLineCommand(id, lineId, dto.quantity, dto.unitPrice));
+        await this.handler.handle(new UpdateLineCommand(id, lineId, dto.quantity, dto.unitPrice, dto.isGift));
         const result = await this.getHandler.handle(new GetSalesOrderQuery(id));
         return toSalesOrderResponseDto(result);
     }
