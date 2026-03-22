@@ -32,13 +32,15 @@ npx jest --config test/jest-e2e.json --testPathPatterns=items             # Item
 npx jest --config test/jest-e2e.json --testPathPatterns=categories        # Categories suite only
 npx jest --config test/jest-e2e.json --testPathPatterns=recipes           # Recipes suite only
 npx jest --config test/jest-e2e.json --testPathPatterns=purchases         # Purchases suite only
+npx jest --config test/jest-e2e.json --testPathPatterns=products          # Products suite only
+npx jest --config test/jest-e2e.json --testPathPatterns=settings          # Settings suite only
 ```
 
-E2E tests use the real databases and clean relevant tables before each suite. Test files live in `test/inventory/`, `test/recipe/`, and `test/purchase/`. The helper `test/helpers/app.setup.ts` bootstraps the full `AppModule` with identical global setup to `main.ts` and exports `cleanInventoryDb()`, `cleanRecipeDb()`, and `cleanPurchaseDb()`.
+E2E tests use the real databases and clean relevant tables before each suite. Test files live in `test/inventory/`, `test/recipe/`, `test/purchase/`, and `test/settings/`. The helper `test/helpers/app.setup.ts` bootstraps the full `AppModule` with identical global setup to `main.ts` and exports `cleanInventoryDb()`, `cleanRecipeDb()`, `cleanPurchaseDb()`, and `cleanSettingsDb()`.
 
 **Important**: The `test:e2e` script runs with `--runInBand` (all suites in one process, sequentially). This is required because all suites share the same real databases — parallel execution causes `cleanXxxDb()` calls from one suite to corrupt in-flight data of another. Do not remove `--runInBand`.
 
-Current totals: **85 tests** — 28 inventory (19 items + 9 categories) + 30 recipe + 27 purchase.
+Current totals: **104 tests** — 28 inventory (19 items + 9 categories) + 12 products + 30 recipe + 27 purchase + 7 settings.
 
 ### Database (Prisma — per module)
 ```bash
