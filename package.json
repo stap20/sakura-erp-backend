@@ -45,7 +45,11 @@
         "production:db:generate": "prisma generate --config=./src/modules/production/internal/infrastructure/database/prisma/prisma.config.ts",
         "production:db:migrate": "prisma migrate dev --config=./src/modules/production/internal/infrastructure/database/prisma/prisma.config.ts",
         "production:db:deploy": "prisma migrate deploy --config=./src/modules/production/internal/infrastructure/database/prisma/prisma.config.ts",
-        "production:db:studio": "prisma studio --config=./src/modules/production/internal/infrastructure/database/prisma/prisma.config.ts"
+        "production:db:studio": "prisma studio --config=./src/modules/production/internal/infrastructure/database/prisma/prisma.config.ts",
+        "settings:db:generate": "prisma generate --config=./src/modules/settings/internal/infrastructure/database/prisma/prisma.config.ts",
+        "settings:db:migrate": "prisma migrate dev --config=./src/modules/settings/internal/infrastructure/database/prisma/prisma.config.ts",
+        "settings:db:deploy": "prisma migrate deploy --config=./src/modules/settings/internal/infrastructure/database/prisma/prisma.config.ts",
+        "settings:db:studio": "prisma studio --config=./src/modules/settings/internal/infrastructure/database/prisma/prisma.config.ts"
     },
     "dependencies": {
         "@elastic/elasticsearch": "^9.2.0",
@@ -76,7 +80,8 @@
         "inventory-db": "file:src/modules/inventory/internal/infrastructure/database/prisma/generated/client",
         "recipe-db": "file:src/modules/recipe/internal/infrastructure/database/prisma/generated/client",
         "purchase-db": "file:src/modules/purchase/internal/infrastructure/database/prisma/generated/client",
-        "production-db": "file:src/modules/production/internal/infrastructure/database/prisma/generated/client"
+        "production-db": "file:src/modules/production/internal/infrastructure/database/prisma/generated/client",
+        "settings-db": "file:src/modules/settings/internal/infrastructure/database/prisma/generated/client"
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3.2.0",
