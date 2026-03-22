@@ -1005,6 +1005,9 @@ export namespace Prisma {
     status: string | null
     notes: string | null
     shippedAt: Date | null
+    invoiceNumber: string | null
+    paymentStatus: string | null
+    paidAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -1017,6 +1020,9 @@ export namespace Prisma {
     status: string | null
     notes: string | null
     shippedAt: Date | null
+    invoiceNumber: string | null
+    paymentStatus: string | null
+    paidAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -1029,6 +1035,9 @@ export namespace Prisma {
     status: number
     notes: number
     shippedAt: number
+    invoiceNumber: number
+    paymentStatus: number
+    paidAt: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -1043,6 +1052,9 @@ export namespace Prisma {
     status?: true
     notes?: true
     shippedAt?: true
+    invoiceNumber?: true
+    paymentStatus?: true
+    paidAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -1055,6 +1067,9 @@ export namespace Prisma {
     status?: true
     notes?: true
     shippedAt?: true
+    invoiceNumber?: true
+    paymentStatus?: true
+    paidAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -1067,6 +1082,9 @@ export namespace Prisma {
     status?: true
     notes?: true
     shippedAt?: true
+    invoiceNumber?: true
+    paymentStatus?: true
+    paidAt?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -1152,6 +1170,9 @@ export namespace Prisma {
     status: string
     notes: string | null
     shippedAt: Date | null
+    invoiceNumber: string | null
+    paymentStatus: string | null
+    paidAt: Date | null
     createdAt: Date
     updatedAt: Date
     _count: SalesOrderCountAggregateOutputType | null
@@ -1181,6 +1202,9 @@ export namespace Prisma {
     status?: boolean
     notes?: boolean
     shippedAt?: boolean
+    invoiceNumber?: boolean
+    paymentStatus?: boolean
+    paidAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     lines?: boolean | SalesOrder$linesArgs<ExtArgs>
@@ -1195,6 +1219,9 @@ export namespace Prisma {
     status?: boolean
     notes?: boolean
     shippedAt?: boolean
+    invoiceNumber?: boolean
+    paymentStatus?: boolean
+    paidAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["salesOrder"]>
@@ -1207,6 +1234,9 @@ export namespace Prisma {
     status?: boolean
     notes?: boolean
     shippedAt?: boolean
+    invoiceNumber?: boolean
+    paymentStatus?: boolean
+    paidAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["salesOrder"]>
@@ -1219,11 +1249,14 @@ export namespace Prisma {
     status?: boolean
     notes?: boolean
     shippedAt?: boolean
+    invoiceNumber?: boolean
+    paymentStatus?: boolean
+    paidAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type SalesOrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "customerName" | "customerPhone" | "customerContact" | "status" | "notes" | "shippedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["salesOrder"]>
+  export type SalesOrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "customerName" | "customerPhone" | "customerContact" | "status" | "notes" | "shippedAt" | "invoiceNumber" | "paymentStatus" | "paidAt" | "createdAt" | "updatedAt", ExtArgs["result"]["salesOrder"]>
   export type SalesOrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     lines?: boolean | SalesOrder$linesArgs<ExtArgs>
     _count?: boolean | SalesOrderCountOutputTypeDefaultArgs<ExtArgs>
@@ -1244,6 +1277,9 @@ export namespace Prisma {
       status: string
       notes: string | null
       shippedAt: Date | null
+      invoiceNumber: string | null
+      paymentStatus: string | null
+      paidAt: Date | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["salesOrder"]>
@@ -1677,6 +1713,9 @@ export namespace Prisma {
     readonly status: FieldRef<"SalesOrder", 'String'>
     readonly notes: FieldRef<"SalesOrder", 'String'>
     readonly shippedAt: FieldRef<"SalesOrder", 'DateTime'>
+    readonly invoiceNumber: FieldRef<"SalesOrder", 'String'>
+    readonly paymentStatus: FieldRef<"SalesOrder", 'String'>
+    readonly paidAt: FieldRef<"SalesOrder", 'DateTime'>
     readonly createdAt: FieldRef<"SalesOrder", 'DateTime'>
     readonly updatedAt: FieldRef<"SalesOrder", 'DateTime'>
   }
@@ -3266,6 +3305,9 @@ export namespace Prisma {
     status: 'status',
     notes: 'notes',
     shippedAt: 'shippedAt',
+    invoiceNumber: 'invoiceNumber',
+    paymentStatus: 'paymentStatus',
+    paidAt: 'paidAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -3393,6 +3435,9 @@ export namespace Prisma {
     status?: StringFilter<"SalesOrder"> | string
     notes?: StringNullableFilter<"SalesOrder"> | string | null
     shippedAt?: DateTimeNullableFilter<"SalesOrder"> | Date | string | null
+    invoiceNumber?: StringNullableFilter<"SalesOrder"> | string | null
+    paymentStatus?: StringNullableFilter<"SalesOrder"> | string | null
+    paidAt?: DateTimeNullableFilter<"SalesOrder"> | Date | string | null
     createdAt?: DateTimeFilter<"SalesOrder"> | Date | string
     updatedAt?: DateTimeFilter<"SalesOrder"> | Date | string
     lines?: SalesOrderLineListRelationFilter
@@ -3406,6 +3451,9 @@ export namespace Prisma {
     status?: SortOrder
     notes?: SortOrderInput | SortOrder
     shippedAt?: SortOrderInput | SortOrder
+    invoiceNumber?: SortOrderInput | SortOrder
+    paymentStatus?: SortOrderInput | SortOrder
+    paidAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     lines?: SalesOrderLineOrderByRelationAggregateInput
@@ -3413,6 +3461,7 @@ export namespace Prisma {
 
   export type SalesOrderWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    invoiceNumber?: string
     AND?: SalesOrderWhereInput | SalesOrderWhereInput[]
     OR?: SalesOrderWhereInput[]
     NOT?: SalesOrderWhereInput | SalesOrderWhereInput[]
@@ -3422,10 +3471,12 @@ export namespace Prisma {
     status?: StringFilter<"SalesOrder"> | string
     notes?: StringNullableFilter<"SalesOrder"> | string | null
     shippedAt?: DateTimeNullableFilter<"SalesOrder"> | Date | string | null
+    paymentStatus?: StringNullableFilter<"SalesOrder"> | string | null
+    paidAt?: DateTimeNullableFilter<"SalesOrder"> | Date | string | null
     createdAt?: DateTimeFilter<"SalesOrder"> | Date | string
     updatedAt?: DateTimeFilter<"SalesOrder"> | Date | string
     lines?: SalesOrderLineListRelationFilter
-  }, "id">
+  }, "id" | "invoiceNumber">
 
   export type SalesOrderOrderByWithAggregationInput = {
     id?: SortOrder
@@ -3435,6 +3486,9 @@ export namespace Prisma {
     status?: SortOrder
     notes?: SortOrderInput | SortOrder
     shippedAt?: SortOrderInput | SortOrder
+    invoiceNumber?: SortOrderInput | SortOrder
+    paymentStatus?: SortOrderInput | SortOrder
+    paidAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: SalesOrderCountOrderByAggregateInput
@@ -3453,6 +3507,9 @@ export namespace Prisma {
     status?: StringWithAggregatesFilter<"SalesOrder"> | string
     notes?: StringNullableWithAggregatesFilter<"SalesOrder"> | string | null
     shippedAt?: DateTimeNullableWithAggregatesFilter<"SalesOrder"> | Date | string | null
+    invoiceNumber?: StringNullableWithAggregatesFilter<"SalesOrder"> | string | null
+    paymentStatus?: StringNullableWithAggregatesFilter<"SalesOrder"> | string | null
+    paidAt?: DateTimeNullableWithAggregatesFilter<"SalesOrder"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"SalesOrder"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"SalesOrder"> | Date | string
   }
@@ -3538,6 +3595,9 @@ export namespace Prisma {
     status?: string
     notes?: string | null
     shippedAt?: Date | string | null
+    invoiceNumber?: string | null
+    paymentStatus?: string | null
+    paidAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     lines?: SalesOrderLineCreateNestedManyWithoutOrderInput
@@ -3551,6 +3611,9 @@ export namespace Prisma {
     status?: string
     notes?: string | null
     shippedAt?: Date | string | null
+    invoiceNumber?: string | null
+    paymentStatus?: string | null
+    paidAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     lines?: SalesOrderLineUncheckedCreateNestedManyWithoutOrderInput
@@ -3564,6 +3627,9 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    invoiceNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lines?: SalesOrderLineUpdateManyWithoutOrderNestedInput
@@ -3577,6 +3643,9 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    invoiceNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lines?: SalesOrderLineUncheckedUpdateManyWithoutOrderNestedInput
@@ -3590,6 +3659,9 @@ export namespace Prisma {
     status?: string
     notes?: string | null
     shippedAt?: Date | string | null
+    invoiceNumber?: string | null
+    paymentStatus?: string | null
+    paidAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -3602,6 +3674,9 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    invoiceNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -3614,6 +3689,9 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    invoiceNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -3769,6 +3847,9 @@ export namespace Prisma {
     status?: SortOrder
     notes?: SortOrder
     shippedAt?: SortOrder
+    invoiceNumber?: SortOrder
+    paymentStatus?: SortOrder
+    paidAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -3781,6 +3862,9 @@ export namespace Prisma {
     status?: SortOrder
     notes?: SortOrder
     shippedAt?: SortOrder
+    invoiceNumber?: SortOrder
+    paymentStatus?: SortOrder
+    paidAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -3793,6 +3877,9 @@ export namespace Prisma {
     status?: SortOrder
     notes?: SortOrder
     shippedAt?: SortOrder
+    invoiceNumber?: SortOrder
+    paymentStatus?: SortOrder
+    paidAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -4280,6 +4367,9 @@ export namespace Prisma {
     status?: string
     notes?: string | null
     shippedAt?: Date | string | null
+    invoiceNumber?: string | null
+    paymentStatus?: string | null
+    paidAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -4292,6 +4382,9 @@ export namespace Prisma {
     status?: string
     notes?: string | null
     shippedAt?: Date | string | null
+    invoiceNumber?: string | null
+    paymentStatus?: string | null
+    paidAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -4320,6 +4413,9 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    invoiceNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -4332,6 +4428,9 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     shippedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    invoiceNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

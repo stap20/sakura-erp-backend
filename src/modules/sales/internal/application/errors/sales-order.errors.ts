@@ -25,3 +25,9 @@ export class InsufficientStockForSaleError extends ConflictError {
         super(`Insufficient stock for item ${itemId}`);
     }
 }
+
+export class SalesOrderNotPayableApplicationError extends ConflictError {
+    constructor(orderId: string) {
+        super(`Sales order ${orderId} payment status is not PENDING and cannot be marked as paid`);
+    }
+}

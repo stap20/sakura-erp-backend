@@ -15,11 +15,15 @@ model SalesOrder {
   status          String          @default("DRAFT")
   notes           String?
   shippedAt       DateTime?
+  invoiceNumber   String?         @unique
+  paymentStatus   String?
+  paidAt          DateTime?
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
   lines           SalesOrderLine[]
 
   @@index([status])
+  @@index([paymentStatus])
   @@map("sales_orders")
 }
 

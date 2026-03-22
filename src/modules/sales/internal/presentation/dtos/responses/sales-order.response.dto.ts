@@ -9,6 +9,9 @@ export class SalesOrderResponseDto {
     @ApiProperty() status: string;
     @ApiPropertyOptional() notes: string | null;
     @ApiPropertyOptional() shippedAt: Date | null;
+    @ApiPropertyOptional() invoiceNumber: string | null;
+    @ApiPropertyOptional() paymentStatus: string | null;
+    @ApiPropertyOptional() paidAt: Date | null;
     @ApiProperty({ type: [SalesOrderLineResponseDto] }) lines: SalesOrderLineResponseDto[];
     @ApiProperty() createdAt: Date;
     @ApiProperty() updatedAt: Date;

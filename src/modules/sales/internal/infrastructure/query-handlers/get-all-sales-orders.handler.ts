@@ -10,7 +10,7 @@ export class GetAllSalesOrdersHandler implements IGetAllSalesOrdersHandler {
     constructor(private readonly readRepo: ReadSalesOrderRepository) {}
 
     async handle(query: GetAllSalesOrdersQuery): Promise<GetAllSalesOrdersResponse[]> {
-        const entities = await this.readRepo.findAll({ status: query.status });
+        const entities = await this.readRepo.findAll({ status: query.status, paymentStatus: query.paymentStatus });
         return entities.map(mapToGetAllSalesOrdersResponse);
     }
 }

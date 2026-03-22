@@ -7,6 +7,7 @@ import {
     SalesOrderNotConfirmableError,
     SalesOrderNotShippableError,
     SalesOrderNotCancellableError,
+    SalesOrderNotPayableError,
     SalesOrderLineNotFoundError,
     DuplicateLineItemError,
 } from '../errors/sales-order.errors';
@@ -27,6 +28,9 @@ export interface PersistenceSalesOrderParams {
     status: string;
     notes: string | null;
     shippedAt: Date | null;
+    invoiceNumber: string | null;
+    paymentStatus: string | null;
+    paidAt: Date | null;
     createdAt: Date;
     updatedAt: Date;
     lines: SalesOrderLine[];
@@ -39,6 +43,9 @@ export class SalesOrder extends AggregateRoot<SalesOrderId> {
     private status: SalesOrderStatus;
     private notes: string | null;
     private shippedAt: Date | null;
+    private invoiceNumber: string | null;
+    private paymentStatus: string | null;
+    private paidAt: Date | null;
     private lines: SalesOrderLine[];
     private createdAt: Date;
     private updatedAt: Date;
@@ -51,6 +58,9 @@ export class SalesOrder extends AggregateRoot<SalesOrderId> {
         status: SalesOrderStatus,
         notes: string | null,
         shippedAt: Date | null,
+        invoiceNumber: string | null,
+        paymentStatus: string | null,
+        paidAt: Date | null,
         lines: SalesOrderLine[],
         createdAt: Date,
         updatedAt: Date,
@@ -62,6 +72,9 @@ export class SalesOrder extends AggregateRoot<SalesOrderId> {
         this.status = status;
         this.notes = notes;
         this.shippedAt = shippedAt;
+        this.invoiceNumber = invoiceNumber;
+        this.paymentStatus = paymentStatus;
+        this.paidAt = paidAt;
         this.lines = lines;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -78,6 +91,9 @@ export class SalesOrder extends AggregateRoot<SalesOrderId> {
             params.customerContact ?? null,
             status,
             params.notes ?? null,
+            null,
+            null,
+            null,
             null,
             [],
             now,
@@ -96,6 +112,9 @@ export class SalesOrder extends AggregateRoot<SalesOrderId> {
             status,
             params.notes,
             params.shippedAt,
+            params.invoiceNumber,
+            params.paymentStatus,
+            params.paidAt,
             params.lines,
             params.createdAt,
             params.updatedAt,
@@ -111,6 +130,20 @@ export class SalesOrder extends AggregateRoot<SalesOrderId> {
             throw new SalesOrderNotConfirmableError();
         }
         this.status = SalesOrderStatus.confirmed();
+        this.paymentStatus = 'PENDING';
+        this.updatedAt = new Date();
+    }
+
+    public setInvoiceNumber(invoiceNumber: string): void {
+        this.invoiceNumber = invoiceNumber;
+    }
+
+    public markAsPaid(): void {
+        if (this.paymentStatus !== 'PENDING') {
+            throw new SalesOrderNotPayableError();
+        }
+        this.paymentStatus = 'PAID';
+        this.paidAt = new Date();
         this.updatedAt = new Date();
     }
 
@@ -181,6 +214,9 @@ export class SalesOrder extends AggregateRoot<SalesOrderId> {
     public getStatus(): SalesOrderStatus { return this.status; }
     public getNotes(): string | null { return this.notes; }
     public getShippedAt(): Date | null { return this.shippedAt; }
+    public getInvoiceNumber(): string | null { return this.invoiceNumber; }
+    public getPaymentStatus(): string | null { return this.paymentStatus; }
+    public getPaidAt(): Date | null { return this.paidAt; }
     public getLines(): SalesOrderLine[] { return [...this.lines]; }
     public getCreatedAt(): Date { return this.createdAt; }
     public getUpdatedAt(): Date { return this.updatedAt; }

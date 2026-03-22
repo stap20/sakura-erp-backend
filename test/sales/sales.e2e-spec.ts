@@ -305,6 +305,65 @@ describe('Sales (e2e)', () => {
         });
     });
 
+    // ─── Invoice + Payment Status ────────────────────────────────────────────────
+
+    describe('Invoice + Payment Status', () => {
+        it('confirm sets invoiceNumber and paymentStatus=PENDING', async () => {
+            const res = await request(app.getHttpServer())
+                .get(`/api/v1/sales/${orderId}`)
+                .expect(200);
+
+            expect(res.body.invoiceNumber).toBeDefined();
+            expect(res.body.invoiceNumber).toMatch(/^INV-\d{8}-\d{4}$/);
+            expect(res.body.paymentStatus).toBe('PENDING');
+            expect(res.body.paidAt).toBeNull();
+        });
+
+        it('POST /sales/:id/mark-paid → 204, paymentStatus becomes PAID', async () => {
+            const createRes = await request(app.getHttpServer())
+                .post('/api/v1/sales')
+                .send({ customerName: 'Payment Test Customer' })
+                .expect(201);
+            const payOrderId = createRes.body.id;
+
+            await request(app.getHttpServer())
+                .post(`/api/v1/sales/${payOrderId}/confirm`)
+                .expect(204);
+
+            await request(app.getHttpServer())
+                .post(`/api/v1/sales/${payOrderId}/mark-paid`)
+                .expect(204);
+
+            const res = await request(app.getHttpServer())
+                .get(`/api/v1/sales/${payOrderId}`)
+                .expect(200);
+
+            expect(res.body.paymentStatus).toBe('PAID');
+            expect(res.body.paidAt).toBeDefined();
+        });
+
+        it('cannot mark-paid again → 409', async () => {
+            const createRes = await request(app.getHttpServer())
+                .post('/api/v1/sales')
+                .send({ customerName: 'Double Pay Test' })
+                .expect(201);
+            const pid = createRes.body.id;
+
+            await request(app.getHttpServer()).post(`/api/v1/sales/${pid}/confirm`).expect(204);
+            await request(app.getHttpServer()).post(`/api/v1/sales/${pid}/mark-paid`).expect(204);
+            await request(app.getHttpServer()).post(`/api/v1/sales/${pid}/mark-paid`).expect(409);
+        });
+
+        it('GET /sales?paymentStatus=PENDING returns only PENDING orders', async () => {
+            const res = await request(app.getHttpServer())
+                .get('/api/v1/sales?paymentStatus=PENDING')
+                .expect(200);
+
+            expect(Array.isArray(res.body)).toBe(true);
+            expect(res.body.every((o: any) => o.paymentStatus === 'PENDING')).toBe(true);
+        });
+    });
+
     // ─── Gift Lines ───────────────────────────────────────────────────────────────
 
     describe('Gift line support', () => {

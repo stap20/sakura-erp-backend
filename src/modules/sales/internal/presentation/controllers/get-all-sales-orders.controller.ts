@@ -19,7 +19,7 @@ export class GetAllSalesOrdersController {
     @ApiOperation({ summary: 'Get all sales orders' })
     @ApiResponse({ status: 200, type: [SalesOrderResponseDto] })
     async getAll(@Query() query: GetAllSalesOrdersQueryDto): Promise<SalesOrderResponseDto[]> {
-        const results = await this.handler.handle(new GetAllSalesOrdersQuery(query.status));
+        const results = await this.handler.handle(new GetAllSalesOrdersQuery(query.status, query.paymentStatus));
         return results.map(toAllSalesOrdersResponseDto);
     }
 }

@@ -128,6 +128,9 @@ exports.Prisma.SalesOrderScalarFieldEnum = {
   status: 'status',
   notes: 'notes',
   shippedAt: 'shippedAt',
+  invoiceNumber: 'invoiceNumber',
+  paymentStatus: 'paymentStatus',
+  paidAt: 'paidAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
