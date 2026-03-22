@@ -1346,14 +1346,31 @@ export namespace Prisma {
 
   export type AggregateProduct = {
     _count: ProductCountAggregateOutputType | null
+    _avg: ProductAvgAggregateOutputType | null
+    _sum: ProductSumAggregateOutputType | null
     _min: ProductMinAggregateOutputType | null
     _max: ProductMaxAggregateOutputType | null
+  }
+
+  export type ProductAvgAggregateOutputType = {
+    referenceBatchGm: number | null
+    referenceDurationMin: number | null
+    referenceWastePercent: number | null
+  }
+
+  export type ProductSumAggregateOutputType = {
+    referenceBatchGm: number | null
+    referenceDurationMin: number | null
+    referenceWastePercent: number | null
   }
 
   export type ProductMinAggregateOutputType = {
     id: string | null
     name: string | null
     description: string | null
+    referenceBatchGm: number | null
+    referenceDurationMin: number | null
+    referenceWastePercent: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -1362,6 +1379,9 @@ export namespace Prisma {
     id: string | null
     name: string | null
     description: string | null
+    referenceBatchGm: number | null
+    referenceDurationMin: number | null
+    referenceWastePercent: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -1370,16 +1390,34 @@ export namespace Prisma {
     id: number
     name: number
     description: number
+    referenceBatchGm: number
+    referenceDurationMin: number
+    referenceWastePercent: number
     createdAt: number
     updatedAt: number
     _all: number
   }
 
 
+  export type ProductAvgAggregateInputType = {
+    referenceBatchGm?: true
+    referenceDurationMin?: true
+    referenceWastePercent?: true
+  }
+
+  export type ProductSumAggregateInputType = {
+    referenceBatchGm?: true
+    referenceDurationMin?: true
+    referenceWastePercent?: true
+  }
+
   export type ProductMinAggregateInputType = {
     id?: true
     name?: true
     description?: true
+    referenceBatchGm?: true
+    referenceDurationMin?: true
+    referenceWastePercent?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -1388,6 +1426,9 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
+    referenceBatchGm?: true
+    referenceDurationMin?: true
+    referenceWastePercent?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -1396,6 +1437,9 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
+    referenceBatchGm?: true
+    referenceDurationMin?: true
+    referenceWastePercent?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -1439,6 +1483,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: ProductAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ProductSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: ProductMinAggregateInputType
@@ -1469,6 +1525,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: ProductCountAggregateInputType | true
+    _avg?: ProductAvgAggregateInputType
+    _sum?: ProductSumAggregateInputType
     _min?: ProductMinAggregateInputType
     _max?: ProductMaxAggregateInputType
   }
@@ -1477,9 +1535,14 @@ export namespace Prisma {
     id: string
     name: string
     description: string | null
+    referenceBatchGm: number | null
+    referenceDurationMin: number | null
+    referenceWastePercent: number | null
     createdAt: Date
     updatedAt: Date
     _count: ProductCountAggregateOutputType | null
+    _avg: ProductAvgAggregateOutputType | null
+    _sum: ProductSumAggregateOutputType | null
     _min: ProductMinAggregateOutputType | null
     _max: ProductMaxAggregateOutputType | null
   }
@@ -1502,6 +1565,9 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
+    referenceBatchGm?: boolean
+    referenceDurationMin?: boolean
+    referenceWastePercent?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     items?: boolean | Product$itemsArgs<ExtArgs>
@@ -1512,6 +1578,9 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
+    referenceBatchGm?: boolean
+    referenceDurationMin?: boolean
+    referenceWastePercent?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["product"]>
@@ -1520,6 +1589,9 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
+    referenceBatchGm?: boolean
+    referenceDurationMin?: boolean
+    referenceWastePercent?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["product"]>
@@ -1528,11 +1600,14 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
+    referenceBatchGm?: boolean
+    referenceDurationMin?: boolean
+    referenceWastePercent?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["product"]>
+  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "referenceBatchGm" | "referenceDurationMin" | "referenceWastePercent" | "createdAt" | "updatedAt", ExtArgs["result"]["product"]>
   export type ProductInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     items?: boolean | Product$itemsArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
@@ -1549,6 +1624,9 @@ export namespace Prisma {
       id: string
       name: string
       description: string | null
+      referenceBatchGm: number | null
+      referenceDurationMin: number | null
+      referenceWastePercent: number | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["product"]>
@@ -1978,6 +2056,9 @@ export namespace Prisma {
     readonly id: FieldRef<"Product", 'String'>
     readonly name: FieldRef<"Product", 'String'>
     readonly description: FieldRef<"Product", 'String'>
+    readonly referenceBatchGm: FieldRef<"Product", 'Float'>
+    readonly referenceDurationMin: FieldRef<"Product", 'Float'>
+    readonly referenceWastePercent: FieldRef<"Product", 'Float'>
     readonly createdAt: FieldRef<"Product", 'DateTime'>
     readonly updatedAt: FieldRef<"Product", 'DateTime'>
   }
@@ -7069,6 +7150,9 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     description: 'description',
+    referenceBatchGm: 'referenceBatchGm',
+    referenceDurationMin: 'referenceDurationMin',
+    referenceWastePercent: 'referenceWastePercent',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -7175,6 +7259,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -7203,20 +7301,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Float'
-   */
-  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-  /**
-   * Reference to a field of type 'Float[]'
-   */
-  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -7240,6 +7324,9 @@ export namespace Prisma {
     id?: StringFilter<"Product"> | string
     name?: StringFilter<"Product"> | string
     description?: StringNullableFilter<"Product"> | string | null
+    referenceBatchGm?: FloatNullableFilter<"Product"> | number | null
+    referenceDurationMin?: FloatNullableFilter<"Product"> | number | null
+    referenceWastePercent?: FloatNullableFilter<"Product"> | number | null
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
     items?: ItemListRelationFilter
@@ -7249,6 +7336,9 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
+    referenceBatchGm?: SortOrderInput | SortOrder
+    referenceDurationMin?: SortOrderInput | SortOrder
+    referenceWastePercent?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     items?: ItemOrderByRelationAggregateInput
@@ -7261,6 +7351,9 @@ export namespace Prisma {
     OR?: ProductWhereInput[]
     NOT?: ProductWhereInput | ProductWhereInput[]
     description?: StringNullableFilter<"Product"> | string | null
+    referenceBatchGm?: FloatNullableFilter<"Product"> | number | null
+    referenceDurationMin?: FloatNullableFilter<"Product"> | number | null
+    referenceWastePercent?: FloatNullableFilter<"Product"> | number | null
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
     items?: ItemListRelationFilter
@@ -7270,11 +7363,16 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
+    referenceBatchGm?: SortOrderInput | SortOrder
+    referenceDurationMin?: SortOrderInput | SortOrder
+    referenceWastePercent?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: ProductCountOrderByAggregateInput
+    _avg?: ProductAvgOrderByAggregateInput
     _max?: ProductMaxOrderByAggregateInput
     _min?: ProductMinOrderByAggregateInput
+    _sum?: ProductSumOrderByAggregateInput
   }
 
   export type ProductScalarWhereWithAggregatesInput = {
@@ -7284,6 +7382,9 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Product"> | string
     name?: StringWithAggregatesFilter<"Product"> | string
     description?: StringNullableWithAggregatesFilter<"Product"> | string | null
+    referenceBatchGm?: FloatNullableWithAggregatesFilter<"Product"> | number | null
+    referenceDurationMin?: FloatNullableWithAggregatesFilter<"Product"> | number | null
+    referenceWastePercent?: FloatNullableWithAggregatesFilter<"Product"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
   }
@@ -7588,6 +7689,9 @@ export namespace Prisma {
     id: string
     name: string
     description?: string | null
+    referenceBatchGm?: number | null
+    referenceDurationMin?: number | null
+    referenceWastePercent?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     items?: ItemCreateNestedManyWithoutProductInput
@@ -7597,6 +7701,9 @@ export namespace Prisma {
     id: string
     name: string
     description?: string | null
+    referenceBatchGm?: number | null
+    referenceDurationMin?: number | null
+    referenceWastePercent?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     items?: ItemUncheckedCreateNestedManyWithoutProductInput
@@ -7606,6 +7713,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceBatchGm?: NullableFloatFieldUpdateOperationsInput | number | null
+    referenceDurationMin?: NullableFloatFieldUpdateOperationsInput | number | null
+    referenceWastePercent?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     items?: ItemUpdateManyWithoutProductNestedInput
@@ -7615,6 +7725,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceBatchGm?: NullableFloatFieldUpdateOperationsInput | number | null
+    referenceDurationMin?: NullableFloatFieldUpdateOperationsInput | number | null
+    referenceWastePercent?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     items?: ItemUncheckedUpdateManyWithoutProductNestedInput
@@ -7624,6 +7737,9 @@ export namespace Prisma {
     id: string
     name: string
     description?: string | null
+    referenceBatchGm?: number | null
+    referenceDurationMin?: number | null
+    referenceWastePercent?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -7632,6 +7748,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceBatchGm?: NullableFloatFieldUpdateOperationsInput | number | null
+    referenceDurationMin?: NullableFloatFieldUpdateOperationsInput | number | null
+    referenceWastePercent?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -7640,6 +7759,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceBatchGm?: NullableFloatFieldUpdateOperationsInput | number | null
+    referenceDurationMin?: NullableFloatFieldUpdateOperationsInput | number | null
+    referenceWastePercent?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -7986,6 +8108,17 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -8016,14 +8149,26 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    referenceBatchGm?: SortOrder
+    referenceDurationMin?: SortOrder
+    referenceWastePercent?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type ProductAvgOrderByAggregateInput = {
+    referenceBatchGm?: SortOrder
+    referenceDurationMin?: SortOrder
+    referenceWastePercent?: SortOrder
   }
 
   export type ProductMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    referenceBatchGm?: SortOrder
+    referenceDurationMin?: SortOrder
+    referenceWastePercent?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -8032,8 +8177,17 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    referenceBatchGm?: SortOrder
+    referenceDurationMin?: SortOrder
+    referenceWastePercent?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type ProductSumOrderByAggregateInput = {
+    referenceBatchGm?: SortOrder
+    referenceDurationMin?: SortOrder
+    referenceWastePercent?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -8072,6 +8226,22 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -8095,17 +8265,6 @@ export namespace Prisma {
     gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
-  }
-
-  export type FloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
   export type CategoryNullableScalarRelationFilter = {
@@ -8209,22 +8368,6 @@ export namespace Prisma {
     _sum?: NestedDecimalFilter<$PrismaModel>
     _min?: NestedDecimalFilter<$PrismaModel>
     _max?: NestedDecimalFilter<$PrismaModel>
-  }
-
-  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type CategoryCountOrderByAggregateInput = {
@@ -8410,6 +8553,14 @@ export namespace Prisma {
     set?: string | null
   }
 
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
   }
@@ -8502,14 +8653,6 @@ export namespace Prisma {
     decrement?: Decimal | DecimalJsLike | number | string
     multiply?: Decimal | DecimalJsLike | number | string
     divide?: Decimal | DecimalJsLike | number | string
-  }
-
-  export type NullableFloatFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type CategoryUpdateOneWithoutItemsNestedInput = {
@@ -8744,6 +8887,17 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -8811,6 +8965,22 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -8836,17 +9006,6 @@ export namespace Prisma {
     not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
   }
 
-  export type NestedFloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
   export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
@@ -8861,22 +9020,6 @@ export namespace Prisma {
     _sum?: NestedDecimalFilter<$PrismaModel>
     _min?: NestedDecimalFilter<$PrismaModel>
     _max?: NestedDecimalFilter<$PrismaModel>
-  }
-
-  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type NestedFloatFilter<$PrismaModel = never> = {
@@ -9038,6 +9181,9 @@ export namespace Prisma {
     id: string
     name: string
     description?: string | null
+    referenceBatchGm?: number | null
+    referenceDurationMin?: number | null
+    referenceWastePercent?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -9046,6 +9192,9 @@ export namespace Prisma {
     id: string
     name: string
     description?: string | null
+    referenceBatchGm?: number | null
+    referenceDurationMin?: number | null
+    referenceWastePercent?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -9175,6 +9324,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceBatchGm?: NullableFloatFieldUpdateOperationsInput | number | null
+    referenceDurationMin?: NullableFloatFieldUpdateOperationsInput | number | null
+    referenceWastePercent?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9183,6 +9335,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceBatchGm?: NullableFloatFieldUpdateOperationsInput | number | null
+    referenceDurationMin?: NullableFloatFieldUpdateOperationsInput | number | null
+    referenceWastePercent?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

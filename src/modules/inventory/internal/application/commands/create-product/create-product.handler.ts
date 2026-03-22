@@ -30,6 +30,7 @@ export class CreateProductHandler extends CommandHandlerBase<
             description: command.description,
             referenceBatchGm: command.referenceBatchGm,
             referenceDurationMin: command.referenceDurationMin,
+            referenceWastePercent: command.referenceWastePercent,
         });
 
         await this.productRepository.save(product);
@@ -42,6 +43,7 @@ export class CreateProductHandler extends CommandHandlerBase<
             product.getDescription(),
             product.getReferenceBatchGm(),
             product.getReferenceDurationMin(),
+            product.getReferenceWastePercent(),
         );
     }
 }

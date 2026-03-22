@@ -11,6 +11,7 @@ export class ProductMapper {
             description: entity.description,
             referenceBatchGm: entity.referenceBatchGm,
             referenceDurationMin: entity.referenceDurationMin,
+            referenceWastePercent: entity.referenceWastePercent,
         });
     }
 
@@ -21,6 +22,7 @@ export class ProductMapper {
             description: product.getDescription(),
             referenceBatchGm: product.getReferenceBatchGm(),
             referenceDurationMin: product.getReferenceDurationMin(),
+            referenceWastePercent: product.getReferenceWastePercent(),
         };
     }
 }

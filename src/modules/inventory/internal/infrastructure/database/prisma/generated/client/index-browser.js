@@ -124,6 +124,9 @@ exports.Prisma.ProductScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
+  referenceBatchGm: 'referenceBatchGm',
+  referenceDurationMin: 'referenceDurationMin',
+  referenceWastePercent: 'referenceWastePercent',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

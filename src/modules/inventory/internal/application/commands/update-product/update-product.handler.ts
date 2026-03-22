@@ -24,7 +24,7 @@ export class UpdateProductHandler extends CommandHandlerBase<
             throw new ProductNotFoundApplicationError(command.id);
         }
 
-        product.update({ name: command.name, description: command.description, referenceBatchGm: command.referenceBatchGm, referenceDurationMin: command.referenceDurationMin });
+        product.update({ name: command.name, description: command.description, referenceBatchGm: command.referenceBatchGm, referenceDurationMin: command.referenceDurationMin, referenceWastePercent: command.referenceWastePercent });
         await this.productRepository.save(product);
 
         this.logger.info('Product updated', { productId: product.getId().value });
@@ -35,6 +35,7 @@ export class UpdateProductHandler extends CommandHandlerBase<
             product.getDescription(),
             product.getReferenceBatchGm(),
             product.getReferenceDurationMin(),
+            product.getReferenceWastePercent(),
         );
     }
 }

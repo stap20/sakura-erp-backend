@@ -24,4 +24,10 @@ export class UpdateProductRequestDto {
     @IsNumber()
     @Min(1)
     referenceDurationMin?: number | null;
+
+    @ApiPropertyOptional({ example: 5, description: 'Expected waste percentage for COGS calculation', nullable: true })
+    @IsOptional()
+    @IsNumber()
+    @Min(0)
+    referenceWastePercent?: number | null;
 }

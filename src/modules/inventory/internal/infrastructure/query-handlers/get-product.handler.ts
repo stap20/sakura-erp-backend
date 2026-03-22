@@ -19,6 +19,7 @@ export class GetProductHandler implements IGetProductHandler {
             product.description,
             product.referenceBatchGm,
             product.referenceDurationMin,
+            product.referenceWastePercent,
             product.createdAt,
             product.updatedAt,
         );

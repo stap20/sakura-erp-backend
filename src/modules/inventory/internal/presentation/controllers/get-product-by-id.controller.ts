@@ -19,6 +19,6 @@ export class GetProductByIdController {
     @ApiResponse({ status: 404, description: 'Product not found' })
     async getById(@Param('id') id: string): Promise<ProductResponseDto> {
         const result = await this.getProductHandler.handle(new GetProductQuery(id));
-        return new ProductResponseDto(result.id, result.name, result.description, result.referenceBatchGm, result.referenceDurationMin, result.createdAt, result.updatedAt);
+        return new ProductResponseDto(result.id, result.name, result.description, result.referenceBatchGm, result.referenceDurationMin, result.referenceWastePercent, result.createdAt, result.updatedAt);
     }
 }

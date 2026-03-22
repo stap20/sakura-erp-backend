@@ -4,5 +4,6 @@ export class CreateProductCommand {
         public readonly description?: string | null,
         public readonly referenceBatchGm?: number | null,
         public readonly referenceDurationMin?: number | null,
+        public readonly referenceWastePercent?: number | null,
     ) {}
 }

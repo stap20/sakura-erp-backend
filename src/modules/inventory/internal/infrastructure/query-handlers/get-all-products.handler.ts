@@ -22,6 +22,7 @@ export class GetAllProductsHandler implements IGetAllProductsHandler {
                 description: p.description,
                 referenceBatchGm: p.referenceBatchGm,
                 referenceDurationMin: p.referenceDurationMin,
+                referenceWastePercent: p.referenceWastePercent,
                 createdAt: p.createdAt,
                 updatedAt: p.updatedAt,
             })),
