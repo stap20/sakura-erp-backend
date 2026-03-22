@@ -7,6 +7,7 @@ export interface CreateProductParams {
     description?: string | null;
     referenceBatchGm?: number | null;
     referenceDurationMin?: number | null;
+    referenceWastePercent?: number | null;
 }
 
 export interface PersistenceProductParams {
@@ -15,6 +16,7 @@ export interface PersistenceProductParams {
     description: string | null;
     referenceBatchGm: number | null;
     referenceDurationMin: number | null;
+    referenceWastePercent: number | null;
 }
 
 export interface UpdateProductParams {
@@ -22,6 +24,7 @@ export interface UpdateProductParams {
     description?: string | null;
     referenceBatchGm?: number | null;
     referenceDurationMin?: number | null;
+    referenceWastePercent?: number | null;
 }
 
 export class Product extends AggregateRoot<ProductId> {
@@ -29,6 +32,7 @@ export class Product extends AggregateRoot<ProductId> {
     private description: string | null;
     private referenceBatchGm: number | null;
     private referenceDurationMin: number | null;
+    private referenceWastePercent: number | null;
 
     private constructor(
         id: ProductId,
@@ -36,12 +40,14 @@ export class Product extends AggregateRoot<ProductId> {
         description: string | null,
         referenceBatchGm: number | null,
         referenceDurationMin: number | null,
+        referenceWastePercent: number | null,
     ) {
         super(id);
         this.name = name;
         this.description = description;
         this.referenceBatchGm = referenceBatchGm;
         this.referenceDurationMin = referenceDurationMin;
+        this.referenceWastePercent = referenceWastePercent;
     }
 
     public static create(params: CreateProductParams): Product {
@@ -54,6 +60,7 @@ export class Product extends AggregateRoot<ProductId> {
             params.description ?? null,
             params.referenceBatchGm ?? null,
             params.referenceDurationMin ?? null,
+            params.referenceWastePercent ?? null,
         );
     }
 
@@ -64,6 +71,7 @@ export class Product extends AggregateRoot<ProductId> {
             params.description,
             params.referenceBatchGm,
             params.referenceDurationMin,
+            params.referenceWastePercent,
         );
     }
 
@@ -83,6 +91,9 @@ export class Product extends AggregateRoot<ProductId> {
         if (params.referenceDurationMin !== undefined) {
             this.referenceDurationMin = params.referenceDurationMin;
         }
+        if (params.referenceWastePercent !== undefined) {
+            this.referenceWastePercent = params.referenceWastePercent;
+        }
     }
 
     public getName(): string {
@@ -99,6 +110,10 @@ export class Product extends AggregateRoot<ProductId> {
 
     public getReferenceDurationMin(): number | null {
         return this.referenceDurationMin;
+    }
+
+    public getReferenceWastePercent(): number | null {
+        return this.referenceWastePercent;
     }
 
     public equals(other: Product): boolean {

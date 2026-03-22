@@ -4,6 +4,7 @@ export interface ProductSummary {
     description: string | null;
     referenceBatchGm: number | null;
     referenceDurationMin: number | null;
+    referenceWastePercent: number | null;
     createdAt: Date;
     updatedAt: Date;
 }

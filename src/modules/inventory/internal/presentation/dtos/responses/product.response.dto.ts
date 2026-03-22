@@ -16,6 +16,9 @@ export class ProductResponseDto {
     @ApiPropertyOptional({ nullable: true, description: 'Duration in minutes to produce referenceBatchGm' })
     referenceDurationMin: number | null;
 
+    @ApiPropertyOptional({ nullable: true, description: 'Expected waste percentage for COGS calculation' })
+    referenceWastePercent: number | null;
+
     @ApiProperty()
     createdAt: Date;
 
@@ -28,6 +31,7 @@ export class ProductResponseDto {
         description: string | null,
         referenceBatchGm?: number | null,
         referenceDurationMin?: number | null,
+        referenceWastePercent?: number | null,
         createdAt?: Date,
         updatedAt?: Date,
     ) {
@@ -36,6 +40,7 @@ export class ProductResponseDto {
         this.description = description;
         this.referenceBatchGm = referenceBatchGm ?? null;
         this.referenceDurationMin = referenceDurationMin ?? null;
+        this.referenceWastePercent = referenceWastePercent ?? null;
         if (createdAt) this.createdAt = createdAt;
         if (updatedAt) this.updatedAt = updatedAt;
     }

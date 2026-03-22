@@ -1,0 +1,18 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model CostConfig {
+  id                    String   @id @default("singleton")
+  monthlySalary         Float
+  monthlyWorkingHours   Float
+  depreciationPerMinute Float
+  updatedAt             DateTime @updatedAt
+
+  @@map("cost_config")
+}
