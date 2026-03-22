@@ -10,6 +10,8 @@ export class GetAllSalesOrdersResponse {
         public readonly invoiceNumber: string | null,
         public readonly paymentStatus: string | null,
         public readonly paidAt: Date | null,
+        public readonly discountCode: string | null,
+        public readonly discountAmount: number,
         public readonly linesCount: number,
         public readonly createdAt: Date,
         public readonly updatedAt: Date,

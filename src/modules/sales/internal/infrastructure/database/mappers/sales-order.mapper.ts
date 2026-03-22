@@ -31,6 +31,8 @@ export class SalesOrderMapper {
             invoiceNumber: entity.invoiceNumber ?? null,
             paymentStatus: entity.paymentStatus ?? null,
             paidAt: entity.paidAt ?? null,
+            discountCode: (entity as any).discountCode ?? null,
+            discountAmount: Number((entity as any).discountAmount ?? 0),
             createdAt: entity.createdAt,
             updatedAt: entity.updatedAt,
             lines,

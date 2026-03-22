@@ -16,6 +16,8 @@ export function toSalesOrderResponseDto(response: GetSalesOrderResponse): SalesO
     dto.invoiceNumber = response.invoiceNumber;
     dto.paymentStatus = response.paymentStatus;
     dto.paidAt = response.paidAt;
+    dto.discountCode = (response as any).discountCode ?? null;
+    dto.discountAmount = (response as any).discountAmount ?? 0;
     dto.lines = response.lines.map((l) => ({
         id: l.id,
         itemId: l.itemId,
@@ -42,6 +44,8 @@ export function toAllSalesOrdersResponseDto(response: GetAllSalesOrdersResponse)
     dto.invoiceNumber = response.invoiceNumber;
     dto.paymentStatus = response.paymentStatus;
     dto.paidAt = response.paidAt;
+    dto.discountCode = (response as any).discountCode ?? null;
+    dto.discountAmount = (response as any).discountAmount ?? 0;
     dto.lines = [];
     dto.createdAt = response.createdAt;
     dto.updatedAt = response.updatedAt;

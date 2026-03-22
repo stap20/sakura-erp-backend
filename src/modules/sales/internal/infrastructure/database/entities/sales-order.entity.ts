@@ -11,6 +11,8 @@ export class SalesOrderEntity {
     invoiceNumber: string | null;
     paymentStatus: string | null;
     paidAt: Date | null;
+    discountCode: string | null;
+    discountAmount: number;
     createdAt: Date;
     updatedAt: Date;
     lines: SalesOrderLineEntity[];

@@ -37,6 +37,8 @@ export class SalesOrderRepository implements ISalesOrderRepository {
                     invoiceNumber: order.getInvoiceNumber(),
                     paymentStatus: order.getPaymentStatus(),
                     paidAt: order.getPaidAt(),
+                    discountCode: order.getDiscountCode(),
+                    discountAmount: order.getDiscountAmount(),
                     updatedAt: order.getUpdatedAt(),
                 },
                 create: {
@@ -50,6 +52,8 @@ export class SalesOrderRepository implements ISalesOrderRepository {
                     invoiceNumber: order.getInvoiceNumber(),
                     paymentStatus: order.getPaymentStatus(),
                     paidAt: order.getPaidAt(),
+                    discountCode: order.getDiscountCode(),
+                    discountAmount: order.getDiscountAmount(),
                     createdAt: order.getCreatedAt(),
                     updatedAt: order.getUpdatedAt(),
                 },

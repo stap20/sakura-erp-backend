@@ -12,6 +12,8 @@ export class SalesOrderResponseDto {
     @ApiPropertyOptional() invoiceNumber: string | null;
     @ApiPropertyOptional() paymentStatus: string | null;
     @ApiPropertyOptional() paidAt: Date | null;
+    @ApiPropertyOptional() discountCode: string | null;
+    @ApiProperty() discountAmount: number;
     @ApiProperty({ type: [SalesOrderLineResponseDto] }) lines: SalesOrderLineResponseDto[];
     @ApiProperty() createdAt: Date;
     @ApiProperty() updatedAt: Date;
