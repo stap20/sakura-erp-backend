@@ -34,13 +34,14 @@ npx jest --config test/jest-e2e.json --testPathPatterns=recipes           # Reci
 npx jest --config test/jest-e2e.json --testPathPatterns=purchases         # Purchases suite only
 npx jest --config test/jest-e2e.json --testPathPatterns=products          # Products suite only
 npx jest --config test/jest-e2e.json --testPathPatterns=settings          # Settings suite only
+npx jest --config test/jest-e2e.json --testPathPatterns=sales             # Sales suite only
 ```
 
-E2E tests use the real databases and clean relevant tables before each suite. Test files live in `test/inventory/`, `test/recipe/`, `test/purchase/`, and `test/settings/`. The helper `test/helpers/app.setup.ts` bootstraps the full `AppModule` with identical global setup to `main.ts` and exports `cleanInventoryDb()`, `cleanRecipeDb()`, `cleanPurchaseDb()`, and `cleanSettingsDb()`.
+E2E tests use the real databases and clean relevant tables before each suite. Test files live in `test/inventory/`, `test/recipe/`, `test/purchase/`, `test/settings/`, and `test/sales/`. The helper `test/helpers/app.setup.ts` bootstraps the full `AppModule` with identical global setup to `main.ts` and exports `cleanInventoryDb()`, `cleanRecipeDb()`, `cleanPurchaseDb()`, `cleanSettingsDb()`, and `cleanSalesDb()`.
 
 **Important**: The `test:e2e` script runs with `--runInBand` (all suites in one process, sequentially). This is required because all suites share the same real databases — parallel execution causes `cleanXxxDb()` calls from one suite to corrupt in-flight data of another. Do not remove `--runInBand`.
 
-Current totals: **104 tests** — 28 inventory (19 items + 9 categories) + 12 products + 30 recipe + 27 purchase + 7 settings.
+Current totals: **~120 tests** — 28 inventory (19 items + 9 categories) + 12 products + 30 recipe + 27 purchase + 7 settings + ~16 sales.
 
 ### Database (Prisma — per module)
 ```bash
@@ -79,6 +80,12 @@ npm run production:db:generate
 npm run production:db:migrate
 npm run production:db:deploy
 npm run production:db:studio
+
+# Sales DB
+npm run sales:db:generate
+npm run sales:db:migrate
+npm run sales:db:deploy
+npm run sales:db:studio
 ```
 
 ## Architecture
@@ -135,6 +142,7 @@ Each module has its own PostgreSQL database and Prisma client:
 | Recipe    | `sakura_recipe_db`     | `RECIPE_DATABASE_URL`     |
 | Purchase   | `sakura_purchase_db`    | `PURCHASE_DATABASE_URL`   |
 | Production | `sakura_production_db`  | `PRODUCTION_DATABASE_URL` |
+| Sales      | `sakura_sales_db`       | `SALES_DATABASE_URL`      |
 
 Prisma schemas and generated clients live inside each module's infrastructure directory, not at the project root.
 
@@ -190,3 +198,4 @@ Prisma schemas and generated clients live inside each module's infrastructure di
 - **Recipe**: Complete — formula/BOM management with version lifecycle (DRAFT → ACTIVE → ARCHIVED), w/w% percentage quantities, add-on placeholders (fragrance/colorants), 100% base formula validation at activation. Links to Product aggregate (not Item). E2E tested (30 tests).
 - **Purchase**: Complete — procurement management with PO lifecycle (DRAFT → CONFIRMED → RECEIVED + CANCELLED), vendor snapshot, item validation (RAW_MATERIAL/PACKAGING only), auto-restock on receive with vendorId + unitPrice propagation to InventoryTransaction. Cross-module integration via `IInventoryFacade` (facade pattern). E2E tested (27 tests).
 - **Production**: Complete — two-phase production: ProductionOrder (bulk batch) + FillingOrder (fill into variants). BulkStock tracks available bulk grams per Product. Cross-module integration via `IInventoryFacade` + `IRecipeFacade`.
+- **Sales**: Complete — sell FINAL_PRODUCT and SHIPPING_PACKAGING to customers with lifecycle (DRAFT → CONFIRMED → SHIPPED + CANCELLED). Customer snapshot, stock deducted on SHIP, COGS pricing endpoint. Cross-module integration via `IInventoryFacade` + `IRecipeFacade` + `ISettingsFacade`. E2E tested (~16 tests).
