@@ -16,6 +16,7 @@ export class SalesOrderMapper {
                     measureUnit: l.measureUnit,
                     quantity: Number(l.quantity),
                     unitPrice: Number(l.unitPrice),
+                    isGift: l.isGift,
                 }),
         );
 
@@ -27,6 +28,11 @@ export class SalesOrderMapper {
             status: entity.status,
             notes: entity.notes,
             shippedAt: entity.shippedAt,
+            invoiceNumber: entity.invoiceNumber ?? null,
+            paymentStatus: entity.paymentStatus ?? null,
+            paidAt: entity.paidAt ?? null,
+            discountCode: (entity as any).discountCode ?? null,
+            discountAmount: Number((entity as any).discountAmount ?? 0),
             createdAt: entity.createdAt,
             updatedAt: entity.updatedAt,
             lines,
@@ -42,6 +48,7 @@ export class SalesOrderMapper {
             measureUnit: line.measureUnit,
             quantity: line.quantity,
             unitPrice: line.unitPrice,
+            isGift: line.isGift,
         } as SalesOrderLineEntity;
     }
 }

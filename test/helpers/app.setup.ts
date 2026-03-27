@@ -77,4 +77,5 @@ export async function cleanSalesDb(app: INestApplication): Promise<void> {
     const prisma = app.get<ISalesPrismaClient>(ISalesPrismaClient);
     await prisma.salesOrderLine.deleteMany();
     await prisma.salesOrder.deleteMany();
+    await prisma.discountCode.deleteMany();
 }

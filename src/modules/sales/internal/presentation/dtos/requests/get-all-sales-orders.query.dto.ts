@@ -8,9 +8,19 @@ enum SalesOrderStatusEnum {
     CANCELLED = 'CANCELLED',
 }
 
+enum PaymentStatusEnum {
+    PENDING = 'PENDING',
+    PAID = 'PAID',
+}
+
 export class GetAllSalesOrdersQueryDto {
     @ApiPropertyOptional({ enum: SalesOrderStatusEnum })
     @IsOptional()
     @IsEnum(SalesOrderStatusEnum)
     status?: string;
+
+    @ApiPropertyOptional({ enum: PaymentStatusEnum })
+    @IsOptional()
+    @IsEnum(PaymentStatusEnum)
+    paymentStatus?: string;
 }

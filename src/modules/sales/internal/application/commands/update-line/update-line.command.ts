@@ -4,5 +4,6 @@ export class UpdateLineCommand {
         public readonly lineId: string,
         public readonly quantity?: number,
         public readonly unitPrice?: number,
+        public readonly isGift?: boolean,
     ) {}
 }

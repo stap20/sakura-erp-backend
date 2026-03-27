@@ -5,6 +5,7 @@ export interface CreateSalesOrderLineParams {
     measureUnit: string;
     quantity: number;
     unitPrice: number;
+    isGift?: boolean;
 }
 
 export class SalesOrderLine {
@@ -14,6 +15,7 @@ export class SalesOrderLine {
     public readonly measureUnit: string;
     public quantity: number;
     public unitPrice: number;
+    public isGift: boolean;
 
     constructor(params: CreateSalesOrderLineParams) {
         this.id = params.id;
@@ -22,14 +24,12 @@ export class SalesOrderLine {
         this.measureUnit = params.measureUnit;
         this.quantity = params.quantity;
         this.unitPrice = params.unitPrice;
+        this.isGift = params.isGift ?? false;
     }
 
-    public update(quantity?: number, unitPrice?: number): void {
-        if (quantity !== undefined) {
-            this.quantity = quantity;
-        }
-        if (unitPrice !== undefined) {
-            this.unitPrice = unitPrice;
-        }
+    public update(quantity?: number, unitPrice?: number, isGift?: boolean): void {
+        if (quantity !== undefined) this.quantity = quantity;
+        if (unitPrice !== undefined) this.unitPrice = unitPrice;
+        if (isGift !== undefined) this.isGift = isGift;
     }
 }

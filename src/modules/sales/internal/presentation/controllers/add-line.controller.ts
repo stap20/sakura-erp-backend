@@ -27,7 +27,7 @@ export class AddLineController {
         @Param('id') id: string,
         @Body() dto: AddLineRequestDto,
     ): Promise<SalesOrderResponseDto> {
-        await this.handler.handle(new AddLineCommand(id, dto.itemId, dto.quantity, dto.unitPrice));
+        await this.handler.handle(new AddLineCommand(id, dto.itemId, dto.quantity, dto.unitPrice, dto.isGift));
         const result = await this.getHandler.handle(new GetSalesOrderQuery(id));
         return toSalesOrderResponseDto(result);
     }

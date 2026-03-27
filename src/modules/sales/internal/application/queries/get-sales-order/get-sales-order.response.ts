@@ -5,6 +5,7 @@ export class SalesOrderLineResponse {
     measureUnit: string;
     quantity: number;
     unitPrice: number;
+    isGift: boolean;
 }
 
 export class GetSalesOrderResponse {
@@ -16,6 +17,11 @@ export class GetSalesOrderResponse {
         public readonly status: string,
         public readonly notes: string | null,
         public readonly shippedAt: Date | null,
+        public readonly invoiceNumber: string | null,
+        public readonly paymentStatus: string | null,
+        public readonly paidAt: Date | null,
+        public readonly discountCode: string | null,
+        public readonly discountAmount: number,
         public readonly lines: SalesOrderLineResponse[],
         public readonly createdAt: Date,
         public readonly updatedAt: Date,

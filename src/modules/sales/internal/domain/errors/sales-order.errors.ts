@@ -35,3 +35,9 @@ export class DuplicateLineItemError extends DomainError {
         super('An item with this ID already exists in the sales order');
     }
 }
+
+export class SalesOrderNotPayableError extends DomainError {
+    constructor() {
+        super('Sales order payment status is not PENDING and cannot be marked as paid');
+    }
+}

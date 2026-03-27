@@ -304,4 +304,331 @@ describe('Sales (e2e)', () => {
             expect(updatedLine.unitPrice).toBe(120);
         });
     });
+
+    // ─── Invoice + Payment Status ────────────────────────────────────────────────
+
+    describe('Invoice + Payment Status', () => {
+        it('confirm sets invoiceNumber and paymentStatus=PENDING', async () => {
+            const res = await request(app.getHttpServer())
+                .get(`/api/v1/sales/${orderId}`)
+                .expect(200);
+
+            expect(res.body.invoiceNumber).toBeDefined();
+            expect(res.body.invoiceNumber).toMatch(/^INV-\d{8}-\d{4}$/);
+            expect(res.body.paymentStatus).toBe('PENDING');
+            expect(res.body.paidAt).toBeNull();
+        });
+
+        it('POST /sales/:id/mark-paid → 204, paymentStatus becomes PAID', async () => {
+            const createRes = await request(app.getHttpServer())
+                .post('/api/v1/sales')
+                .send({ customerName: 'Payment Test Customer' })
+                .expect(201);
+            const payOrderId = createRes.body.id;
+
+            await request(app.getHttpServer())
+                .post(`/api/v1/sales/${payOrderId}/confirm`)
+                .expect(204);
+
+            await request(app.getHttpServer())
+                .post(`/api/v1/sales/${payOrderId}/mark-paid`)
+                .expect(204);
+
+            const res = await request(app.getHttpServer())
+                .get(`/api/v1/sales/${payOrderId}`)
+                .expect(200);
+
+            expect(res.body.paymentStatus).toBe('PAID');
+            expect(res.body.paidAt).toBeDefined();
+        });
+
+        it('cannot mark-paid again → 409', async () => {
+            const createRes = await request(app.getHttpServer())
+                .post('/api/v1/sales')
+                .send({ customerName: 'Double Pay Test' })
+                .expect(201);
+            const pid = createRes.body.id;
+
+            await request(app.getHttpServer()).post(`/api/v1/sales/${pid}/confirm`).expect(204);
+            await request(app.getHttpServer()).post(`/api/v1/sales/${pid}/mark-paid`).expect(204);
+            await request(app.getHttpServer()).post(`/api/v1/sales/${pid}/mark-paid`).expect(409);
+        });
+
+        it('GET /sales?paymentStatus=PENDING returns only PENDING orders', async () => {
+            const res = await request(app.getHttpServer())
+                .get('/api/v1/sales?paymentStatus=PENDING')
+                .expect(200);
+
+            expect(Array.isArray(res.body)).toBe(true);
+            expect(res.body.every((o: any) => o.paymentStatus === 'PENDING')).toBe(true);
+        });
+    });
+
+    // ─── Gift Lines ───────────────────────────────────────────────────────────────
+
+    describe('Gift line support', () => {
+        it('adds a line with isGift=true → 201, isGift reflected in response', async () => {
+            const createRes = await request(app.getHttpServer())
+                .post('/api/v1/sales')
+                .send({ customerName: 'Gift Test Customer' })
+                .expect(201);
+
+            const giftOrderId = createRes.body.id;
+
+            const addRes = await request(app.getHttpServer())
+                .post(`/api/v1/sales/${giftOrderId}/lines`)
+                .send({ itemId: finalProductItemId, quantity: 1, unitPrice: 150, isGift: true })
+                .expect(201);
+
+            const line = addRes.body.lines[0];
+            expect(line.isGift).toBe(true);
+            expect(line.itemId).toBe(finalProductItemId);
+        });
+
+        it('adds a non-gift line → isGift defaults to false', async () => {
+            const createRes = await request(app.getHttpServer())
+                .post('/api/v1/sales')
+                .send({ customerName: 'Non-Gift Test' })
+                .expect(201);
+
+            const addRes = await request(app.getHttpServer())
+                .post(`/api/v1/sales/${createRes.body.id}/lines`)
+                .send({ itemId: shippingPackagingItemId, quantity: 2, unitPrice: 10 })
+                .expect(201);
+
+            expect(addRes.body.lines[0].isGift).toBe(false);
+        });
+
+        it('updates isGift on a line → isGift toggled to true', async () => {
+            const createRes = await request(app.getHttpServer())
+                .post('/api/v1/sales')
+                .send({ customerName: 'Toggle Gift Test' })
+                .expect(201);
+
+            const addRes = await request(app.getHttpServer())
+                .post(`/api/v1/sales/${createRes.body.id}/lines`)
+                .send({ itemId: finalProductItemId, quantity: 1, unitPrice: 100 })
+                .expect(201);
+
+            const lineId = addRes.body.lines[0].id;
+
+            const updateRes = await request(app.getHttpServer())
+                .patch(`/api/v1/sales/${createRes.body.id}/lines/${lineId}`)
+                .send({ isGift: true })
+                .expect(200);
+
+            const updated = updateRes.body.lines.find((l: any) => l.id === lineId);
+            expect(updated.isGift).toBe(true);
+        });
+    });
+
+    // ─── Discount Codes ──────────────────────────────────────────────────────────
+
+    describe('Discount Codes', () => {
+        let percentCodeId: string;
+        let fixedCodeId: string;
+
+        it('POST /promotions/discount-codes → creates PERCENT code', async () => {
+            const res = await request(app.getHttpServer())
+                .post('/api/v1/promotions/discount-codes')
+                .send({ code: 'SUMMER20', type: 'PERCENT', value: 20 })
+                .expect(201);
+
+            expect(res.body.code).toBe('SUMMER20');
+            expect(res.body.type).toBe('PERCENT');
+            expect(res.body.value).toBe(20);
+            expect(res.body.usedCount).toBe(0);
+            expect(res.body.isActive).toBe(true);
+            percentCodeId = res.body.id;
+        });
+
+        it('POST /promotions/discount-codes → creates FIXED_AMOUNT code', async () => {
+            const res = await request(app.getHttpServer())
+                .post('/api/v1/promotions/discount-codes')
+                .send({ code: 'FLAT50', type: 'FIXED_AMOUNT', value: 50, maxUses: 10 })
+                .expect(201);
+
+            expect(res.body.code).toBe('FLAT50');
+            expect(res.body.maxUses).toBe(10);
+            fixedCodeId = res.body.id;
+        });
+
+        it('GET /promotions/discount-codes → returns both codes', async () => {
+            const res = await request(app.getHttpServer())
+                .get('/api/v1/promotions/discount-codes')
+                .expect(200);
+
+            expect(Array.isArray(res.body)).toBe(true);
+            expect(res.body.length).toBeGreaterThanOrEqual(2);
+        });
+
+        it('PATCH /promotions/discount-codes/:id → updates code', async () => {
+            await request(app.getHttpServer())
+                .patch(`/api/v1/promotions/discount-codes/${percentCodeId}`)
+                .send({ value: 25 })
+                .expect(204);
+        });
+
+        it('POST /sales/:id/apply-discount → PERCENT discount computed correctly', async () => {
+            // Create order with 2 lines: qty=2 @ 100 each = subtotal 200 (non-gift)
+            const orderRes = await request(app.getHttpServer())
+                .post('/api/v1/sales')
+                .send({ customerName: 'Discount Test' })
+                .expect(201);
+            const discountOrderId = orderRes.body.id;
+
+            await request(app.getHttpServer())
+                .post(`/api/v1/sales/${discountOrderId}/lines`)
+                .send({ itemId: finalProductItemId, quantity: 2, unitPrice: 100 })
+                .expect(201);
+
+            // Apply SUMMER20 (now 25% after update)
+            const res = await request(app.getHttpServer())
+                .post(`/api/v1/sales/${discountOrderId}/apply-discount`)
+                .send({ code: 'SUMMER20' })
+                .expect(200);
+
+            expect(res.body.discountCode).toBe('SUMMER20');
+            expect(res.body.discountAmount).toBe(50); // 200 * 25% = 50
+        });
+
+        it('POST /sales/:id/apply-discount → FIXED_AMOUNT discount', async () => {
+            const orderRes = await request(app.getHttpServer())
+                .post('/api/v1/sales')
+                .send({ customerName: 'Fixed Discount Test' })
+                .expect(201);
+            const fixedOrderId = orderRes.body.id;
+
+            await request(app.getHttpServer())
+                .post(`/api/v1/sales/${fixedOrderId}/lines`)
+                .send({ itemId: shippingPackagingItemId, quantity: 3, unitPrice: 10 })
+                .expect(201);
+
+            // Apply FLAT50 to subtotal of 30 — should be capped at 30
+            const res = await request(app.getHttpServer())
+                .post(`/api/v1/sales/${fixedOrderId}/apply-discount`)
+                .send({ code: 'FLAT50' })
+                .expect(200);
+
+            expect(res.body.discountCode).toBe('FLAT50');
+            expect(res.body.discountAmount).toBe(30); // min(50, 30) = 30
+        });
+
+        it('cannot apply discount to CONFIRMED order → 409', async () => {
+            const orderRes = await request(app.getHttpServer())
+                .post('/api/v1/sales')
+                .send({ customerName: 'Confirmed Discount Test' })
+                .expect(201);
+            const cId = orderRes.body.id;
+
+            await request(app.getHttpServer())
+                .post(`/api/v1/sales/${cId}/lines`)
+                .send({ itemId: shippingPackagingItemId, quantity: 1, unitPrice: 10 })
+                .expect(201);
+
+            await request(app.getHttpServer()).post(`/api/v1/sales/${cId}/confirm`).expect(204);
+
+            await request(app.getHttpServer())
+                .post(`/api/v1/sales/${cId}/apply-discount`)
+                .send({ code: 'SUMMER20' })
+                .expect(409);
+        });
+
+        it('apply unknown code → 404', async () => {
+            const orderRes = await request(app.getHttpServer())
+                .post('/api/v1/sales')
+                .send({ customerName: 'Unknown Code Test' })
+                .expect(201);
+
+            await request(app.getHttpServer())
+                .post(`/api/v1/sales/${orderRes.body.id}/apply-discount`)
+                .send({ code: 'NONEXISTENT' })
+                .expect(404);
+        });
+
+        it('DELETE /sales/:id/discount → removes discount (204)', async () => {
+            const orderRes = await request(app.getHttpServer())
+                .post('/api/v1/sales')
+                .send({ customerName: 'Remove Discount Test' })
+                .expect(201);
+            const removeOrderId = orderRes.body.id;
+
+            await request(app.getHttpServer())
+                .post(`/api/v1/sales/${removeOrderId}/lines`)
+                .send({ itemId: finalProductItemId, quantity: 1, unitPrice: 100 })
+                .expect(201);
+
+            await request(app.getHttpServer())
+                .post(`/api/v1/sales/${removeOrderId}/apply-discount`)
+                .send({ code: 'SUMMER20' })
+                .expect(200);
+
+            await request(app.getHttpServer())
+                .delete(`/api/v1/sales/${removeOrderId}/discount`)
+                .expect(204);
+
+            const res = await request(app.getHttpServer())
+                .get(`/api/v1/sales/${removeOrderId}`)
+                .expect(200);
+
+            expect(res.body.discountCode).toBeNull();
+            expect(res.body.discountAmount).toBe(0);
+        });
+
+        it('confirm increments usedCount on discount code', async () => {
+            const orderRes = await request(app.getHttpServer())
+                .post('/api/v1/sales')
+                .send({ customerName: 'UsedCount Test' })
+                .expect(201);
+            const usedOrderId = orderRes.body.id;
+
+            await request(app.getHttpServer())
+                .post(`/api/v1/sales/${usedOrderId}/lines`)
+                .send({ itemId: shippingPackagingItemId, quantity: 1, unitPrice: 10 })
+                .expect(201);
+
+            // Get usedCount before
+            const before = await request(app.getHttpServer())
+                .get('/api/v1/promotions/discount-codes')
+                .expect(200);
+            const codeBefore = before.body.find((c: any) => c.code === 'SUMMER20');
+            const usedBefore = codeBefore.usedCount;
+
+            await request(app.getHttpServer())
+                .post(`/api/v1/sales/${usedOrderId}/apply-discount`)
+                .send({ code: 'SUMMER20' })
+                .expect(200);
+
+            await request(app.getHttpServer()).post(`/api/v1/sales/${usedOrderId}/confirm`).expect(204);
+
+            const after = await request(app.getHttpServer())
+                .get('/api/v1/promotions/discount-codes')
+                .expect(200);
+            const codeAfter = after.body.find((c: any) => c.code === 'SUMMER20');
+            expect(codeAfter.usedCount).toBe(usedBefore + 1);
+        });
+
+        it('apply expired code → 409', async () => {
+            // Create an expired code
+            await request(app.getHttpServer())
+                .post('/api/v1/promotions/discount-codes')
+                .send({
+                    code: 'EXPIRED10',
+                    type: 'PERCENT',
+                    value: 10,
+                    expiresAt: '2020-01-01T00:00:00.000Z',
+                })
+                .expect(201);
+
+            const orderRes = await request(app.getHttpServer())
+                .post('/api/v1/sales')
+                .send({ customerName: 'Expired Code Test' })
+                .expect(201);
+
+            await request(app.getHttpServer())
+                .post(`/api/v1/sales/${orderRes.body.id}/apply-discount`)
+                .send({ code: 'EXPIRED10' })
+                .expect(409);
+        });
+    });
 });

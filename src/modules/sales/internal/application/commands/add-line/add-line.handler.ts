@@ -38,6 +38,7 @@ export class AddLineHandler extends CommandHandlerBase<AddLineCommand, void> {
             measureUnit: item.measureUnit,
             quantity: command.quantity,
             unitPrice: command.unitPrice,
+            isGift: command.isGift ?? false,
         });
 
         order.addLine(line);

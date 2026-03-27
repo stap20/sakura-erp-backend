@@ -15,12 +15,34 @@ model SalesOrder {
   status          String           @default("DRAFT")
   notes           String?
   shippedAt       DateTime?
+  invoiceNumber   String?          @unique
+  paymentStatus   String?
+  paidAt          DateTime?
+  discountCode    String?
+  discountAmount  Decimal          @default(0)
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
   lines           SalesOrderLine[]
 
   @@index([status])
+  @@index([paymentStatus])
   @@map("sales_orders")
+}
+
+model DiscountCode {
+  id        String    @id
+  code      String    @unique
+  type      String
+  value     Decimal
+  maxUses   Int?
+  usedCount Int       @default(0)
+  expiresAt DateTime?
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([code])
+  @@map("discount_codes")
 }
 
 model SalesOrderLine {
@@ -31,6 +53,7 @@ model SalesOrderLine {
   measureUnit String
   quantity    Decimal
   unitPrice   Decimal
+  isGift      Boolean    @default(false)
   order       SalesOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   @@unique([orderId, itemId])

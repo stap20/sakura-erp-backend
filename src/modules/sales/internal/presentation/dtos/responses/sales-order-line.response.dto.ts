@@ -7,4 +7,5 @@ export class SalesOrderLineResponseDto {
     @ApiProperty() measureUnit: string;
     @ApiProperty() quantity: number;
     @ApiProperty() unitPrice: number;
+    @ApiProperty() isGift: boolean;
 }

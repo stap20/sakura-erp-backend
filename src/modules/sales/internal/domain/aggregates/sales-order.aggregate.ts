@@ -7,9 +7,11 @@ import {
     SalesOrderNotConfirmableError,
     SalesOrderNotShippableError,
     SalesOrderNotCancellableError,
+    SalesOrderNotPayableError,
     SalesOrderLineNotFoundError,
     DuplicateLineItemError,
 } from '../errors/sales-order.errors';
+import { DiscountCodeInactiveError, DiscountCodeExpiredError, DiscountCodeExhaustedError } from '../errors/discount-code.errors';
 
 export interface CreateSalesOrderParams {
     id: string;
@@ -27,6 +29,11 @@ export interface PersistenceSalesOrderParams {
     status: string;
     notes: string | null;
     shippedAt: Date | null;
+    invoiceNumber: string | null;
+    paymentStatus: string | null;
+    paidAt: Date | null;
+    discountCode: string | null;
+    discountAmount: number;
     createdAt: Date;
     updatedAt: Date;
     lines: SalesOrderLine[];
@@ -39,6 +46,11 @@ export class SalesOrder extends AggregateRoot<SalesOrderId> {
     private status: SalesOrderStatus;
     private notes: string | null;
     private shippedAt: Date | null;
+    private invoiceNumber: string | null;
+    private paymentStatus: string | null;
+    private paidAt: Date | null;
+    private discountCode: string | null;
+    private discountAmount: number;
     private lines: SalesOrderLine[];
     private createdAt: Date;
     private updatedAt: Date;
@@ -51,6 +63,11 @@ export class SalesOrder extends AggregateRoot<SalesOrderId> {
         status: SalesOrderStatus,
         notes: string | null,
         shippedAt: Date | null,
+        invoiceNumber: string | null,
+        paymentStatus: string | null,
+        paidAt: Date | null,
+        discountCode: string | null,
+        discountAmount: number,
         lines: SalesOrderLine[],
         createdAt: Date,
         updatedAt: Date,
@@ -62,6 +79,11 @@ export class SalesOrder extends AggregateRoot<SalesOrderId> {
         this.status = status;
         this.notes = notes;
         this.shippedAt = shippedAt;
+        this.invoiceNumber = invoiceNumber;
+        this.paymentStatus = paymentStatus;
+        this.paidAt = paidAt;
+        this.discountCode = discountCode;
+        this.discountAmount = discountAmount;
         this.lines = lines;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -79,6 +101,11 @@ export class SalesOrder extends AggregateRoot<SalesOrderId> {
             status,
             params.notes ?? null,
             null,
+            null,
+            null,
+            null,
+            null,
+            0,
             [],
             now,
             now,
@@ -96,6 +123,11 @@ export class SalesOrder extends AggregateRoot<SalesOrderId> {
             status,
             params.notes,
             params.shippedAt,
+            params.invoiceNumber,
+            params.paymentStatus,
+            params.paidAt,
+            params.discountCode,
+            params.discountAmount,
             params.lines,
             params.createdAt,
             params.updatedAt,
@@ -111,6 +143,45 @@ export class SalesOrder extends AggregateRoot<SalesOrderId> {
             throw new SalesOrderNotConfirmableError();
         }
         this.status = SalesOrderStatus.confirmed();
+        this.paymentStatus = 'PENDING';
+        this.updatedAt = new Date();
+    }
+
+    public setInvoiceNumber(invoiceNumber: string): void {
+        this.invoiceNumber = invoiceNumber;
+    }
+
+    public markAsPaid(): void {
+        if (this.paymentStatus !== 'PENDING') {
+            throw new SalesOrderNotPayableError();
+        }
+        this.paymentStatus = 'PAID';
+        this.paidAt = new Date();
+        this.updatedAt = new Date();
+    }
+
+    public applyDiscount(
+        code: string,
+        amount: number,
+        discountEntity: { isActive: boolean; expiresAt: Date | null; maxUses: number | null; usedCount: number },
+    ): void {
+        if (!this.status.isDraft()) {
+            throw new SalesOrderNotEditableError();
+        }
+        if (!discountEntity.isActive) throw new DiscountCodeInactiveError();
+        if (discountEntity.expiresAt && discountEntity.expiresAt < new Date()) throw new DiscountCodeExpiredError();
+        if (discountEntity.maxUses !== null && discountEntity.usedCount >= discountEntity.maxUses) throw new DiscountCodeExhaustedError();
+        this.discountCode = code;
+        this.discountAmount = amount;
+        this.updatedAt = new Date();
+    }
+
+    public removeDiscount(): void {
+        if (!this.status.isDraft()) {
+            throw new SalesOrderNotEditableError();
+        }
+        this.discountCode = null;
+        this.discountAmount = 0;
         this.updatedAt = new Date();
     }
 
@@ -151,13 +222,13 @@ export class SalesOrder extends AggregateRoot<SalesOrderId> {
         this.updatedAt = new Date();
     }
 
-    public updateLine(lineId: string, quantity?: number, unitPrice?: number): void {
+    public updateLine(lineId: string, quantity?: number, unitPrice?: number, isGift?: boolean): void {
         if (!this.status.isDraft()) {
             throw new SalesOrderNotEditableError();
         }
         const line = this.lines.find((l) => l.id === lineId);
         if (!line) throw new SalesOrderLineNotFoundError(lineId);
-        line.update(quantity, unitPrice);
+        line.update(quantity, unitPrice, isGift);
         this.updatedAt = new Date();
     }
 
@@ -169,12 +240,23 @@ export class SalesOrder extends AggregateRoot<SalesOrderId> {
         this.updatedAt = new Date();
     }
 
+    public getLineSubtotal(): number {
+        return this.lines
+            .filter((l) => !l.isGift)
+            .reduce((sum, l) => sum + l.quantity * l.unitPrice, 0);
+    }
+
+    public getDiscountCode(): string | null { return this.discountCode; }
+    public getDiscountAmount(): number { return this.discountAmount; }
     public getCustomerName(): string { return this.customerName; }
     public getCustomerPhone(): string | null { return this.customerPhone; }
     public getCustomerContact(): string | null { return this.customerContact; }
     public getStatus(): SalesOrderStatus { return this.status; }
     public getNotes(): string | null { return this.notes; }
     public getShippedAt(): Date | null { return this.shippedAt; }
+    public getInvoiceNumber(): string | null { return this.invoiceNumber; }
+    public getPaymentStatus(): string | null { return this.paymentStatus; }
+    public getPaidAt(): Date | null { return this.paidAt; }
     public getLines(): SalesOrderLine[] { return [...this.lines]; }
     public getCreatedAt(): Date { return this.createdAt; }
     public getUpdatedAt(): Date { return this.updatedAt; }

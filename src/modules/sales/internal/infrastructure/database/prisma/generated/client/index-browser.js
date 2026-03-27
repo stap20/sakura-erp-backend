@@ -128,6 +128,24 @@ exports.Prisma.SalesOrderScalarFieldEnum = {
   status: 'status',
   notes: 'notes',
   shippedAt: 'shippedAt',
+  invoiceNumber: 'invoiceNumber',
+  paymentStatus: 'paymentStatus',
+  paidAt: 'paidAt',
+  discountCode: 'discountCode',
+  discountAmount: 'discountAmount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.DiscountCodeScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  type: 'type',
+  value: 'value',
+  maxUses: 'maxUses',
+  usedCount: 'usedCount',
+  expiresAt: 'expiresAt',
+  isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -139,7 +157,8 @@ exports.Prisma.SalesOrderLineScalarFieldEnum = {
   itemName: 'itemName',
   measureUnit: 'measureUnit',
   quantity: 'quantity',
-  unitPrice: 'unitPrice'
+  unitPrice: 'unitPrice',
+  isGift: 'isGift'
 };
 
 exports.Prisma.SortOrder = {
@@ -160,6 +179,7 @@ exports.Prisma.NullsOrder = {
 
 exports.Prisma.ModelName = {
   SalesOrder: 'SalesOrder',
+  DiscountCode: 'DiscountCode',
   SalesOrderLine: 'SalesOrderLine'
 };
 

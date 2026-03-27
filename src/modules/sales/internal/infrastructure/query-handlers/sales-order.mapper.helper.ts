@@ -10,6 +10,7 @@ export function mapToGetSalesOrderResponse(entity: SalesOrderEntity): GetSalesOr
         measureUnit: l.measureUnit,
         quantity: Number(l.quantity),
         unitPrice: Number(l.unitPrice),
+        isGift: (l as any).isGift ?? false,
     }));
 
     return new GetSalesOrderResponse(
@@ -20,6 +21,11 @@ export function mapToGetSalesOrderResponse(entity: SalesOrderEntity): GetSalesOr
         entity.status,
         entity.notes,
         entity.shippedAt,
+        (entity as any).invoiceNumber ?? null,
+        (entity as any).paymentStatus ?? null,
+        (entity as any).paidAt ?? null,
+        (entity as any).discountCode ?? null,
+        Number((entity as any).discountAmount ?? 0),
         lines,
         entity.createdAt,
         entity.updatedAt,
@@ -35,6 +41,11 @@ export function mapToGetAllSalesOrdersResponse(entity: SalesOrderEntity): GetAll
         entity.status,
         entity.notes,
         entity.shippedAt,
+        (entity as any).invoiceNumber ?? null,
+        (entity as any).paymentStatus ?? null,
+        (entity as any).paidAt ?? null,
+        (entity as any).discountCode ?? null,
+        Number((entity as any).discountAmount ?? 0),
         entity.lines.length,
         entity.createdAt,
         entity.updatedAt,

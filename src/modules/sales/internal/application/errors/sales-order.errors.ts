@@ -25,3 +25,33 @@ export class InsufficientStockForSaleError extends ConflictError {
         super(`Insufficient stock for item ${itemId}`);
     }
 }
+
+export class SalesOrderNotPayableApplicationError extends ConflictError {
+    constructor(orderId: string) {
+        super(`Sales order ${orderId} payment status is not PENDING and cannot be marked as paid`);
+    }
+}
+
+export class DiscountCodeNotFoundApplicationError extends NotFoundError {
+    constructor(code: string) {
+        super(`Discount code '${code}' not found`);
+    }
+}
+
+export class DiscountCodeIdNotFoundApplicationError extends NotFoundError {
+    constructor(id: string) {
+        super(`Discount code with id '${id}' not found`);
+    }
+}
+
+export class DiscountCodeInvalidApplicationError extends ConflictError {
+    constructor(reason: string) {
+        super(`Discount code is invalid: ${reason}`);
+    }
+}
+
+export class DiscountCodeDuplicateApplicationError extends ConflictError {
+    constructor(code: string) {
+        super(`Discount code '${code}' already exists`);
+    }
+}
