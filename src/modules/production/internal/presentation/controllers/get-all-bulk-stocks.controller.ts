@@ -1,6 +1,7 @@
 import { Controller, Get, Version, Inject } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { IGetAllBulkStocksHandler } from '../../application/queries/get-all-bulk-stocks/get-all-bulk-stocks.handler.interface';
+import { GetAllBulkStocksQuery } from '../../application/queries/get-all-bulk-stocks/get-all-bulk-stocks.query';
 import { BulkStockResponseDto } from '../dtos/responses/bulk-stock.response.dto';
 
 @ApiTags('Production')
@@ -16,7 +17,7 @@ export class GetAllBulkStocksController {
     @ApiOperation({ summary: 'Get available bulk stock for all products' })
     @ApiResponse({ status: 200, type: [BulkStockResponseDto] })
     async getAll(): Promise<BulkStockResponseDto[]> {
-        const results = await this.handler.handle();
+        const results = await this.handler.handle(new GetAllBulkStocksQuery());
         return results as BulkStockResponseDto[];
     }
 }
