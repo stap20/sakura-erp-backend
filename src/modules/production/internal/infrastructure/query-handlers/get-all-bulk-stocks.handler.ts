@@ -1,12 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ReadBulkStockRepository } from '../repositories/read-bulk-stock.repository';
+import { IGetAllBulkStocksHandler } from '../../application/queries/get-all-bulk-stocks/get-all-bulk-stocks.handler.interface';
 import { GetAllBulkStocksResponse } from '../../application/queries/get-all-bulk-stocks/get-all-bulk-stocks.response';
-
-export const IGetAllBulkStocksHandler = Symbol('IGetAllBulkStocksHandler');
-
-export interface IGetAllBulkStocksHandler {
-    handle(): Promise<GetAllBulkStocksResponse[]>;
-}
 
 @Injectable()
 export class GetAllBulkStocksHandler implements IGetAllBulkStocksHandler {

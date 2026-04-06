@@ -1,8 +1,6 @@
 import { Controller, Get, Version, Inject } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import {
-    IGetAllBulkStocksHandler,
-} from '../../infrastructure/query-handlers/get-all-bulk-stocks.handler';
+import { IGetAllBulkStocksHandler } from '../../application/queries/get-all-bulk-stocks/get-all-bulk-stocks.handler.interface';
 import { BulkStockResponseDto } from '../dtos/responses/bulk-stock.response.dto';
 
 @ApiTags('Production')

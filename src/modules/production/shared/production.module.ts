@@ -42,10 +42,8 @@ import { ExecuteFillingOrderHandler } from '../internal/application/commands/exe
 import { CancelFillingOrderHandler } from '../internal/application/commands/cancel-filling-order/cancel-filling-order.handler';
 
 // Query Handler Interfaces
-import {
-    IGetAllBulkStocksHandler,
-    GetAllBulkStocksHandler,
-} from '../internal/infrastructure/query-handlers/get-all-bulk-stocks.handler';
+import { IGetAllBulkStocksHandler } from '../internal/application/queries/get-all-bulk-stocks/get-all-bulk-stocks.handler.interface';
+import { GetAllBulkStocksHandler } from '../internal/infrastructure/query-handlers/get-all-bulk-stocks.handler';
 import { IGetProductionOrderHandler } from '../internal/application/queries/get-production-order/get-production-order.handler.interface';
 import { IGetAllProductionOrdersHandler } from '../internal/application/queries/get-all-production-orders/get-all-production-orders.handler.interface';
 import { IGetFillingOrderHandler } from '../internal/application/queries/get-filling-order/get-filling-order.handler.interface';
