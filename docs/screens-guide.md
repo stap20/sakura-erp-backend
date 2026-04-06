@@ -280,26 +280,40 @@ Show additional section:
 ## Screen 8 — Product List
 
 **Route:** `/inventory/products`
-**Purpose:** Browse formula families (products), each grouping FINAL_PRODUCT size variants.
+**Purpose:** Browse formula families (products) with production-readiness status and bulk availability at a glance.
 
 ### Layout
 ```
 ┌─ Products ─────────────────────────────── [+ New Product] ──────┐
 │  Search: [__________]                                           │
 ├─────────────────────────────────────────────────────────────────┤
-│  Name              │ Batch Size  │ Waste % │ Recipe  │ Actions  │
-│  Rose Body Butter  │ 10,000 gm   │ 5%      │ ACTIVE  │ [View]   │
-│  Lavender Scrub    │ 5,000 gm    │ 3%      │ DRAFT   │ [View]   │
-│  Argan Face Cream  │ —           │ —       │ —       │ [View]   │
+│  Name              │ Recipe        │ Bulk Available │ Actions   │
+│  Rose Body Butter  │ v3 · ACTIVE   │ 🟢 4,500 gm   │ [View]    │
+│  Lavender Scrub    │ v1 · DRAFT    │ 🔴 0 gm        │ [View]    │
+│  Argan Face Cream  │ —             │ —              │ [View]    │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
 ### Data & Actions
 | Action | API Call |
 |--------|----------|
-| Load | `GET /inventory/products` |
+| Load products | `GET /inventory/products?search=` |
+| Load bulk stocks | `GET /production/bulk-stocks` — fetched in parallel, joined client-side by `productId` |
+| Load recipe status per row | `GET /recipes/product/:productId/active` — called per row (parallel), shows `v{n} · STATUS` |
 | Create → modal | `POST /inventory/products` |
 | Row click | Navigate to `/inventory/products/:id` |
+
+### Column guide
+
+| Column | Source | Purpose |
+|--------|--------|---------|
+| **Recipe** | `GET /recipes/product/:id/active` | Shows `v3 · ACTIVE` or `v1 · DRAFT` or `—`. Production readiness flag — ACTIVE = ready to manufacture |
+| **Bulk Available** | `GET /production/bulk-stocks` joined by `productId` | Grams of mixed bulk in tank. 🟢 >500 gm / 🔴 =0 gm / `—` if never produced |
+
+### UX Notes
+- Fetch products + bulk stocks in parallel (`Promise.all`) — join on `productId` client-side
+- Recipe column: call `GET /recipes/product/:productId/active` per row with `Promise.all` — shows version number + status
+- Products with no bulk stock entry yet show `—` (not `0 gm`) — means production has never run for that product
 
 ---
 

@@ -17,6 +17,9 @@ import { ConfirmProductionOrderController } from '../internal/presentation/contr
 import { ExecuteProductionOrderController } from '../internal/presentation/controllers/execute-production-order.controller';
 import { CancelProductionOrderController } from '../internal/presentation/controllers/cancel-production-order.controller';
 
+// Controllers — Bulk Stock
+import { GetAllBulkStocksController } from '../internal/presentation/controllers/get-all-bulk-stocks.controller';
+
 // Controllers — Filling Orders
 import { CreateFillingOrderController } from '../internal/presentation/controllers/create-filling-order.controller';
 import { GetAllFillingOrdersController } from '../internal/presentation/controllers/get-all-filling-orders.controller';
@@ -39,6 +42,10 @@ import { ExecuteFillingOrderHandler } from '../internal/application/commands/exe
 import { CancelFillingOrderHandler } from '../internal/application/commands/cancel-filling-order/cancel-filling-order.handler';
 
 // Query Handler Interfaces
+import {
+    IGetAllBulkStocksHandler,
+    GetAllBulkStocksHandler,
+} from '../internal/infrastructure/query-handlers/get-all-bulk-stocks.handler';
 import { IGetProductionOrderHandler } from '../internal/application/queries/get-production-order/get-production-order.handler.interface';
 import { IGetAllProductionOrdersHandler } from '../internal/application/queries/get-all-production-orders/get-all-production-orders.handler.interface';
 import { IGetFillingOrderHandler } from '../internal/application/queries/get-filling-order/get-filling-order.handler.interface';
@@ -56,6 +63,7 @@ import { ReadProductionOrderRepository } from '../internal/infrastructure/reposi
 import { FillingOrderRepository } from '../internal/infrastructure/repositories/filling-order.repository';
 import { ReadFillingOrderRepository } from '../internal/infrastructure/repositories/read-filling-order.repository';
 import { BulkStockRepository } from '../internal/infrastructure/repositories/bulk-stock.repository';
+import { ReadBulkStockRepository } from '../internal/infrastructure/repositories/read-bulk-stock.repository';
 
 // Mappers
 import { ProductionOrderMapper } from '../internal/infrastructure/database/mappers/production-order.mapper';
@@ -108,6 +116,10 @@ import { NestLogger } from 'src/shared/infrastructure/logger/nest-logger';
         ExecuteFillingOrderHandler,
         CancelFillingOrderHandler,
 
+        // Query Handler Bindings — Bulk Stock
+        { provide: IGetAllBulkStocksHandler, useClass: GetAllBulkStocksHandler },
+        ReadBulkStockRepository,
+
         // Query Handler Bindings
         { provide: IGetProductionOrderHandler, useClass: GetProductionOrderHandler },
         { provide: IGetAllProductionOrdersHandler, useClass: GetAllProductionOrdersHandler },
@@ -136,6 +148,7 @@ import { NestLogger } from 'src/shared/infrastructure/logger/nest-logger';
         ConfirmProductionOrderController,
         ExecuteProductionOrderController,
         CancelProductionOrderController,
+        GetAllBulkStocksController,
         CreateFillingOrderController,
         GetAllFillingOrdersController,
         GetFillingOrderByIdController,
