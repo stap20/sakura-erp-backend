@@ -35,22 +35,42 @@ export class ExecuteProductionOrderHandler extends CommandHandlerBase<ExecutePro
         const recipe = await this.recipeGateway.getActiveRecipeByProduct(order.getProductId());
         if (!recipe) throw new ActiveRecipeNotFoundApplicationError(order.getProductId());
 
-        // Deduct ingredients (non-add-on only)
+        // Deduct ingredients
         for (const ingredient of recipe.ingredients) {
-            if (ingredient.isAddOn || !ingredient.itemId) continue;
+            if (!ingredient.isAddOn && ingredient.itemId) {
+                // Base ingredient — deduct directly
+                const qty = order.getBatchWeightGm()
+                    * (ingredient.percentage / 100)
+                    * (1 + order.getWastePercent() / 100);
 
-            const qty = order.getBatchWeightGm()
-                * (ingredient.percentage / 100)
-                * (1 + order.getWastePercent() / 100);
+                await this.inventoryGateway.deductItem(
+                    new DeductItemDto(
+                        ingredient.itemId,
+                        qty,
+                        'SYSTEM',
+                        `Production order ${order.getId().value}`,
+                    ),
+                );
+            } else if (ingredient.isAddOn && ingredient.resolutionPhase === 'BULK') {
+                // BULK add-on — resolve to a concrete item via addonResolutions
+                const resolution = order.getAddonResolutions()
+                    .find((r) => r.ingredientCategory === ingredient.ingredientCategory);
+                if (!resolution) continue;
 
-            await this.inventoryGateway.deductItem(
-                new DeductItemDto(
-                    ingredient.itemId,
-                    qty,
-                    'SYSTEM',
-                    `Production order ${order.getId().value}`,
-                ),
-            );
+                const qty = order.getBatchWeightGm()
+                    * (ingredient.percentage / 100)
+                    * (1 + order.getWastePercent() / 100);
+
+                await this.inventoryGateway.deductItem(
+                    new DeductItemDto(
+                        resolution.addonItemId,
+                        qty,
+                        'SYSTEM',
+                        `Production order ${order.getId().value}`,
+                    ),
+                );
+            }
+            // FILLING add-ons: skip here, handled at filling time
         }
 
         // Execute the order

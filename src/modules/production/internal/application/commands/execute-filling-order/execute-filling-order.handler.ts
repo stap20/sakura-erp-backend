@@ -8,6 +8,7 @@ import {
     BulkStockNotFoundApplicationError,
 } from '../../errors/production.errors';
 import { InventoryGateway } from '../../../infrastructure/gateways/inventory.gateway';
+import { RecipeGateway } from '../../../infrastructure/gateways/recipe.gateway';
 import { RestockItemDto } from 'src/modules/inventory/shared/contracts/restock-item.dto';
 import { DeductItemDto } from 'src/modules/inventory/shared/contracts/deduct-item.dto';
 import { ExecuteFillingOrderCommand } from './execute-filling-order.command';
@@ -20,6 +21,7 @@ export class ExecuteFillingOrderHandler extends CommandHandlerBase<ExecuteFillin
         @Inject(IBulkStockRepository)
         private readonly bulkStockRepo: IBulkStockRepository,
         private readonly inventoryGateway: InventoryGateway,
+        private readonly recipeGateway: RecipeGateway,
     ) {
         super();
     }
@@ -34,7 +36,13 @@ export class ExecuteFillingOrderHandler extends CommandHandlerBase<ExecuteFillin
         if (!bulkStock) throw new BulkStockNotFoundApplicationError(order.getProductId());
         bulkStock.deductBulk(order.getBulkUsedGm());
 
-        // Per line: restock variant + deduct packaging components
+        // Fetch active recipe once — needed for FILLING add-on deduction
+        const recipe = await this.recipeGateway.getActiveRecipeByProduct(order.getProductId());
+        const fillingAddOns = recipe
+            ? recipe.ingredients.filter((i) => i.isAddOn && i.resolutionPhase === 'FILLING')
+            : [];
+
+        // Per line: restock variant + deduct packaging + deduct FILLING add-ons
         for (const line of order.getLines()) {
             // Restock the variant item
             await this.inventoryGateway.restockItem(
@@ -48,7 +56,7 @@ export class ExecuteFillingOrderHandler extends CommandHandlerBase<ExecuteFillin
                 ),
             );
 
-            // Get item to find packaging components
+            // Get item to find packaging + addon components
             const item = await this.inventoryGateway.getItem(line.getVariantItemId());
             if (item && item.packagingComponents) {
                 for (const component of item.packagingComponents) {
@@ -57,6 +65,28 @@ export class ExecuteFillingOrderHandler extends CommandHandlerBase<ExecuteFillin
                         new DeductItemDto(
                             component.packagingItemId,
                             totalQty,
+                            'SYSTEM',
+                            `Filling order ${order.getId().value}`,
+                        ),
+                    );
+                }
+            }
+
+            // Deduct FILLING add-ons (e.g. colorant applied per-variant during filling)
+            if (item && item.addonComponents && fillingAddOns.length > 0) {
+                for (const addon of fillingAddOns) {
+                    const addonComponent = item.addonComponents
+                        .find((a) => a.ingredientCategory === addon.ingredientCategory);
+                    if (!addonComponent) continue;
+
+                    const qty = (addon.percentage / 100)
+                        * line.getUnitWeightGm()
+                        * line.getQuantityUnits();
+
+                    await this.inventoryGateway.deductItem(
+                        new DeductItemDto(
+                            addonComponent.addonItemId,
+                            qty,
                             'SYSTEM',
                             `Filling order ${order.getId().value}`,
                         ),
