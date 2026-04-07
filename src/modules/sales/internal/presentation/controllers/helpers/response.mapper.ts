@@ -61,6 +61,7 @@ export function toItemPricingResponseDto(response: GetItemPricingResponse): Item
     dto.laborCostPerUnit = response.laborCostPerUnit;
     dto.depreciationCostPerUnit = response.depreciationCostPerUnit;
     dto.packagingCostPerUnit = response.packagingCostPerUnit;
+    dto.addonCostPerUnit = response.addonCostPerUnit;
     dto.totalCogs = response.totalCogs;
     dto.marginPercent = response.marginPercent;
     dto.suggestedPrice = response.suggestedPrice;

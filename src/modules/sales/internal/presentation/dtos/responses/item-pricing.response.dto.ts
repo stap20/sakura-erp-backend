@@ -8,6 +8,7 @@ export class ItemPricingResponseDto {
     @ApiProperty() laborCostPerUnit: number;
     @ApiProperty() depreciationCostPerUnit: number;
     @ApiProperty() packagingCostPerUnit: number;
+    @ApiProperty() addonCostPerUnit: number;
     @ApiProperty() totalCogs: number;
     @ApiProperty() marginPercent: number;
     @ApiProperty() suggestedPrice: number;

@@ -48,6 +48,7 @@ export class GetItemPricingHandler implements IGetItemPricingHandler {
         if (!recipe) throw new NotFoundError(`No active recipe found for product ${item.productId}`);
 
         const baseIngredients = recipe.ingredients.filter((i) => !i.isAddOn);
+        const addOnIngredients = recipe.ingredients.filter((i) => i.isAddOn);
 
         // 4. Get cost config
         const costConfig = await this.settingsGateway.getCostConfig();
@@ -85,8 +86,20 @@ export class GetItemPricingHandler implements IGetItemPricingHandler {
             packagingPerUnit += component.qtyPerUnit * waup;
         }
 
+        // Add-on cost per unit (uses AddonBOM on the variant item)
+        let addonPerUnit = 0;
+        for (const addon of addOnIngredients) {
+            const addonComponent = item.addonComponents
+                .find((a) => a.ingredientCategory === addon.ingredientCategory);
+            if (!addonComponent) continue;
+            const addonItem = await this.inventoryGateway.getItem(addonComponent.addonItemId);
+            if (!addonItem) continue;
+            const waup = addonItem.weightedAverageUnitPrice ?? 0;
+            addonPerUnit += (addon.percentage / 100) * (item.unitWeightGm ?? 0) * waup;
+        }
+
         // Total COGS and suggested price
-        const totalCogs = materialPerUnit + laborPerUnit + depreciationPerUnit + packagingPerUnit;
+        const totalCogs = materialPerUnit + laborPerUnit + depreciationPerUnit + packagingPerUnit + addonPerUnit;
         const suggestedPrice = totalCogs * (1 + costConfig.defaultMarginPercent / 100);
 
         return new GetItemPricingResponse(
@@ -97,6 +110,7 @@ export class GetItemPricingHandler implements IGetItemPricingHandler {
             laborPerUnit,
             depreciationPerUnit,
             packagingPerUnit,
+            addonPerUnit,
             totalCogs,
             costConfig.defaultMarginPercent,
             suggestedPrice,

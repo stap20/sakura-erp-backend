@@ -7,6 +7,7 @@ export class GetItemPricingResponse {
         public readonly laborCostPerUnit: number,
         public readonly depreciationCostPerUnit: number,
         public readonly packagingCostPerUnit: number,
+        public readonly addonCostPerUnit: number,
         public readonly totalCogs: number,
         public readonly marginPercent: number,
         public readonly suggestedPrice: number,
