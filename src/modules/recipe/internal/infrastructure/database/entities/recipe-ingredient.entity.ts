@@ -7,6 +7,7 @@ export class RecipeIngredientEntity {
     ingredientCategory: string | null;
     quantity: any; // Prisma Decimal
     notes: string | null;
+    resolutionPhase: string;
 
     constructor(data: Partial<RecipeIngredientEntity>) {
         Object.assign(this, data);

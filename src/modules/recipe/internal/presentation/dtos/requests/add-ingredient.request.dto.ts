@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsOptional, IsBoolean, IsPositive, Max, ValidateIf } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsBoolean, IsPositive, Max, ValidateIf, IsIn } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 
@@ -36,4 +36,9 @@ export class AddIngredientRequestDto {
     @IsOptional()
     @IsString()
     notes?: string;
+
+    @ApiPropertyOptional({ example: 'FILLING', enum: ['BULK', 'FILLING'], default: 'FILLING', description: 'When to deduct this add-on: BULK (Phase 1) or FILLING (Phase 2). Only applies when isAddOn=true.' })
+    @IsOptional()
+    @IsIn(['BULK', 'FILLING'])
+    resolutionPhase?: string;
 }

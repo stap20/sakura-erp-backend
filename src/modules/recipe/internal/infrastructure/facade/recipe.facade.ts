@@ -16,13 +16,13 @@ export class RecipeFacade implements IRecipeFacade {
             entity.id,
             entity.productId,
             entity.versionNumber,
-            entity.ingredients
-                .filter((i) => i.itemId !== null)
-                .map((i) => ({
-                    itemId: i.itemId!,
-                    percentage: Number(i.quantity),
-                    isAddOn: i.isAddOn,
-                })),
+            entity.ingredients.map((i) => ({
+                itemId: i.itemId ?? null,
+                ingredientCategory: i.ingredientCategory ?? null,
+                percentage: Number(i.quantity),
+                isAddOn: i.isAddOn,
+                resolutionPhase: i.resolutionPhase ?? 'FILLING',
+            })),
         );
     }
 }

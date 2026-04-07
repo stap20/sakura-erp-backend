@@ -37,7 +37,7 @@ export class ExecuteProductionOrderHandler extends CommandHandlerBase<ExecutePro
 
         // Deduct ingredients (non-add-on only)
         for (const ingredient of recipe.ingredients) {
-            if (ingredient.isAddOn) continue;
+            if (ingredient.isAddOn || !ingredient.itemId) continue;
 
             const qty = order.getBatchWeightGm()
                 * (ingredient.percentage / 100)

@@ -7,5 +7,6 @@ export class AddIngredientCommand {
         public readonly itemId?: string | null,
         public readonly itemName?: string | null,
         public readonly ingredientCategory?: string | null,
+        public readonly resolutionPhase?: string,
     ) {}
 }

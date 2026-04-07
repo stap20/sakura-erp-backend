@@ -17,6 +17,7 @@ export class RecipeVersionMapper {
                     ingredientCategory: i.ingredientCategory,
                     quantity: Number(i.quantity),
                     notes: i.notes,
+                    resolutionPhase: i.resolutionPhase ?? 'FILLING',
                 }),
         );
 
@@ -45,6 +46,7 @@ export class RecipeVersionMapper {
             ingredientCategory: ingredient.ingredientCategory,
             quantity: ingredient.quantity,
             notes: ingredient.notes,
+            resolutionPhase: ingredient.resolutionPhase,
         };
     }
 }

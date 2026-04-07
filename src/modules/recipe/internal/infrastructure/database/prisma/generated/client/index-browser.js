@@ -138,7 +138,8 @@ exports.Prisma.RecipeIngredientScalarFieldEnum = {
   isAddOn: 'isAddOn',
   ingredientCategory: 'ingredientCategory',
   quantity: 'quantity',
-  notes: 'notes'
+  notes: 'notes',
+  resolutionPhase: 'resolutionPhase'
 };
 
 exports.Prisma.SortOrder = {
