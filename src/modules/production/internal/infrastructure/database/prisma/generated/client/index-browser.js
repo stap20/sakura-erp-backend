@@ -133,6 +133,13 @@ exports.Prisma.ProductionOrderScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ProductionOrderAddonResolutionScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  ingredientCategory: 'ingredientCategory',
+  addonItemId: 'addonItemId'
+};
+
 exports.Prisma.FillingOrderScalarFieldEnum = {
   id: 'id',
   productId: 'productId',
@@ -180,6 +187,7 @@ exports.Prisma.NullsOrder = {
 
 exports.Prisma.ModelName = {
   ProductionOrder: 'ProductionOrder',
+  ProductionOrderAddonResolution: 'ProductionOrderAddonResolution',
   FillingOrder: 'FillingOrder',
   FillingOrderLine: 'FillingOrderLine',
   BulkStock: 'BulkStock'

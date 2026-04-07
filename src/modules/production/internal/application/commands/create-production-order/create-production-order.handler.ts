@@ -2,6 +2,7 @@ import { Injectable, Inject } from '@nestjs/common';
 import { CommandHandlerBase } from 'src/shared/application/command.handler.base';
 import { IProductionOrderRepository } from '../../../domain/repositories/production-order.repo.interface';
 import { ProductionOrder } from '../../../domain/aggregates/production-order.aggregate';
+import { AddonResolution } from '../../../domain/value-objects/addon-resolution.vo';
 import { CreateProductionOrderCommand } from './create-production-order.command';
 import { InventoryGateway } from '../../../infrastructure/gateways/inventory.gateway';
 import { ProductNotFoundApplicationError } from '../../errors/production.errors';
@@ -29,6 +30,9 @@ export class CreateProductionOrderHandler extends CommandHandlerBase<
             batchWeightGm: command.batchWeightGm,
             wastePercent: command.wastePercent,
             notes: command.notes,
+            addonResolutions: (command.addonResolutions ?? []).map(
+                (r) => new AddonResolution(r.ingredientCategory, r.addonItemId),
+            ),
         });
 
         await this.repo.save(order);

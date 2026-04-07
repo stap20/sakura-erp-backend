@@ -29,6 +29,7 @@ export class CreateProductionOrderController {
             dto.batchWeightGm,
             dto.wastePercent,
             dto.notes,
+            dto.addonResolutions,
         );
         const id = await this.handler.handle(command);
         const result = await this.getHandler.handle(new GetProductionOrderQuery(id));

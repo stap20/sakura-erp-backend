@@ -2,6 +2,7 @@ import { AggregateRoot } from 'src/shared/domain/aggregate-root';
 import { ProductionOrderId } from '../value-objects/production-order-id.vo';
 import { ProductionOrderStatus } from '../value-objects/production-order-status.vo';
 import { ProductionOrderNotEditableError } from '../errors/production.error';
+import { AddonResolution } from '../value-objects/addon-resolution.vo';
 
 export interface CreateProductionOrderParams {
     id: string;
@@ -9,6 +10,7 @@ export interface CreateProductionOrderParams {
     batchWeightGm: number;
     wastePercent?: number;
     notes?: string | null;
+    addonResolutions?: AddonResolution[];
 }
 
 export interface PersistenceProductionOrderParams {
@@ -22,6 +24,7 @@ export interface PersistenceProductionOrderParams {
     executedAt: Date | null;
     createdAt: Date;
     updatedAt: Date;
+    addonResolutions?: AddonResolution[];
 }
 
 export interface UpdateProductionOrderParams {
@@ -40,6 +43,7 @@ export class ProductionOrder extends AggregateRoot<ProductionOrderId> {
     private executedAt: Date | null;
     private createdAt: Date;
     private updatedAt: Date;
+    private addonResolutions: AddonResolution[];
 
     private constructor(
         id: ProductionOrderId,
@@ -52,6 +56,7 @@ export class ProductionOrder extends AggregateRoot<ProductionOrderId> {
         executedAt: Date | null,
         createdAt: Date,
         updatedAt: Date,
+        addonResolutions: AddonResolution[] = [],
     ) {
         super(id);
         this.productId = productId;
@@ -63,6 +68,7 @@ export class ProductionOrder extends AggregateRoot<ProductionOrderId> {
         this.executedAt = executedAt;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.addonResolutions = addonResolutions;
     }
 
     public static create(params: CreateProductionOrderParams): ProductionOrder {
@@ -78,6 +84,7 @@ export class ProductionOrder extends AggregateRoot<ProductionOrderId> {
             null,
             now,
             now,
+            params.addonResolutions ?? [],
         );
     }
 
@@ -93,6 +100,7 @@ export class ProductionOrder extends AggregateRoot<ProductionOrderId> {
             params.executedAt,
             params.createdAt,
             params.updatedAt,
+            params.addonResolutions ?? [],
         );
     }
 
@@ -132,6 +140,7 @@ export class ProductionOrder extends AggregateRoot<ProductionOrderId> {
         this.updatedAt = new Date();
     }
 
+    public getAddonResolutions(): AddonResolution[] { return this.addonResolutions; }
     public getProductId(): string { return this.productId; }
     public getBatchWeightGm(): number { return this.batchWeightGm; }
     public getWastePercent(): number { return this.wastePercent; }

@@ -19,6 +19,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type ProductionOrder = $Result.DefaultSelection<Prisma.$ProductionOrderPayload>
 /**
+ * Model ProductionOrderAddonResolution
+ * 
+ */
+export type ProductionOrderAddonResolution = $Result.DefaultSelection<Prisma.$ProductionOrderAddonResolutionPayload>
+/**
  * Model FillingOrder
  * 
  */
@@ -164,6 +169,16 @@ export class PrismaClient<
     * ```
     */
   get productionOrder(): Prisma.ProductionOrderDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.productionOrderAddonResolution`: Exposes CRUD operations for the **ProductionOrderAddonResolution** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ProductionOrderAddonResolutions
+    * const productionOrderAddonResolutions = await prisma.productionOrderAddonResolution.findMany()
+    * ```
+    */
+  get productionOrderAddonResolution(): Prisma.ProductionOrderAddonResolutionDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.fillingOrder`: Exposes CRUD operations for the **FillingOrder** model.
@@ -629,6 +644,7 @@ export namespace Prisma {
 
   export const ModelName: {
     ProductionOrder: 'ProductionOrder',
+    ProductionOrderAddonResolution: 'ProductionOrderAddonResolution',
     FillingOrder: 'FillingOrder',
     FillingOrderLine: 'FillingOrderLine',
     BulkStock: 'BulkStock'
@@ -647,7 +663,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "productionOrder" | "fillingOrder" | "fillingOrderLine" | "bulkStock"
+      modelProps: "productionOrder" | "productionOrderAddonResolution" | "fillingOrder" | "fillingOrderLine" | "bulkStock"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -722,6 +738,80 @@ export namespace Prisma {
           count: {
             args: Prisma.ProductionOrderCountArgs<ExtArgs>
             result: $Utils.Optional<ProductionOrderCountAggregateOutputType> | number
+          }
+        }
+      }
+      ProductionOrderAddonResolution: {
+        payload: Prisma.$ProductionOrderAddonResolutionPayload<ExtArgs>
+        fields: Prisma.ProductionOrderAddonResolutionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ProductionOrderAddonResolutionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductionOrderAddonResolutionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ProductionOrderAddonResolutionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductionOrderAddonResolutionPayload>
+          }
+          findFirst: {
+            args: Prisma.ProductionOrderAddonResolutionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductionOrderAddonResolutionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ProductionOrderAddonResolutionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductionOrderAddonResolutionPayload>
+          }
+          findMany: {
+            args: Prisma.ProductionOrderAddonResolutionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductionOrderAddonResolutionPayload>[]
+          }
+          create: {
+            args: Prisma.ProductionOrderAddonResolutionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductionOrderAddonResolutionPayload>
+          }
+          createMany: {
+            args: Prisma.ProductionOrderAddonResolutionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ProductionOrderAddonResolutionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductionOrderAddonResolutionPayload>[]
+          }
+          delete: {
+            args: Prisma.ProductionOrderAddonResolutionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductionOrderAddonResolutionPayload>
+          }
+          update: {
+            args: Prisma.ProductionOrderAddonResolutionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductionOrderAddonResolutionPayload>
+          }
+          deleteMany: {
+            args: Prisma.ProductionOrderAddonResolutionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ProductionOrderAddonResolutionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ProductionOrderAddonResolutionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductionOrderAddonResolutionPayload>[]
+          }
+          upsert: {
+            args: Prisma.ProductionOrderAddonResolutionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductionOrderAddonResolutionPayload>
+          }
+          aggregate: {
+            args: Prisma.ProductionOrderAddonResolutionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateProductionOrderAddonResolution>
+          }
+          groupBy: {
+            args: Prisma.ProductionOrderAddonResolutionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ProductionOrderAddonResolutionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ProductionOrderAddonResolutionCountArgs<ExtArgs>
+            result: $Utils.Optional<ProductionOrderAddonResolutionCountAggregateOutputType> | number
           }
         }
       }
@@ -1056,6 +1146,7 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     productionOrder?: ProductionOrderOmit
+    productionOrderAddonResolution?: ProductionOrderAddonResolutionOmit
     fillingOrder?: FillingOrderOmit
     fillingOrderLine?: FillingOrderLineOmit
     bulkStock?: BulkStockOmit
@@ -1132,6 +1223,37 @@ export namespace Prisma {
   /**
    * Count Types
    */
+
+
+  /**
+   * Count Type ProductionOrderCountOutputType
+   */
+
+  export type ProductionOrderCountOutputType = {
+    addonResolutions: number
+  }
+
+  export type ProductionOrderCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    addonResolutions?: boolean | ProductionOrderCountOutputTypeCountAddonResolutionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ProductionOrderCountOutputType without action
+   */
+  export type ProductionOrderCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductionOrderCountOutputType
+     */
+    select?: ProductionOrderCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ProductionOrderCountOutputType without action
+   */
+  export type ProductionOrderCountOutputTypeCountAddonResolutionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProductionOrderAddonResolutionWhereInput
+  }
 
 
   /**
@@ -1411,6 +1533,8 @@ export namespace Prisma {
     executedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    addonResolutions?: boolean | ProductionOrder$addonResolutionsArgs<ExtArgs>
+    _count?: boolean | ProductionOrderCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["productionOrder"]>
 
   export type ProductionOrderSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1453,10 +1577,18 @@ export namespace Prisma {
   }
 
   export type ProductionOrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productId" | "batchWeightGm" | "wastePercent" | "notes" | "status" | "performedBy" | "executedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["productionOrder"]>
+  export type ProductionOrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    addonResolutions?: boolean | ProductionOrder$addonResolutionsArgs<ExtArgs>
+    _count?: boolean | ProductionOrderCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ProductionOrderIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type ProductionOrderIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $ProductionOrderPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "ProductionOrder"
-    objects: {}
+    objects: {
+      addonResolutions: Prisma.$ProductionOrderAddonResolutionPayload<ExtArgs>[]
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       productId: string
@@ -1862,6 +1994,7 @@ export namespace Prisma {
    */
   export interface Prisma__ProductionOrderClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    addonResolutions<T extends ProductionOrder$addonResolutionsArgs<ExtArgs> = {}>(args?: Subset<T, ProductionOrder$addonResolutionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductionOrderAddonResolutionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1918,6 +2051,10 @@ export namespace Prisma {
      */
     omit?: ProductionOrderOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductionOrderInclude<ExtArgs> | null
+    /**
      * Filter, which ProductionOrder to fetch.
      */
     where: ProductionOrderWhereUniqueInput
@@ -1936,6 +2073,10 @@ export namespace Prisma {
      */
     omit?: ProductionOrderOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductionOrderInclude<ExtArgs> | null
+    /**
      * Filter, which ProductionOrder to fetch.
      */
     where: ProductionOrderWhereUniqueInput
@@ -1953,6 +2094,10 @@ export namespace Prisma {
      * Omit specific fields from the ProductionOrder
      */
     omit?: ProductionOrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductionOrderInclude<ExtArgs> | null
     /**
      * Filter, which ProductionOrder to fetch.
      */
@@ -2002,6 +2147,10 @@ export namespace Prisma {
      */
     omit?: ProductionOrderOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductionOrderInclude<ExtArgs> | null
+    /**
      * Filter, which ProductionOrder to fetch.
      */
     where?: ProductionOrderWhereInput
@@ -2050,6 +2199,10 @@ export namespace Prisma {
      */
     omit?: ProductionOrderOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductionOrderInclude<ExtArgs> | null
+    /**
      * Filter, which ProductionOrders to fetch.
      */
     where?: ProductionOrderWhereInput
@@ -2092,6 +2245,10 @@ export namespace Prisma {
      * Omit specific fields from the ProductionOrder
      */
     omit?: ProductionOrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductionOrderInclude<ExtArgs> | null
     /**
      * The data needed to create a ProductionOrder.
      */
@@ -2140,6 +2297,10 @@ export namespace Prisma {
      * Omit specific fields from the ProductionOrder
      */
     omit?: ProductionOrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductionOrderInclude<ExtArgs> | null
     /**
      * The data needed to update a ProductionOrder.
      */
@@ -2207,6 +2368,10 @@ export namespace Prisma {
      */
     omit?: ProductionOrderOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductionOrderInclude<ExtArgs> | null
+    /**
      * The filter to search for the ProductionOrder to update in case it exists.
      */
     where: ProductionOrderWhereUniqueInput
@@ -2233,6 +2398,10 @@ export namespace Prisma {
      */
     omit?: ProductionOrderOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductionOrderInclude<ExtArgs> | null
+    /**
      * Filter which ProductionOrder to delete.
      */
     where: ProductionOrderWhereUniqueInput
@@ -2253,6 +2422,30 @@ export namespace Prisma {
   }
 
   /**
+   * ProductionOrder.addonResolutions
+   */
+  export type ProductionOrder$addonResolutionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductionOrderAddonResolution
+     */
+    select?: ProductionOrderAddonResolutionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductionOrderAddonResolution
+     */
+    omit?: ProductionOrderAddonResolutionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductionOrderAddonResolutionInclude<ExtArgs> | null
+    where?: ProductionOrderAddonResolutionWhereInput
+    orderBy?: ProductionOrderAddonResolutionOrderByWithRelationInput | ProductionOrderAddonResolutionOrderByWithRelationInput[]
+    cursor?: ProductionOrderAddonResolutionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProductionOrderAddonResolutionScalarFieldEnum | ProductionOrderAddonResolutionScalarFieldEnum[]
+  }
+
+  /**
    * ProductionOrder without action
    */
   export type ProductionOrderDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2264,6 +2457,1055 @@ export namespace Prisma {
      * Omit specific fields from the ProductionOrder
      */
     omit?: ProductionOrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductionOrderInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ProductionOrderAddonResolution
+   */
+
+  export type AggregateProductionOrderAddonResolution = {
+    _count: ProductionOrderAddonResolutionCountAggregateOutputType | null
+    _min: ProductionOrderAddonResolutionMinAggregateOutputType | null
+    _max: ProductionOrderAddonResolutionMaxAggregateOutputType | null
+  }
+
+  export type ProductionOrderAddonResolutionMinAggregateOutputType = {
+    id: string | null
+    orderId: string | null
+    ingredientCategory: string | null
+    addonItemId: string | null
+  }
+
+  export type ProductionOrderAddonResolutionMaxAggregateOutputType = {
+    id: string | null
+    orderId: string | null
+    ingredientCategory: string | null
+    addonItemId: string | null
+  }
+
+  export type ProductionOrderAddonResolutionCountAggregateOutputType = {
+    id: number
+    orderId: number
+    ingredientCategory: number
+    addonItemId: number
+    _all: number
+  }
+
+
+  export type ProductionOrderAddonResolutionMinAggregateInputType = {
+    id?: true
+    orderId?: true
+    ingredientCategory?: true
+    addonItemId?: true
+  }
+
+  export type ProductionOrderAddonResolutionMaxAggregateInputType = {
+    id?: true
+    orderId?: true
+    ingredientCategory?: true
+    addonItemId?: true
+  }
+
+  export type ProductionOrderAddonResolutionCountAggregateInputType = {
+    id?: true
+    orderId?: true
+    ingredientCategory?: true
+    addonItemId?: true
+    _all?: true
+  }
+
+  export type ProductionOrderAddonResolutionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProductionOrderAddonResolution to aggregate.
+     */
+    where?: ProductionOrderAddonResolutionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProductionOrderAddonResolutions to fetch.
+     */
+    orderBy?: ProductionOrderAddonResolutionOrderByWithRelationInput | ProductionOrderAddonResolutionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ProductionOrderAddonResolutionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProductionOrderAddonResolutions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProductionOrderAddonResolutions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ProductionOrderAddonResolutions
+    **/
+    _count?: true | ProductionOrderAddonResolutionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ProductionOrderAddonResolutionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ProductionOrderAddonResolutionMaxAggregateInputType
+  }
+
+  export type GetProductionOrderAddonResolutionAggregateType<T extends ProductionOrderAddonResolutionAggregateArgs> = {
+        [P in keyof T & keyof AggregateProductionOrderAddonResolution]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateProductionOrderAddonResolution[P]>
+      : GetScalarType<T[P], AggregateProductionOrderAddonResolution[P]>
+  }
+
+
+
+
+  export type ProductionOrderAddonResolutionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProductionOrderAddonResolutionWhereInput
+    orderBy?: ProductionOrderAddonResolutionOrderByWithAggregationInput | ProductionOrderAddonResolutionOrderByWithAggregationInput[]
+    by: ProductionOrderAddonResolutionScalarFieldEnum[] | ProductionOrderAddonResolutionScalarFieldEnum
+    having?: ProductionOrderAddonResolutionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ProductionOrderAddonResolutionCountAggregateInputType | true
+    _min?: ProductionOrderAddonResolutionMinAggregateInputType
+    _max?: ProductionOrderAddonResolutionMaxAggregateInputType
+  }
+
+  export type ProductionOrderAddonResolutionGroupByOutputType = {
+    id: string
+    orderId: string
+    ingredientCategory: string
+    addonItemId: string
+    _count: ProductionOrderAddonResolutionCountAggregateOutputType | null
+    _min: ProductionOrderAddonResolutionMinAggregateOutputType | null
+    _max: ProductionOrderAddonResolutionMaxAggregateOutputType | null
+  }
+
+  type GetProductionOrderAddonResolutionGroupByPayload<T extends ProductionOrderAddonResolutionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ProductionOrderAddonResolutionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ProductionOrderAddonResolutionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ProductionOrderAddonResolutionGroupByOutputType[P]>
+            : GetScalarType<T[P], ProductionOrderAddonResolutionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ProductionOrderAddonResolutionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    orderId?: boolean
+    ingredientCategory?: boolean
+    addonItemId?: boolean
+    order?: boolean | ProductionOrderDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["productionOrderAddonResolution"]>
+
+  export type ProductionOrderAddonResolutionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    orderId?: boolean
+    ingredientCategory?: boolean
+    addonItemId?: boolean
+    order?: boolean | ProductionOrderDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["productionOrderAddonResolution"]>
+
+  export type ProductionOrderAddonResolutionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    orderId?: boolean
+    ingredientCategory?: boolean
+    addonItemId?: boolean
+    order?: boolean | ProductionOrderDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["productionOrderAddonResolution"]>
+
+  export type ProductionOrderAddonResolutionSelectScalar = {
+    id?: boolean
+    orderId?: boolean
+    ingredientCategory?: boolean
+    addonItemId?: boolean
+  }
+
+  export type ProductionOrderAddonResolutionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderId" | "ingredientCategory" | "addonItemId", ExtArgs["result"]["productionOrderAddonResolution"]>
+  export type ProductionOrderAddonResolutionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    order?: boolean | ProductionOrderDefaultArgs<ExtArgs>
+  }
+  export type ProductionOrderAddonResolutionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    order?: boolean | ProductionOrderDefaultArgs<ExtArgs>
+  }
+  export type ProductionOrderAddonResolutionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    order?: boolean | ProductionOrderDefaultArgs<ExtArgs>
+  }
+
+  export type $ProductionOrderAddonResolutionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ProductionOrderAddonResolution"
+    objects: {
+      order: Prisma.$ProductionOrderPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      orderId: string
+      ingredientCategory: string
+      addonItemId: string
+    }, ExtArgs["result"]["productionOrderAddonResolution"]>
+    composites: {}
+  }
+
+  type ProductionOrderAddonResolutionGetPayload<S extends boolean | null | undefined | ProductionOrderAddonResolutionDefaultArgs> = $Result.GetResult<Prisma.$ProductionOrderAddonResolutionPayload, S>
+
+  type ProductionOrderAddonResolutionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ProductionOrderAddonResolutionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ProductionOrderAddonResolutionCountAggregateInputType | true
+    }
+
+  export interface ProductionOrderAddonResolutionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ProductionOrderAddonResolution'], meta: { name: 'ProductionOrderAddonResolution' } }
+    /**
+     * Find zero or one ProductionOrderAddonResolution that matches the filter.
+     * @param {ProductionOrderAddonResolutionFindUniqueArgs} args - Arguments to find a ProductionOrderAddonResolution
+     * @example
+     * // Get one ProductionOrderAddonResolution
+     * const productionOrderAddonResolution = await prisma.productionOrderAddonResolution.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ProductionOrderAddonResolutionFindUniqueArgs>(args: SelectSubset<T, ProductionOrderAddonResolutionFindUniqueArgs<ExtArgs>>): Prisma__ProductionOrderAddonResolutionClient<$Result.GetResult<Prisma.$ProductionOrderAddonResolutionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ProductionOrderAddonResolution that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ProductionOrderAddonResolutionFindUniqueOrThrowArgs} args - Arguments to find a ProductionOrderAddonResolution
+     * @example
+     * // Get one ProductionOrderAddonResolution
+     * const productionOrderAddonResolution = await prisma.productionOrderAddonResolution.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ProductionOrderAddonResolutionFindUniqueOrThrowArgs>(args: SelectSubset<T, ProductionOrderAddonResolutionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ProductionOrderAddonResolutionClient<$Result.GetResult<Prisma.$ProductionOrderAddonResolutionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProductionOrderAddonResolution that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductionOrderAddonResolutionFindFirstArgs} args - Arguments to find a ProductionOrderAddonResolution
+     * @example
+     * // Get one ProductionOrderAddonResolution
+     * const productionOrderAddonResolution = await prisma.productionOrderAddonResolution.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ProductionOrderAddonResolutionFindFirstArgs>(args?: SelectSubset<T, ProductionOrderAddonResolutionFindFirstArgs<ExtArgs>>): Prisma__ProductionOrderAddonResolutionClient<$Result.GetResult<Prisma.$ProductionOrderAddonResolutionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProductionOrderAddonResolution that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductionOrderAddonResolutionFindFirstOrThrowArgs} args - Arguments to find a ProductionOrderAddonResolution
+     * @example
+     * // Get one ProductionOrderAddonResolution
+     * const productionOrderAddonResolution = await prisma.productionOrderAddonResolution.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ProductionOrderAddonResolutionFindFirstOrThrowArgs>(args?: SelectSubset<T, ProductionOrderAddonResolutionFindFirstOrThrowArgs<ExtArgs>>): Prisma__ProductionOrderAddonResolutionClient<$Result.GetResult<Prisma.$ProductionOrderAddonResolutionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ProductionOrderAddonResolutions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductionOrderAddonResolutionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ProductionOrderAddonResolutions
+     * const productionOrderAddonResolutions = await prisma.productionOrderAddonResolution.findMany()
+     * 
+     * // Get first 10 ProductionOrderAddonResolutions
+     * const productionOrderAddonResolutions = await prisma.productionOrderAddonResolution.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const productionOrderAddonResolutionWithIdOnly = await prisma.productionOrderAddonResolution.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ProductionOrderAddonResolutionFindManyArgs>(args?: SelectSubset<T, ProductionOrderAddonResolutionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductionOrderAddonResolutionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ProductionOrderAddonResolution.
+     * @param {ProductionOrderAddonResolutionCreateArgs} args - Arguments to create a ProductionOrderAddonResolution.
+     * @example
+     * // Create one ProductionOrderAddonResolution
+     * const ProductionOrderAddonResolution = await prisma.productionOrderAddonResolution.create({
+     *   data: {
+     *     // ... data to create a ProductionOrderAddonResolution
+     *   }
+     * })
+     * 
+     */
+    create<T extends ProductionOrderAddonResolutionCreateArgs>(args: SelectSubset<T, ProductionOrderAddonResolutionCreateArgs<ExtArgs>>): Prisma__ProductionOrderAddonResolutionClient<$Result.GetResult<Prisma.$ProductionOrderAddonResolutionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ProductionOrderAddonResolutions.
+     * @param {ProductionOrderAddonResolutionCreateManyArgs} args - Arguments to create many ProductionOrderAddonResolutions.
+     * @example
+     * // Create many ProductionOrderAddonResolutions
+     * const productionOrderAddonResolution = await prisma.productionOrderAddonResolution.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ProductionOrderAddonResolutionCreateManyArgs>(args?: SelectSubset<T, ProductionOrderAddonResolutionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ProductionOrderAddonResolutions and returns the data saved in the database.
+     * @param {ProductionOrderAddonResolutionCreateManyAndReturnArgs} args - Arguments to create many ProductionOrderAddonResolutions.
+     * @example
+     * // Create many ProductionOrderAddonResolutions
+     * const productionOrderAddonResolution = await prisma.productionOrderAddonResolution.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ProductionOrderAddonResolutions and only return the `id`
+     * const productionOrderAddonResolutionWithIdOnly = await prisma.productionOrderAddonResolution.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ProductionOrderAddonResolutionCreateManyAndReturnArgs>(args?: SelectSubset<T, ProductionOrderAddonResolutionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductionOrderAddonResolutionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ProductionOrderAddonResolution.
+     * @param {ProductionOrderAddonResolutionDeleteArgs} args - Arguments to delete one ProductionOrderAddonResolution.
+     * @example
+     * // Delete one ProductionOrderAddonResolution
+     * const ProductionOrderAddonResolution = await prisma.productionOrderAddonResolution.delete({
+     *   where: {
+     *     // ... filter to delete one ProductionOrderAddonResolution
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ProductionOrderAddonResolutionDeleteArgs>(args: SelectSubset<T, ProductionOrderAddonResolutionDeleteArgs<ExtArgs>>): Prisma__ProductionOrderAddonResolutionClient<$Result.GetResult<Prisma.$ProductionOrderAddonResolutionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ProductionOrderAddonResolution.
+     * @param {ProductionOrderAddonResolutionUpdateArgs} args - Arguments to update one ProductionOrderAddonResolution.
+     * @example
+     * // Update one ProductionOrderAddonResolution
+     * const productionOrderAddonResolution = await prisma.productionOrderAddonResolution.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ProductionOrderAddonResolutionUpdateArgs>(args: SelectSubset<T, ProductionOrderAddonResolutionUpdateArgs<ExtArgs>>): Prisma__ProductionOrderAddonResolutionClient<$Result.GetResult<Prisma.$ProductionOrderAddonResolutionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ProductionOrderAddonResolutions.
+     * @param {ProductionOrderAddonResolutionDeleteManyArgs} args - Arguments to filter ProductionOrderAddonResolutions to delete.
+     * @example
+     * // Delete a few ProductionOrderAddonResolutions
+     * const { count } = await prisma.productionOrderAddonResolution.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ProductionOrderAddonResolutionDeleteManyArgs>(args?: SelectSubset<T, ProductionOrderAddonResolutionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProductionOrderAddonResolutions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductionOrderAddonResolutionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ProductionOrderAddonResolutions
+     * const productionOrderAddonResolution = await prisma.productionOrderAddonResolution.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ProductionOrderAddonResolutionUpdateManyArgs>(args: SelectSubset<T, ProductionOrderAddonResolutionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProductionOrderAddonResolutions and returns the data updated in the database.
+     * @param {ProductionOrderAddonResolutionUpdateManyAndReturnArgs} args - Arguments to update many ProductionOrderAddonResolutions.
+     * @example
+     * // Update many ProductionOrderAddonResolutions
+     * const productionOrderAddonResolution = await prisma.productionOrderAddonResolution.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ProductionOrderAddonResolutions and only return the `id`
+     * const productionOrderAddonResolutionWithIdOnly = await prisma.productionOrderAddonResolution.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ProductionOrderAddonResolutionUpdateManyAndReturnArgs>(args: SelectSubset<T, ProductionOrderAddonResolutionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductionOrderAddonResolutionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ProductionOrderAddonResolution.
+     * @param {ProductionOrderAddonResolutionUpsertArgs} args - Arguments to update or create a ProductionOrderAddonResolution.
+     * @example
+     * // Update or create a ProductionOrderAddonResolution
+     * const productionOrderAddonResolution = await prisma.productionOrderAddonResolution.upsert({
+     *   create: {
+     *     // ... data to create a ProductionOrderAddonResolution
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ProductionOrderAddonResolution we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ProductionOrderAddonResolutionUpsertArgs>(args: SelectSubset<T, ProductionOrderAddonResolutionUpsertArgs<ExtArgs>>): Prisma__ProductionOrderAddonResolutionClient<$Result.GetResult<Prisma.$ProductionOrderAddonResolutionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ProductionOrderAddonResolutions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductionOrderAddonResolutionCountArgs} args - Arguments to filter ProductionOrderAddonResolutions to count.
+     * @example
+     * // Count the number of ProductionOrderAddonResolutions
+     * const count = await prisma.productionOrderAddonResolution.count({
+     *   where: {
+     *     // ... the filter for the ProductionOrderAddonResolutions we want to count
+     *   }
+     * })
+    **/
+    count<T extends ProductionOrderAddonResolutionCountArgs>(
+      args?: Subset<T, ProductionOrderAddonResolutionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ProductionOrderAddonResolutionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ProductionOrderAddonResolution.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductionOrderAddonResolutionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ProductionOrderAddonResolutionAggregateArgs>(args: Subset<T, ProductionOrderAddonResolutionAggregateArgs>): Prisma.PrismaPromise<GetProductionOrderAddonResolutionAggregateType<T>>
+
+    /**
+     * Group by ProductionOrderAddonResolution.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductionOrderAddonResolutionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ProductionOrderAddonResolutionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ProductionOrderAddonResolutionGroupByArgs['orderBy'] }
+        : { orderBy?: ProductionOrderAddonResolutionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ProductionOrderAddonResolutionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProductionOrderAddonResolutionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ProductionOrderAddonResolution model
+   */
+  readonly fields: ProductionOrderAddonResolutionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ProductionOrderAddonResolution.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ProductionOrderAddonResolutionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    order<T extends ProductionOrderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductionOrderDefaultArgs<ExtArgs>>): Prisma__ProductionOrderClient<$Result.GetResult<Prisma.$ProductionOrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ProductionOrderAddonResolution model
+   */
+  interface ProductionOrderAddonResolutionFieldRefs {
+    readonly id: FieldRef<"ProductionOrderAddonResolution", 'String'>
+    readonly orderId: FieldRef<"ProductionOrderAddonResolution", 'String'>
+    readonly ingredientCategory: FieldRef<"ProductionOrderAddonResolution", 'String'>
+    readonly addonItemId: FieldRef<"ProductionOrderAddonResolution", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ProductionOrderAddonResolution findUnique
+   */
+  export type ProductionOrderAddonResolutionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductionOrderAddonResolution
+     */
+    select?: ProductionOrderAddonResolutionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductionOrderAddonResolution
+     */
+    omit?: ProductionOrderAddonResolutionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductionOrderAddonResolutionInclude<ExtArgs> | null
+    /**
+     * Filter, which ProductionOrderAddonResolution to fetch.
+     */
+    where: ProductionOrderAddonResolutionWhereUniqueInput
+  }
+
+  /**
+   * ProductionOrderAddonResolution findUniqueOrThrow
+   */
+  export type ProductionOrderAddonResolutionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductionOrderAddonResolution
+     */
+    select?: ProductionOrderAddonResolutionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductionOrderAddonResolution
+     */
+    omit?: ProductionOrderAddonResolutionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductionOrderAddonResolutionInclude<ExtArgs> | null
+    /**
+     * Filter, which ProductionOrderAddonResolution to fetch.
+     */
+    where: ProductionOrderAddonResolutionWhereUniqueInput
+  }
+
+  /**
+   * ProductionOrderAddonResolution findFirst
+   */
+  export type ProductionOrderAddonResolutionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductionOrderAddonResolution
+     */
+    select?: ProductionOrderAddonResolutionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductionOrderAddonResolution
+     */
+    omit?: ProductionOrderAddonResolutionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductionOrderAddonResolutionInclude<ExtArgs> | null
+    /**
+     * Filter, which ProductionOrderAddonResolution to fetch.
+     */
+    where?: ProductionOrderAddonResolutionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProductionOrderAddonResolutions to fetch.
+     */
+    orderBy?: ProductionOrderAddonResolutionOrderByWithRelationInput | ProductionOrderAddonResolutionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProductionOrderAddonResolutions.
+     */
+    cursor?: ProductionOrderAddonResolutionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProductionOrderAddonResolutions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProductionOrderAddonResolutions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProductionOrderAddonResolutions.
+     */
+    distinct?: ProductionOrderAddonResolutionScalarFieldEnum | ProductionOrderAddonResolutionScalarFieldEnum[]
+  }
+
+  /**
+   * ProductionOrderAddonResolution findFirstOrThrow
+   */
+  export type ProductionOrderAddonResolutionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductionOrderAddonResolution
+     */
+    select?: ProductionOrderAddonResolutionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductionOrderAddonResolution
+     */
+    omit?: ProductionOrderAddonResolutionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductionOrderAddonResolutionInclude<ExtArgs> | null
+    /**
+     * Filter, which ProductionOrderAddonResolution to fetch.
+     */
+    where?: ProductionOrderAddonResolutionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProductionOrderAddonResolutions to fetch.
+     */
+    orderBy?: ProductionOrderAddonResolutionOrderByWithRelationInput | ProductionOrderAddonResolutionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProductionOrderAddonResolutions.
+     */
+    cursor?: ProductionOrderAddonResolutionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProductionOrderAddonResolutions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProductionOrderAddonResolutions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProductionOrderAddonResolutions.
+     */
+    distinct?: ProductionOrderAddonResolutionScalarFieldEnum | ProductionOrderAddonResolutionScalarFieldEnum[]
+  }
+
+  /**
+   * ProductionOrderAddonResolution findMany
+   */
+  export type ProductionOrderAddonResolutionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductionOrderAddonResolution
+     */
+    select?: ProductionOrderAddonResolutionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductionOrderAddonResolution
+     */
+    omit?: ProductionOrderAddonResolutionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductionOrderAddonResolutionInclude<ExtArgs> | null
+    /**
+     * Filter, which ProductionOrderAddonResolutions to fetch.
+     */
+    where?: ProductionOrderAddonResolutionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProductionOrderAddonResolutions to fetch.
+     */
+    orderBy?: ProductionOrderAddonResolutionOrderByWithRelationInput | ProductionOrderAddonResolutionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ProductionOrderAddonResolutions.
+     */
+    cursor?: ProductionOrderAddonResolutionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProductionOrderAddonResolutions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProductionOrderAddonResolutions.
+     */
+    skip?: number
+    distinct?: ProductionOrderAddonResolutionScalarFieldEnum | ProductionOrderAddonResolutionScalarFieldEnum[]
+  }
+
+  /**
+   * ProductionOrderAddonResolution create
+   */
+  export type ProductionOrderAddonResolutionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductionOrderAddonResolution
+     */
+    select?: ProductionOrderAddonResolutionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductionOrderAddonResolution
+     */
+    omit?: ProductionOrderAddonResolutionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductionOrderAddonResolutionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ProductionOrderAddonResolution.
+     */
+    data: XOR<ProductionOrderAddonResolutionCreateInput, ProductionOrderAddonResolutionUncheckedCreateInput>
+  }
+
+  /**
+   * ProductionOrderAddonResolution createMany
+   */
+  export type ProductionOrderAddonResolutionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ProductionOrderAddonResolutions.
+     */
+    data: ProductionOrderAddonResolutionCreateManyInput | ProductionOrderAddonResolutionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ProductionOrderAddonResolution createManyAndReturn
+   */
+  export type ProductionOrderAddonResolutionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductionOrderAddonResolution
+     */
+    select?: ProductionOrderAddonResolutionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductionOrderAddonResolution
+     */
+    omit?: ProductionOrderAddonResolutionOmit<ExtArgs> | null
+    /**
+     * The data used to create many ProductionOrderAddonResolutions.
+     */
+    data: ProductionOrderAddonResolutionCreateManyInput | ProductionOrderAddonResolutionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductionOrderAddonResolutionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ProductionOrderAddonResolution update
+   */
+  export type ProductionOrderAddonResolutionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductionOrderAddonResolution
+     */
+    select?: ProductionOrderAddonResolutionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductionOrderAddonResolution
+     */
+    omit?: ProductionOrderAddonResolutionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductionOrderAddonResolutionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ProductionOrderAddonResolution.
+     */
+    data: XOR<ProductionOrderAddonResolutionUpdateInput, ProductionOrderAddonResolutionUncheckedUpdateInput>
+    /**
+     * Choose, which ProductionOrderAddonResolution to update.
+     */
+    where: ProductionOrderAddonResolutionWhereUniqueInput
+  }
+
+  /**
+   * ProductionOrderAddonResolution updateMany
+   */
+  export type ProductionOrderAddonResolutionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ProductionOrderAddonResolutions.
+     */
+    data: XOR<ProductionOrderAddonResolutionUpdateManyMutationInput, ProductionOrderAddonResolutionUncheckedUpdateManyInput>
+    /**
+     * Filter which ProductionOrderAddonResolutions to update
+     */
+    where?: ProductionOrderAddonResolutionWhereInput
+    /**
+     * Limit how many ProductionOrderAddonResolutions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProductionOrderAddonResolution updateManyAndReturn
+   */
+  export type ProductionOrderAddonResolutionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductionOrderAddonResolution
+     */
+    select?: ProductionOrderAddonResolutionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductionOrderAddonResolution
+     */
+    omit?: ProductionOrderAddonResolutionOmit<ExtArgs> | null
+    /**
+     * The data used to update ProductionOrderAddonResolutions.
+     */
+    data: XOR<ProductionOrderAddonResolutionUpdateManyMutationInput, ProductionOrderAddonResolutionUncheckedUpdateManyInput>
+    /**
+     * Filter which ProductionOrderAddonResolutions to update
+     */
+    where?: ProductionOrderAddonResolutionWhereInput
+    /**
+     * Limit how many ProductionOrderAddonResolutions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductionOrderAddonResolutionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ProductionOrderAddonResolution upsert
+   */
+  export type ProductionOrderAddonResolutionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductionOrderAddonResolution
+     */
+    select?: ProductionOrderAddonResolutionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductionOrderAddonResolution
+     */
+    omit?: ProductionOrderAddonResolutionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductionOrderAddonResolutionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ProductionOrderAddonResolution to update in case it exists.
+     */
+    where: ProductionOrderAddonResolutionWhereUniqueInput
+    /**
+     * In case the ProductionOrderAddonResolution found by the `where` argument doesn't exist, create a new ProductionOrderAddonResolution with this data.
+     */
+    create: XOR<ProductionOrderAddonResolutionCreateInput, ProductionOrderAddonResolutionUncheckedCreateInput>
+    /**
+     * In case the ProductionOrderAddonResolution was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ProductionOrderAddonResolutionUpdateInput, ProductionOrderAddonResolutionUncheckedUpdateInput>
+  }
+
+  /**
+   * ProductionOrderAddonResolution delete
+   */
+  export type ProductionOrderAddonResolutionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductionOrderAddonResolution
+     */
+    select?: ProductionOrderAddonResolutionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductionOrderAddonResolution
+     */
+    omit?: ProductionOrderAddonResolutionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductionOrderAddonResolutionInclude<ExtArgs> | null
+    /**
+     * Filter which ProductionOrderAddonResolution to delete.
+     */
+    where: ProductionOrderAddonResolutionWhereUniqueInput
+  }
+
+  /**
+   * ProductionOrderAddonResolution deleteMany
+   */
+  export type ProductionOrderAddonResolutionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProductionOrderAddonResolutions to delete
+     */
+    where?: ProductionOrderAddonResolutionWhereInput
+    /**
+     * Limit how many ProductionOrderAddonResolutions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProductionOrderAddonResolution without action
+   */
+  export type ProductionOrderAddonResolutionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductionOrderAddonResolution
+     */
+    select?: ProductionOrderAddonResolutionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductionOrderAddonResolution
+     */
+    omit?: ProductionOrderAddonResolutionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductionOrderAddonResolutionInclude<ExtArgs> | null
   }
 
 
@@ -5595,6 +6837,16 @@ export namespace Prisma {
   export type ProductionOrderScalarFieldEnum = (typeof ProductionOrderScalarFieldEnum)[keyof typeof ProductionOrderScalarFieldEnum]
 
 
+  export const ProductionOrderAddonResolutionScalarFieldEnum: {
+    id: 'id',
+    orderId: 'orderId',
+    ingredientCategory: 'ingredientCategory',
+    addonItemId: 'addonItemId'
+  };
+
+  export type ProductionOrderAddonResolutionScalarFieldEnum = (typeof ProductionOrderAddonResolutionScalarFieldEnum)[keyof typeof ProductionOrderAddonResolutionScalarFieldEnum]
+
+
   export const FillingOrderScalarFieldEnum: {
     id: 'id',
     productId: 'productId',
@@ -5735,6 +6987,7 @@ export namespace Prisma {
     executedAt?: DateTimeNullableFilter<"ProductionOrder"> | Date | string | null
     createdAt?: DateTimeFilter<"ProductionOrder"> | Date | string
     updatedAt?: DateTimeFilter<"ProductionOrder"> | Date | string
+    addonResolutions?: ProductionOrderAddonResolutionListRelationFilter
   }
 
   export type ProductionOrderOrderByWithRelationInput = {
@@ -5748,6 +7001,7 @@ export namespace Prisma {
     executedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    addonResolutions?: ProductionOrderAddonResolutionOrderByRelationAggregateInput
   }
 
   export type ProductionOrderWhereUniqueInput = Prisma.AtLeast<{
@@ -5764,6 +7018,7 @@ export namespace Prisma {
     executedAt?: DateTimeNullableFilter<"ProductionOrder"> | Date | string | null
     createdAt?: DateTimeFilter<"ProductionOrder"> | Date | string
     updatedAt?: DateTimeFilter<"ProductionOrder"> | Date | string
+    addonResolutions?: ProductionOrderAddonResolutionListRelationFilter
   }, "id">
 
   export type ProductionOrderOrderByWithAggregationInput = {
@@ -5798,6 +7053,56 @@ export namespace Prisma {
     executedAt?: DateTimeNullableWithAggregatesFilter<"ProductionOrder"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"ProductionOrder"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ProductionOrder"> | Date | string
+  }
+
+  export type ProductionOrderAddonResolutionWhereInput = {
+    AND?: ProductionOrderAddonResolutionWhereInput | ProductionOrderAddonResolutionWhereInput[]
+    OR?: ProductionOrderAddonResolutionWhereInput[]
+    NOT?: ProductionOrderAddonResolutionWhereInput | ProductionOrderAddonResolutionWhereInput[]
+    id?: StringFilter<"ProductionOrderAddonResolution"> | string
+    orderId?: StringFilter<"ProductionOrderAddonResolution"> | string
+    ingredientCategory?: StringFilter<"ProductionOrderAddonResolution"> | string
+    addonItemId?: StringFilter<"ProductionOrderAddonResolution"> | string
+    order?: XOR<ProductionOrderScalarRelationFilter, ProductionOrderWhereInput>
+  }
+
+  export type ProductionOrderAddonResolutionOrderByWithRelationInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    ingredientCategory?: SortOrder
+    addonItemId?: SortOrder
+    order?: ProductionOrderOrderByWithRelationInput
+  }
+
+  export type ProductionOrderAddonResolutionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ProductionOrderAddonResolutionWhereInput | ProductionOrderAddonResolutionWhereInput[]
+    OR?: ProductionOrderAddonResolutionWhereInput[]
+    NOT?: ProductionOrderAddonResolutionWhereInput | ProductionOrderAddonResolutionWhereInput[]
+    orderId?: StringFilter<"ProductionOrderAddonResolution"> | string
+    ingredientCategory?: StringFilter<"ProductionOrderAddonResolution"> | string
+    addonItemId?: StringFilter<"ProductionOrderAddonResolution"> | string
+    order?: XOR<ProductionOrderScalarRelationFilter, ProductionOrderWhereInput>
+  }, "id">
+
+  export type ProductionOrderAddonResolutionOrderByWithAggregationInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    ingredientCategory?: SortOrder
+    addonItemId?: SortOrder
+    _count?: ProductionOrderAddonResolutionCountOrderByAggregateInput
+    _max?: ProductionOrderAddonResolutionMaxOrderByAggregateInput
+    _min?: ProductionOrderAddonResolutionMinOrderByAggregateInput
+  }
+
+  export type ProductionOrderAddonResolutionScalarWhereWithAggregatesInput = {
+    AND?: ProductionOrderAddonResolutionScalarWhereWithAggregatesInput | ProductionOrderAddonResolutionScalarWhereWithAggregatesInput[]
+    OR?: ProductionOrderAddonResolutionScalarWhereWithAggregatesInput[]
+    NOT?: ProductionOrderAddonResolutionScalarWhereWithAggregatesInput | ProductionOrderAddonResolutionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ProductionOrderAddonResolution"> | string
+    orderId?: StringWithAggregatesFilter<"ProductionOrderAddonResolution"> | string
+    ingredientCategory?: StringWithAggregatesFilter<"ProductionOrderAddonResolution"> | string
+    addonItemId?: StringWithAggregatesFilter<"ProductionOrderAddonResolution"> | string
   }
 
   export type FillingOrderWhereInput = {
@@ -6004,6 +7309,7 @@ export namespace Prisma {
     executedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    addonResolutions?: ProductionOrderAddonResolutionCreateNestedManyWithoutOrderInput
   }
 
   export type ProductionOrderUncheckedCreateInput = {
@@ -6017,6 +7323,7 @@ export namespace Prisma {
     executedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    addonResolutions?: ProductionOrderAddonResolutionUncheckedCreateNestedManyWithoutOrderInput
   }
 
   export type ProductionOrderUpdateInput = {
@@ -6030,6 +7337,7 @@ export namespace Prisma {
     executedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    addonResolutions?: ProductionOrderAddonResolutionUpdateManyWithoutOrderNestedInput
   }
 
   export type ProductionOrderUncheckedUpdateInput = {
@@ -6043,6 +7351,7 @@ export namespace Prisma {
     executedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    addonResolutions?: ProductionOrderAddonResolutionUncheckedUpdateManyWithoutOrderNestedInput
   }
 
   export type ProductionOrderCreateManyInput = {
@@ -6082,6 +7391,54 @@ export namespace Prisma {
     executedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductionOrderAddonResolutionCreateInput = {
+    id: string
+    ingredientCategory: string
+    addonItemId: string
+    order: ProductionOrderCreateNestedOneWithoutAddonResolutionsInput
+  }
+
+  export type ProductionOrderAddonResolutionUncheckedCreateInput = {
+    id: string
+    orderId: string
+    ingredientCategory: string
+    addonItemId: string
+  }
+
+  export type ProductionOrderAddonResolutionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ingredientCategory?: StringFieldUpdateOperationsInput | string
+    addonItemId?: StringFieldUpdateOperationsInput | string
+    order?: ProductionOrderUpdateOneRequiredWithoutAddonResolutionsNestedInput
+  }
+
+  export type ProductionOrderAddonResolutionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    ingredientCategory?: StringFieldUpdateOperationsInput | string
+    addonItemId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ProductionOrderAddonResolutionCreateManyInput = {
+    id: string
+    orderId: string
+    ingredientCategory: string
+    addonItemId: string
+  }
+
+  export type ProductionOrderAddonResolutionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ingredientCategory?: StringFieldUpdateOperationsInput | string
+    addonItemId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ProductionOrderAddonResolutionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    ingredientCategory?: StringFieldUpdateOperationsInput | string
+    addonItemId?: StringFieldUpdateOperationsInput | string
   }
 
   export type FillingOrderCreateInput = {
@@ -6353,9 +7710,19 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type ProductionOrderAddonResolutionListRelationFilter = {
+    every?: ProductionOrderAddonResolutionWhereInput
+    some?: ProductionOrderAddonResolutionWhereInput
+    none?: ProductionOrderAddonResolutionWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
+  }
+
+  export type ProductionOrderAddonResolutionOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type ProductionOrderCountOrderByAggregateInput = {
@@ -6485,6 +7852,32 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type ProductionOrderScalarRelationFilter = {
+    is?: ProductionOrderWhereInput
+    isNot?: ProductionOrderWhereInput
+  }
+
+  export type ProductionOrderAddonResolutionCountOrderByAggregateInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    ingredientCategory?: SortOrder
+    addonItemId?: SortOrder
+  }
+
+  export type ProductionOrderAddonResolutionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    ingredientCategory?: SortOrder
+    addonItemId?: SortOrder
+  }
+
+  export type ProductionOrderAddonResolutionMinOrderByAggregateInput = {
+    id?: SortOrder
+    orderId?: SortOrder
+    ingredientCategory?: SortOrder
+    addonItemId?: SortOrder
   }
 
   export type FillingOrderLineListRelationFilter = {
@@ -6617,6 +8010,20 @@ export namespace Prisma {
     availableGm?: SortOrder
   }
 
+  export type ProductionOrderAddonResolutionCreateNestedManyWithoutOrderInput = {
+    create?: XOR<ProductionOrderAddonResolutionCreateWithoutOrderInput, ProductionOrderAddonResolutionUncheckedCreateWithoutOrderInput> | ProductionOrderAddonResolutionCreateWithoutOrderInput[] | ProductionOrderAddonResolutionUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: ProductionOrderAddonResolutionCreateOrConnectWithoutOrderInput | ProductionOrderAddonResolutionCreateOrConnectWithoutOrderInput[]
+    createMany?: ProductionOrderAddonResolutionCreateManyOrderInputEnvelope
+    connect?: ProductionOrderAddonResolutionWhereUniqueInput | ProductionOrderAddonResolutionWhereUniqueInput[]
+  }
+
+  export type ProductionOrderAddonResolutionUncheckedCreateNestedManyWithoutOrderInput = {
+    create?: XOR<ProductionOrderAddonResolutionCreateWithoutOrderInput, ProductionOrderAddonResolutionUncheckedCreateWithoutOrderInput> | ProductionOrderAddonResolutionCreateWithoutOrderInput[] | ProductionOrderAddonResolutionUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: ProductionOrderAddonResolutionCreateOrConnectWithoutOrderInput | ProductionOrderAddonResolutionCreateOrConnectWithoutOrderInput[]
+    createMany?: ProductionOrderAddonResolutionCreateManyOrderInputEnvelope
+    connect?: ProductionOrderAddonResolutionWhereUniqueInput | ProductionOrderAddonResolutionWhereUniqueInput[]
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -6639,6 +8046,48 @@ export namespace Prisma {
 
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
+  }
+
+  export type ProductionOrderAddonResolutionUpdateManyWithoutOrderNestedInput = {
+    create?: XOR<ProductionOrderAddonResolutionCreateWithoutOrderInput, ProductionOrderAddonResolutionUncheckedCreateWithoutOrderInput> | ProductionOrderAddonResolutionCreateWithoutOrderInput[] | ProductionOrderAddonResolutionUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: ProductionOrderAddonResolutionCreateOrConnectWithoutOrderInput | ProductionOrderAddonResolutionCreateOrConnectWithoutOrderInput[]
+    upsert?: ProductionOrderAddonResolutionUpsertWithWhereUniqueWithoutOrderInput | ProductionOrderAddonResolutionUpsertWithWhereUniqueWithoutOrderInput[]
+    createMany?: ProductionOrderAddonResolutionCreateManyOrderInputEnvelope
+    set?: ProductionOrderAddonResolutionWhereUniqueInput | ProductionOrderAddonResolutionWhereUniqueInput[]
+    disconnect?: ProductionOrderAddonResolutionWhereUniqueInput | ProductionOrderAddonResolutionWhereUniqueInput[]
+    delete?: ProductionOrderAddonResolutionWhereUniqueInput | ProductionOrderAddonResolutionWhereUniqueInput[]
+    connect?: ProductionOrderAddonResolutionWhereUniqueInput | ProductionOrderAddonResolutionWhereUniqueInput[]
+    update?: ProductionOrderAddonResolutionUpdateWithWhereUniqueWithoutOrderInput | ProductionOrderAddonResolutionUpdateWithWhereUniqueWithoutOrderInput[]
+    updateMany?: ProductionOrderAddonResolutionUpdateManyWithWhereWithoutOrderInput | ProductionOrderAddonResolutionUpdateManyWithWhereWithoutOrderInput[]
+    deleteMany?: ProductionOrderAddonResolutionScalarWhereInput | ProductionOrderAddonResolutionScalarWhereInput[]
+  }
+
+  export type ProductionOrderAddonResolutionUncheckedUpdateManyWithoutOrderNestedInput = {
+    create?: XOR<ProductionOrderAddonResolutionCreateWithoutOrderInput, ProductionOrderAddonResolutionUncheckedCreateWithoutOrderInput> | ProductionOrderAddonResolutionCreateWithoutOrderInput[] | ProductionOrderAddonResolutionUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: ProductionOrderAddonResolutionCreateOrConnectWithoutOrderInput | ProductionOrderAddonResolutionCreateOrConnectWithoutOrderInput[]
+    upsert?: ProductionOrderAddonResolutionUpsertWithWhereUniqueWithoutOrderInput | ProductionOrderAddonResolutionUpsertWithWhereUniqueWithoutOrderInput[]
+    createMany?: ProductionOrderAddonResolutionCreateManyOrderInputEnvelope
+    set?: ProductionOrderAddonResolutionWhereUniqueInput | ProductionOrderAddonResolutionWhereUniqueInput[]
+    disconnect?: ProductionOrderAddonResolutionWhereUniqueInput | ProductionOrderAddonResolutionWhereUniqueInput[]
+    delete?: ProductionOrderAddonResolutionWhereUniqueInput | ProductionOrderAddonResolutionWhereUniqueInput[]
+    connect?: ProductionOrderAddonResolutionWhereUniqueInput | ProductionOrderAddonResolutionWhereUniqueInput[]
+    update?: ProductionOrderAddonResolutionUpdateWithWhereUniqueWithoutOrderInput | ProductionOrderAddonResolutionUpdateWithWhereUniqueWithoutOrderInput[]
+    updateMany?: ProductionOrderAddonResolutionUpdateManyWithWhereWithoutOrderInput | ProductionOrderAddonResolutionUpdateManyWithWhereWithoutOrderInput[]
+    deleteMany?: ProductionOrderAddonResolutionScalarWhereInput | ProductionOrderAddonResolutionScalarWhereInput[]
+  }
+
+  export type ProductionOrderCreateNestedOneWithoutAddonResolutionsInput = {
+    create?: XOR<ProductionOrderCreateWithoutAddonResolutionsInput, ProductionOrderUncheckedCreateWithoutAddonResolutionsInput>
+    connectOrCreate?: ProductionOrderCreateOrConnectWithoutAddonResolutionsInput
+    connect?: ProductionOrderWhereUniqueInput
+  }
+
+  export type ProductionOrderUpdateOneRequiredWithoutAddonResolutionsNestedInput = {
+    create?: XOR<ProductionOrderCreateWithoutAddonResolutionsInput, ProductionOrderUncheckedCreateWithoutAddonResolutionsInput>
+    connectOrCreate?: ProductionOrderCreateOrConnectWithoutAddonResolutionsInput
+    upsert?: ProductionOrderUpsertWithoutAddonResolutionsInput
+    connect?: ProductionOrderWhereUniqueInput
+    update?: XOR<XOR<ProductionOrderUpdateToOneWithWhereWithoutAddonResolutionsInput, ProductionOrderUpdateWithoutAddonResolutionsInput>, ProductionOrderUncheckedUpdateWithoutAddonResolutionsInput>
   }
 
   export type FillingOrderLineCreateNestedManyWithoutFillingOrderInput = {
@@ -6858,6 +8307,122 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type ProductionOrderAddonResolutionCreateWithoutOrderInput = {
+    id: string
+    ingredientCategory: string
+    addonItemId: string
+  }
+
+  export type ProductionOrderAddonResolutionUncheckedCreateWithoutOrderInput = {
+    id: string
+    ingredientCategory: string
+    addonItemId: string
+  }
+
+  export type ProductionOrderAddonResolutionCreateOrConnectWithoutOrderInput = {
+    where: ProductionOrderAddonResolutionWhereUniqueInput
+    create: XOR<ProductionOrderAddonResolutionCreateWithoutOrderInput, ProductionOrderAddonResolutionUncheckedCreateWithoutOrderInput>
+  }
+
+  export type ProductionOrderAddonResolutionCreateManyOrderInputEnvelope = {
+    data: ProductionOrderAddonResolutionCreateManyOrderInput | ProductionOrderAddonResolutionCreateManyOrderInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ProductionOrderAddonResolutionUpsertWithWhereUniqueWithoutOrderInput = {
+    where: ProductionOrderAddonResolutionWhereUniqueInput
+    update: XOR<ProductionOrderAddonResolutionUpdateWithoutOrderInput, ProductionOrderAddonResolutionUncheckedUpdateWithoutOrderInput>
+    create: XOR<ProductionOrderAddonResolutionCreateWithoutOrderInput, ProductionOrderAddonResolutionUncheckedCreateWithoutOrderInput>
+  }
+
+  export type ProductionOrderAddonResolutionUpdateWithWhereUniqueWithoutOrderInput = {
+    where: ProductionOrderAddonResolutionWhereUniqueInput
+    data: XOR<ProductionOrderAddonResolutionUpdateWithoutOrderInput, ProductionOrderAddonResolutionUncheckedUpdateWithoutOrderInput>
+  }
+
+  export type ProductionOrderAddonResolutionUpdateManyWithWhereWithoutOrderInput = {
+    where: ProductionOrderAddonResolutionScalarWhereInput
+    data: XOR<ProductionOrderAddonResolutionUpdateManyMutationInput, ProductionOrderAddonResolutionUncheckedUpdateManyWithoutOrderInput>
+  }
+
+  export type ProductionOrderAddonResolutionScalarWhereInput = {
+    AND?: ProductionOrderAddonResolutionScalarWhereInput | ProductionOrderAddonResolutionScalarWhereInput[]
+    OR?: ProductionOrderAddonResolutionScalarWhereInput[]
+    NOT?: ProductionOrderAddonResolutionScalarWhereInput | ProductionOrderAddonResolutionScalarWhereInput[]
+    id?: StringFilter<"ProductionOrderAddonResolution"> | string
+    orderId?: StringFilter<"ProductionOrderAddonResolution"> | string
+    ingredientCategory?: StringFilter<"ProductionOrderAddonResolution"> | string
+    addonItemId?: StringFilter<"ProductionOrderAddonResolution"> | string
+  }
+
+  export type ProductionOrderCreateWithoutAddonResolutionsInput = {
+    id: string
+    productId: string
+    batchWeightGm: number
+    wastePercent?: number
+    notes?: string | null
+    status?: string
+    performedBy?: string | null
+    executedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProductionOrderUncheckedCreateWithoutAddonResolutionsInput = {
+    id: string
+    productId: string
+    batchWeightGm: number
+    wastePercent?: number
+    notes?: string | null
+    status?: string
+    performedBy?: string | null
+    executedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProductionOrderCreateOrConnectWithoutAddonResolutionsInput = {
+    where: ProductionOrderWhereUniqueInput
+    create: XOR<ProductionOrderCreateWithoutAddonResolutionsInput, ProductionOrderUncheckedCreateWithoutAddonResolutionsInput>
+  }
+
+  export type ProductionOrderUpsertWithoutAddonResolutionsInput = {
+    update: XOR<ProductionOrderUpdateWithoutAddonResolutionsInput, ProductionOrderUncheckedUpdateWithoutAddonResolutionsInput>
+    create: XOR<ProductionOrderCreateWithoutAddonResolutionsInput, ProductionOrderUncheckedCreateWithoutAddonResolutionsInput>
+    where?: ProductionOrderWhereInput
+  }
+
+  export type ProductionOrderUpdateToOneWithWhereWithoutAddonResolutionsInput = {
+    where?: ProductionOrderWhereInput
+    data: XOR<ProductionOrderUpdateWithoutAddonResolutionsInput, ProductionOrderUncheckedUpdateWithoutAddonResolutionsInput>
+  }
+
+  export type ProductionOrderUpdateWithoutAddonResolutionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    batchWeightGm?: FloatFieldUpdateOperationsInput | number
+    wastePercent?: FloatFieldUpdateOperationsInput | number
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    performedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    executedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductionOrderUncheckedUpdateWithoutAddonResolutionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    batchWeightGm?: FloatFieldUpdateOperationsInput | number
+    wastePercent?: FloatFieldUpdateOperationsInput | number
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    performedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    executedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type FillingOrderLineCreateWithoutFillingOrderInput = {
     id: string
     variantItemId: string
@@ -6977,6 +8542,30 @@ export namespace Prisma {
     executedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductionOrderAddonResolutionCreateManyOrderInput = {
+    id: string
+    ingredientCategory: string
+    addonItemId: string
+  }
+
+  export type ProductionOrderAddonResolutionUpdateWithoutOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ingredientCategory?: StringFieldUpdateOperationsInput | string
+    addonItemId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ProductionOrderAddonResolutionUncheckedUpdateWithoutOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ingredientCategory?: StringFieldUpdateOperationsInput | string
+    addonItemId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ProductionOrderAddonResolutionUncheckedUpdateManyWithoutOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ingredientCategory?: StringFieldUpdateOperationsInput | string
+    addonItemId?: StringFieldUpdateOperationsInput | string
   }
 
   export type FillingOrderLineCreateManyFillingOrderInput = {
