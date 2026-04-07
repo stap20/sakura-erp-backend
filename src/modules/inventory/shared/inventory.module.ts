@@ -31,6 +31,9 @@ import { GetAllProductsController } from '../internal/presentation/controllers/g
 // Controllers - PackagingBOM
 import { SetPackagingBomController } from '../internal/presentation/controllers/set-packaging-bom.controller';
 
+// Controllers - AddonBOM
+import { SetAddonBomController } from '../internal/presentation/controllers/set-addon-bom.controller';
+
 // Command Handlers - Items
 import { CreateItemHandler } from '../internal/application/commands/create-item/create-item.handler';
 import { UpdateItemHandler } from '../internal/application/commands/update-item/update-item.handler';
@@ -49,6 +52,9 @@ import { UpdateProductHandler } from '../internal/application/commands/update-pr
 
 // Command Handlers - PackagingBOM
 import { SetPackagingBomHandler } from '../internal/application/commands/set-packaging-bom/set-packaging-bom.handler';
+
+// Command Handlers - AddonBOM
+import { SetAddonBomHandler } from '../internal/application/commands/set-addon-bom/set-addon-bom.handler';
 
 // Query Handler Interfaces
 import { IGetItemHandler } from '../internal/application/queries/get-item/get-item.handler.interface';
@@ -77,6 +83,8 @@ import { ProductRepository } from '../internal/infrastructure/repositories/produ
 import { ReadProductRepository } from '../internal/infrastructure/repositories/read-product.repository';
 import { PackagingBomRepository } from '../internal/infrastructure/repositories/packaging-bom.repository';
 import { ReadPackagingBomRepository } from '../internal/infrastructure/repositories/read-packaging-bom.repository';
+import { AddonBomRepository } from '../internal/infrastructure/repositories/addon-bom.repository';
+import { ReadAddonBomRepository } from '../internal/infrastructure/repositories/read-addon-bom.repository';
 
 // Mappers
 import { ItemMapper } from '../internal/infrastructure/database/mappers/item.mapper';
@@ -89,6 +97,7 @@ import { IItemRepository } from '../internal/domain/repositories/item.repo.inter
 import { ICategoryRepository } from '../internal/domain/repositories/category.repo.interface';
 import { IProductRepository } from '../internal/domain/repositories/product.repo.interface';
 import { IPackagingBomRepository } from '../internal/domain/repositories/packaging-bom.repo.interface';
+import { IAddonBomRepository } from '../internal/domain/repositories/addon-bom.repo.interface';
 
 // Shared
 import { ILogger } from 'src/shared/domain/contracts/logger.interface';
@@ -136,6 +145,9 @@ import { IInventoryFacade } from 'src/modules/inventory/shared/contracts/invento
         // Command Handlers - PackagingBOM
         SetPackagingBomHandler,
 
+        // Command Handlers - AddonBOM
+        SetAddonBomHandler,
+
         // Query Handler Bindings
         { provide: IGetItemHandler, useClass: GetItemHandler },
         { provide: IGetAllItemsHandler, useClass: GetAllItemsHandler },
@@ -150,10 +162,12 @@ import { IInventoryFacade } from 'src/modules/inventory/shared/contracts/invento
         { provide: ICategoryRepository, useClass: CategoryRepository },
         { provide: IProductRepository, useClass: ProductRepository },
         { provide: IPackagingBomRepository, useClass: PackagingBomRepository },
+        { provide: IAddonBomRepository, useClass: AddonBomRepository },
         ReadItemRepository,
         ReadCategoryRepository,
         ReadProductRepository,
         ReadPackagingBomRepository,
+        ReadAddonBomRepository,
 
         // Mappers
         ItemMapper,
@@ -187,6 +201,7 @@ import { IInventoryFacade } from 'src/modules/inventory/shared/contracts/invento
         GetProductByIdController,
         GetAllProductsController,
         SetPackagingBomController,
+        SetAddonBomController,
     ],
 })
 export class InventoryModule {}

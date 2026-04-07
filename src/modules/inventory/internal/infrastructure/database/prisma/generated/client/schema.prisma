@@ -41,6 +41,8 @@ model Item {
   transactions        InventoryTransaction[]
   packagingComponents PackagingComponent[]   @relation("VariantPackaging")
   usedAsPackagingIn   PackagingComponent[]   @relation("PackagingItem")
+  addonComponents     AddonComponent[]       @relation("VariantAddon")
+  usedAsAddonIn       AddonComponent[]       @relation("AddonItem")
 
   @@map("items")
 }
@@ -68,6 +70,19 @@ model PackagingComponent {
   packagingItem Item @relation("PackagingItem", fields: [packagingItemId], references: [id])
 
   @@map("packaging_components")
+}
+
+model AddonComponent {
+  id                 String @id
+  variantItemId      String
+  ingredientCategory String
+  addonItemId        String
+
+  variantItem Item @relation("VariantAddon", fields: [variantItemId], references: [id])
+  addonItem   Item @relation("AddonItem", fields: [addonItemId], references: [id])
+
+  @@unique([variantItemId, ingredientCategory])
+  @@map("addon_components")
 }
 
 model InventoryTransaction {

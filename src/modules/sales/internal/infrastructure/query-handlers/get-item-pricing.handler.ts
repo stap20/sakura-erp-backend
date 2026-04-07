@@ -67,6 +67,7 @@ export class GetItemPricingHandler implements IGetItemPricingHandler {
         // Material cost per unit
         let totalMaterialCost = 0;
         for (const ingredient of baseIngredients) {
+            if (!ingredient.itemId) continue;
             const ingredientItem = await this.inventoryGateway.getItem(ingredient.itemId);
             if (!ingredientItem) continue;
             const waup = ingredientItem.weightedAverageUnitPrice ?? 0;

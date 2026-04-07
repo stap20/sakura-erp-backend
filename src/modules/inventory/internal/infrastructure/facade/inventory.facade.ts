@@ -7,6 +7,7 @@ import { DeductItemDto } from 'src/modules/inventory/shared/contracts/deduct-ite
 import { ReadItemRepository } from '../repositories/read-item.repository';
 import { ReadProductRepository } from '../repositories/read-product.repository';
 import { ReadPackagingBomRepository } from '../repositories/read-packaging-bom.repository';
+import { ReadAddonBomRepository } from '../repositories/read-addon-bom.repository';
 import { RestockItemHandler } from '../../application/commands/restock-item/restock-item.handler';
 import { RestockItemCommand } from '../../application/commands/restock-item/restock-item.command';
 import { DeductItemHandler } from '../../application/commands/deduct-item/deduct-item.handler';
@@ -18,6 +19,7 @@ export class InventoryFacade implements IInventoryFacade {
         private readonly readItemRepository: ReadItemRepository,
         private readonly readProductRepository: ReadProductRepository,
         private readonly readPackagingBomRepository: ReadPackagingBomRepository,
+        private readonly readAddonBomRepository: ReadAddonBomRepository,
         private readonly restockItemHandler: RestockItemHandler,
         private readonly deductItemHandler: DeductItemHandler,
     ) {}
@@ -26,6 +28,7 @@ export class InventoryFacade implements IInventoryFacade {
         const item = await this.readItemRepository.getById(itemId);
         if (!item) return null;
         const components = await this.readPackagingBomRepository.getByVariantItemId(itemId);
+        const addonComponents = await this.readAddonBomRepository.getByVariantItemId(itemId);
         return new InventoryItemDto(
             item.id,
             item.name,
@@ -35,6 +38,7 @@ export class InventoryFacade implements IInventoryFacade {
             item.weightedAverageUnitPrice ?? null,
             components.map((c) => ({ packagingItemId: c.packagingItemId, qtyPerUnit: c.qtyPerUnit })),
             item.productId ?? null,
+            addonComponents.map((c) => ({ ingredientCategory: c.ingredientCategory, addonItemId: c.addonItemId })),
         );
     }
 
