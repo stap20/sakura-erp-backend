@@ -257,4 +257,73 @@ describe('Inventory Items (e2e)', () => {
             expect(dates[0]).toBeGreaterThanOrEqual(dates[1]);
         });
     });
+
+    // ─── AddonBOM ────────────────────────────────────────────────────────────────
+
+    describe('AddonBOM (PUT /api/v1/inventory/items/:id/addon-bom)', () => {
+        let finalProductItemId: string;
+        let addonItemId: string;
+
+        beforeAll(async () => {
+            const fpRes = await request(app.getHttpServer())
+                .post('/api/v1/inventory/items')
+                .send({ name: 'Body Splash 50ml (AddonBOM Test)', type: 'FINAL_PRODUCT', measureUnit: 'PCS', unitWeightGm: 50 })
+                .expect(201);
+            finalProductItemId = fpRes.body.id;
+
+            const addonRes = await request(app.getHttpServer())
+                .post('/api/v1/inventory/items')
+                .send({ name: 'Fragrance Oil A (AddonBOM Test)', type: 'RAW_MATERIAL', measureUnit: 'G' })
+                .expect(201);
+            addonItemId = addonRes.body.id;
+        });
+
+        it('sets addon-bom → 200 with addonComponents array', async () => {
+            const res = await request(app.getHttpServer())
+                .put(`/api/v1/inventory/items/${finalProductItemId}/addon-bom`)
+                .send({ components: [{ ingredientCategory: 'fragrance', addonItemId }] })
+                .expect(200);
+
+            expect(res.body.variantItemId).toBe(finalProductItemId);
+            expect(res.body.components).toHaveLength(1);
+            expect(res.body.components[0]).toMatchObject({
+                ingredientCategory: 'fragrance',
+                addonItemId,
+            });
+        });
+
+        it('replaces components on second PUT (idempotent replace)', async () => {
+            const res = await request(app.getHttpServer())
+                .put(`/api/v1/inventory/items/${finalProductItemId}/addon-bom`)
+                .send({ components: [{ ingredientCategory: 'colorant', addonItemId }] })
+                .expect(200);
+
+            expect(res.body.components).toHaveLength(1);
+            expect(res.body.components[0].ingredientCategory).toBe('colorant');
+        });
+
+        it('GET /inventory/items/:id reflects addonComponents after PUT', async () => {
+            const res = await request(app.getHttpServer())
+                .get(`/api/v1/inventory/items/${finalProductItemId}`)
+                .expect(200);
+
+            expect(res.body.addonComponents).toHaveLength(1);
+            expect(res.body.addonComponents[0].ingredientCategory).toBe('colorant');
+            expect(res.body.addonComponents[0].addonItemId).toBe(addonItemId);
+        });
+
+        it('returns 404 for non-existent item id', async () => {
+            await request(app.getHttpServer())
+                .put('/api/v1/inventory/items/nonexistent-id-000/addon-bom')
+                .send({ components: [{ ingredientCategory: 'fragrance', addonItemId }] })
+                .expect(404);
+        });
+
+        it('returns 400 when components field is missing', async () => {
+            await request(app.getHttpServer())
+                .put(`/api/v1/inventory/items/${finalProductItemId}/addon-bom`)
+                .send({})
+                .expect(400);
+        });
+    });
 });

@@ -6,6 +6,7 @@ export class IngredientResponse {
     ingredientCategory: string | null;
     quantity: number;
     notes: string | null;
+    resolutionPhase: string;
 }
 
 export class GetRecipeVersionResponse {

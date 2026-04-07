@@ -71,6 +71,7 @@ export class ItemRepository implements IItemRepository {
                 where: { id: data.id },
                 data: {
                     currentStock: data.currentStock,
+                    weightedAverageUnitPrice: data.weightedAverageUnitPrice,
                     updatedAt: new Date(),
                 },
             }),

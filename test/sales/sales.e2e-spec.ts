@@ -3,6 +3,7 @@ import * as request from 'supertest';
 import {
     createTestApp,
     cleanInventoryDb,
+    cleanRecipeDb,
     cleanSalesDb,
     cleanSettingsDb,
 } from '../helpers/app.setup';
@@ -40,7 +41,7 @@ describe('Sales (e2e)', () => {
         // Create a RAW_MATERIAL item
         const rawRes = await request(app.getHttpServer())
             .post('/api/v1/inventory/items')
-            .send({ name: 'Rose Water (Sales Test)', type: 'RAW_MATERIAL', measureUnit: 'GM' });
+            .send({ name: 'Rose Water (Sales Test)', type: 'RAW_MATERIAL', measureUnit: 'G' });
         rawMaterialItemId = rawRes.body.id;
 
         // Create a FINAL_PRODUCT item linked to the product
@@ -629,6 +630,107 @@ describe('Sales (e2e)', () => {
                 .post(`/api/v1/sales/${orderRes.body.id}/apply-discount`)
                 .send({ code: 'EXPIRED10' })
                 .expect(409);
+        });
+    });
+
+    // ─── Item Pricing with Add-On Cost ───────────────────────────────────────────
+
+    describe('Item Pricing with Add-On Cost (GET /api/v1/sales/pricing/item/:itemId)', () => {
+        let pricingItemId: string;
+        let addonItemId: string;
+
+        beforeAll(async () => {
+            await cleanRecipeDb(app);
+
+            // Cost config (required for pricing)
+            await request(app.getHttpServer())
+                .put('/api/v1/settings/cost-config')
+                .send({ monthlySalary: 3000, monthlyWorkingHours: 160, depreciationPerMinute: 0.05 })
+                .expect(200);
+
+            // FINAL_PRODUCT variant linked to the shared productId
+            const fpRes = await request(app.getHttpServer())
+                .post('/api/v1/inventory/items')
+                .send({
+                    name: 'Body Splash 50ml (Pricing Test)',
+                    type: 'FINAL_PRODUCT',
+                    measureUnit: 'PCS',
+                    unitWeightGm: 50,
+                    productId,
+                })
+                .expect(201);
+            pricingItemId = fpRes.body.id;
+
+            // Addon inventory item (the concrete fragrance item)
+            const addonRes = await request(app.getHttpServer())
+                .post('/api/v1/inventory/items')
+                .send({ name: 'Fragrance Oil (Pricing Test)', type: 'RAW_MATERIAL', measureUnit: 'G' })
+                .expect(201);
+            addonItemId = addonRes.body.id;
+
+            // Give the addon item a WAUP via restock at unitPrice=5 gm/unit
+            await request(app.getHttpServer())
+                .post(`/api/v1/inventory/items/${addonItemId}/restock`)
+                .send({ quantity: 1000, unitPrice: 5, performedBy: 'TEST_SETUP' })
+                .expect(201);
+
+            // Set AddonBOM on the pricing item
+            await request(app.getHttpServer())
+                .put(`/api/v1/inventory/items/${pricingItemId}/addon-bom`)
+                .send({ components: [{ ingredientCategory: 'fragrance', addonItemId }] })
+                .expect(200);
+
+            // Create recipe for the product: 90% base + 10% fragrance add-on
+            const recipeRes = await request(app.getHttpServer())
+                .post('/api/v1/recipes')
+                .send({ productId, notes: 'Body Splash Recipe (Pricing Test)' })
+                .expect(201);
+            const pricingVersionId: string = recipeRes.body.id;
+
+            await request(app.getHttpServer())
+                .post(`/api/v1/recipes/${pricingVersionId}/ingredients`)
+                .send({ itemId: rawMaterialItemId, itemName: 'Rose Water', quantity: 100 })
+                .expect(201);
+
+            await request(app.getHttpServer())
+                .post(`/api/v1/recipes/${pricingVersionId}/ingredients`)
+                .send({ isAddOn: true, ingredientCategory: 'fragrance', quantity: 10 })
+                .expect(201);
+
+            // Restock base ingredient so WAUP is set
+            await request(app.getHttpServer())
+                .post(`/api/v1/inventory/items/${rawMaterialItemId}/restock`)
+                .send({ quantity: 1000, unitPrice: 2, performedBy: 'TEST_SETUP' })
+                .expect(201);
+
+            await request(app.getHttpServer())
+                .post(`/api/v1/recipes/${pricingVersionId}/activate`)
+                .expect(204);
+        });
+
+        it('returns addonCostPerUnit > 0 and included in totalCogs', async () => {
+            const res = await request(app.getHttpServer())
+                .get(`/api/v1/sales/pricing/item/${pricingItemId}`)
+                .expect(200);
+
+            // addonCostPerUnit = (10/100) * 50gm * 5(waup) = 25
+            expect(res.body.addonCostPerUnit).toBeCloseTo(25, 5);
+            expect(res.body.totalCogs).toBeCloseTo(
+                res.body.materialCostPerUnit +
+                    res.body.laborCostPerUnit +
+                    res.body.depreciationCostPerUnit +
+                    res.body.packagingCostPerUnit +
+                    res.body.addonCostPerUnit,
+                5,
+            );
+        });
+
+        it('returns addonCostPerUnit=0 for item with no AddonBOM configured', async () => {
+            const res = await request(app.getHttpServer())
+                .get(`/api/v1/sales/pricing/item/${finalProductItemId}`)
+                .expect(200);
+
+            expect(res.body.addonCostPerUnit).toBe(0);
         });
     });
 });

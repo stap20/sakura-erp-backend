@@ -22,6 +22,9 @@ export class IngredientResponseDto {
     @ApiPropertyOptional({ example: 'Add slowly while mixing', nullable: true })
     notes: string | null;
 
+    @ApiProperty({ example: 'FILLING', enum: ['BULK', 'FILLING'] })
+    resolutionPhase: string;
+
     constructor(
         id: string,
         itemId: string | null,
@@ -30,6 +33,7 @@ export class IngredientResponseDto {
         ingredientCategory: string | null,
         quantity: number,
         notes: string | null,
+        resolutionPhase: string = 'FILLING',
     ) {
         this.id = id;
         this.itemId = itemId;
@@ -38,5 +42,6 @@ export class IngredientResponseDto {
         this.ingredientCategory = ingredientCategory;
         this.quantity = quantity;
         this.notes = notes;
+        this.resolutionPhase = resolutionPhase;
     }
 }

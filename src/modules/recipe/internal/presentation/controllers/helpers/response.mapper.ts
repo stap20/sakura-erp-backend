@@ -15,6 +15,7 @@ interface RecipeVersionLike {
         ingredientCategory: string | null;
         quantity: number;
         notes: string | null;
+        resolutionPhase?: string;
     }[];
     createdAt: Date;
     updatedAt: Date;
@@ -37,6 +38,7 @@ export function toRecipeVersionResponseDto(r: RecipeVersionLike): RecipeVersionR
                     i.ingredientCategory,
                     i.quantity,
                     i.notes,
+                    i.resolutionPhase ?? 'FILLING',
                 ),
         ),
         r.createdAt,

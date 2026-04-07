@@ -1,5 +1,10 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
+export class AddonComponentResponseDto {
+    @ApiProperty() ingredientCategory: string;
+    @ApiProperty() addonItemId: string;
+}
+
 export class ItemResponseDto {
     @ApiProperty({ example: 'clxyz1234567890' })
     id: string;
@@ -37,6 +42,9 @@ export class ItemResponseDto {
     @ApiProperty({ type: 'string', format: 'date-time' })
     updatedAt: Date;
 
+    @ApiProperty({ type: [AddonComponentResponseDto], description: 'Add-on BOM components (FINAL_PRODUCT only)' })
+    addonComponents: AddonComponentResponseDto[];
+
     constructor(
         id: string,
         name: string,
@@ -50,6 +58,7 @@ export class ItemResponseDto {
         unitWeightGm?: number | null,
         weightedAverageUnitPrice?: number | null,
         productId?: string | null,
+        addonComponents: AddonComponentResponseDto[] = [],
     ) {
         this.id = id;
         this.name = name;
@@ -63,5 +72,6 @@ export class ItemResponseDto {
         this.unitWeightGm = unitWeightGm ?? null;
         this.weightedAverageUnitPrice = weightedAverageUnitPrice ?? null;
         this.productId = productId ?? null;
+        this.addonComponents = addonComponents;
     }
 }

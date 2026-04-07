@@ -33,6 +33,7 @@ export class GetItemByIdController {
             result.unitWeightGm,
             result.weightedAverageUnitPrice,
             result.productId,
+            result.addonComponents,
         );
     }
 }

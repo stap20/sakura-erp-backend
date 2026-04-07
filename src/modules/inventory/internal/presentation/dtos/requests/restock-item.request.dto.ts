@@ -1,4 +1,4 @@
-import { IsNumber, IsPositive, IsString, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsNumber, IsPositive, IsString, IsNotEmpty, IsOptional, Min } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class RestockItemRequestDto {
@@ -16,6 +16,12 @@ export class RestockItemRequestDto {
     @IsOptional()
     @IsString()
     vendorId?: string | null;
+
+    @ApiPropertyOptional({ example: 12.5, description: 'Unit price used to update weighted average unit price' })
+    @IsOptional()
+    @IsNumber()
+    @Min(0)
+    unitPrice?: number | null;
 
     @ApiPropertyOptional({ example: 'Monthly supplier delivery' })
     @IsOptional()
