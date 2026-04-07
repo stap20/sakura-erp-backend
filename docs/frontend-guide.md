@@ -98,9 +98,25 @@ erDiagram
     RecipeIngredient {
         string id PK
         string recipeVersionId FK
-        string itemId FK
+        string itemId FK "nullable for add-ons"
+        string ingredientCategory FK "nullable for base ingredients"
         number quantity
         boolean isAddOn
+        string resolutionPhase "BULK or FILLING"
+    }
+
+    PackagingComponent {
+        string id PK
+        string variantItemId FK
+        string packagingItemId FK
+        number quantityPerUnit
+    }
+
+    AddonComponent {
+        string id PK
+        string variantItemId FK
+        string ingredientCategory
+        string addonItemId FK
     }
 
     PurchaseOrder {
@@ -123,6 +139,7 @@ erDiagram
         string productId FK
         number batchWeightGm
         string status
+        array addonResolutions "ingredientCategory + addonItemId per add-on"
     }
 
     FillingOrder {
@@ -172,6 +189,8 @@ erDiagram
     Product ||--o{ RecipeVersion : "has versions"
     RecipeVersion ||--o{ RecipeIngredient : "contains"
     Item ||--o{ RecipeIngredient : "used in"
+    Item ||--o{ PackagingComponent : "variant has BOM"
+    Item ||--o{ AddonComponent : "variant has addon BOM"
     Vendor ||--o{ PurchaseOrder : "fulfills"
     PurchaseOrder ||--o{ PurchaseOrderLine : "has lines"
     Item ||--o{ PurchaseOrderLine : "purchased as"
@@ -282,10 +301,11 @@ sequenceDiagram
     participant BULK as BulkStock
 
     Note over U,BULK: Phase 1 — Bulk Production
-    U->>API: POST /production/orders (productId, batchWeightGm)
+    U->>API: POST /production/orders (productId, batchWeightGm, addonResolutions?)
     U->>API: POST /production/orders/:id/confirm
     U->>API: POST /production/orders/:id/execute
-    API->>INV: Deduct raw ingredients (scaled by recipe %)
+    API->>INV: Deduct base ingredients (scaled by recipe %)
+    API->>INV: Deduct BULK add-on ingredients (resolutionPhase=BULK, resolved via addonResolutions[])
     API->>BULK: Add bulkAvailableGm += batchWeightGm
 
     Note over U,BULK: Phase 2 — Filling into Variants
@@ -295,6 +315,7 @@ sequenceDiagram
     API->>BULK: Deduct bulkUsedGm
     API->>INV: Restock variant items (qty filled)
     API->>INV: Deduct packaging BOM components (per unit filled)
+    API->>INV: Deduct FILLING add-on ingredients (resolutionPhase=FILLING, resolved via item.addonComponents[])
 ```
 
 ---
@@ -326,11 +347,14 @@ flowchart TD
 
     CF --> LC[Labor Cost/unit = salary / hours / batchDuration × batchUnits]
     CF --> DC[Depreciation Cost/unit = depreciationPerMinute × batchDuration / units]
-    RV --> MC[Material Cost/unit = Σ ingredient% × WAUP × batchGm / units]
+    RV --> MC[Material Cost/unit = Σ base_ingredient% × WAUP × unitWeightGm]
     WAUP --> MC
+    RV --> AC[Addon Cost/unit = Σ addon_ingredient% × addonItem.WAUP × unitWeightGm]
+    WAUP --> AC
     LC --> COGS[Total COGS/unit]
     DC --> COGS
     MC --> COGS
+    AC --> COGS
     COGS --> SP[Suggested Price = COGS × (1 + marginPercent/100)]
 ```
 
@@ -399,10 +423,11 @@ flowchart TD
 | GET | `/inventory/items/:id` | Get item | — | Item |
 | PATCH | `/inventory/items/:id` | Update | `{name?, measureUnit?, categoryId?, unitWeightGm?, productId?}` | Item |
 | POST | `/inventory/items/:id/archive` | Archive | — | void 204 |
-| POST | `/inventory/items/:id/restock` | Restock | `{quantity, performedBy, vendorId?, notes?}` | Transaction |
+| POST | `/inventory/items/:id/restock` | Restock | `{quantity, performedBy, vendorId?, unitPrice?, notes?}` | Transaction |
 | POST | `/inventory/items/:id/deduct` | Deduct | `{quantity, performedBy, notes?}` | Transaction |
 | GET | `/inventory/items/:id/transactions` | History | `?type&offset&limit` | Transaction[] |
-| PUT | `/inventory/items/:id/packaging-bom` | Set BOM | `{components[]}` | void |
+| PUT | `/inventory/items/:id/packaging-bom` | Set Packaging BOM | `{components: [{packagingItemId, quantityPerUnit}]}` | `{variantItemId, components[]}` |
+| PUT | `/inventory/items/:id/addon-bom` | Set Addon BOM | `{components: [{ingredientCategory, addonItemId}]}` | `{variantItemId, components[]}` |
 
 ### Inventory — Products
 
@@ -423,7 +448,7 @@ flowchart TD
 | GET | `/recipes/product/:productId/active` | Get active | — | RecipeVersion |
 | GET | `/recipes/product/:productId/versions` | All versions | — | RecipeVersion[] |
 | PATCH | `/recipes/:id` | Update notes | `{notes?}` | void |
-| POST | `/recipes/:id/ingredients` | Add ingredient | `{itemId?, itemName?, isAddOn?, ingredientCategory?, quantity, notes?}` | RecipeVersion |
+| POST | `/recipes/:id/ingredients` | Add ingredient | `{itemId?, itemName?, isAddOn?, ingredientCategory?, quantity, resolutionPhase?, notes?}` | RecipeVersion |
 | PATCH | `/recipes/:id/ingredients/:ingredientId` | Update ingredient | `{quantity, notes?}` | void |
 | DELETE | `/recipes/:id/ingredients/:ingredientId` | Remove ingredient | — | void 204 |
 | POST | `/recipes/:id/activate` | Activate | — | void 204 |
@@ -449,7 +474,7 @@ flowchart TD
 
 | Method | Path | Description | Body / Query | Response |
 |--------|------|-------------|------|----------|
-| POST | `/production/orders` | Create DRAFT | `{productId, batchWeightGm, wastePercent, notes?}` | ProductionOrder |
+| POST | `/production/orders` | Create DRAFT | `{productId, batchWeightGm, wastePercent, notes?, addonResolutions?: [{ingredientCategory, addonItemId}]}` | ProductionOrder |
 | GET | `/production/orders` | List | `?productId&status&offset&limit` | ProductionOrder[] |
 | GET | `/production/orders/:id` | Get | — | ProductionOrder |
 | PATCH | `/production/orders/:id` | Update | `{batchWeightGm?, wastePercent?, notes?}` | ProductionOrder |
@@ -485,7 +510,7 @@ flowchart TD
 | POST | `/sales/:id/mark-paid` | Mark as paid | — | void 204 |
 | POST | `/sales/:id/apply-discount` | Apply discount | `{code}` | SalesOrder |
 | DELETE | `/sales/:id/discount` | Remove discount | — | void 204 |
-| GET | `/sales/pricing/item/:itemId` | COGS pricing | — | PricingResponse |
+| GET | `/sales/pricing/item/:itemId` | COGS pricing | — | `{materialPerUnit, laborPerUnit, depreciationPerUnit, packagingPerUnit, addonCostPerUnit, totalCogs, suggestedPrice}` |
 
 ### Promotions (Discount Codes)
 
@@ -632,7 +657,11 @@ Display ingredients as a live table with a running total % at the bottom. Warn i
 #### 5. Production Wizard
 A 2-step wizard:
 - **Step 1**: Create + Execute ProductionOrder → shows which ingredients will be deducted
+  - If the active recipe has add-on ingredients with `resolutionPhase: 'BULK'`, the user must map each `ingredientCategory` to a concrete RAW_MATERIAL item (`addonResolutions[]` array in the create body)
+  - Fetch the active recipe (`GET /recipes/product/:productId/active`), filter `isAddOn && resolutionPhase === 'BULK'`, show a picker per category
 - **Step 2**: Create + Execute FillingOrder → shows how much bulk will be used per variant
+  - FILLING add-ons are resolved automatically from each variant's `addonComponents[]` — no extra user input needed
+  - Inform the user that fragrance/colorant add-ons will be deducted per unit at fill time
 
 ---
 
@@ -704,6 +733,10 @@ graph LR
 - Payment can only be marked as `PAID` when `paymentStatus === 'PENDING'`
 - An item can only be archived if it has zero stock
 - A category can only be archived if it has no active items
+- `PUT /inventory/items/:id/addon-bom` only works on `FINAL_PRODUCT` items (400 otherwise)
+- Add-on ingredients (`isAddOn: true`) use `ingredientCategory` (e.g. `'fragrance'`) instead of `itemId` — the concrete item is resolved at production time via `addonResolutions[]` (BULK) or `addonComponents[]` on the variant item (FILLING)
+- `resolutionPhase: 'BULK'` → add-on deducted at ProductionOrder execute; `'FILLING'` (default) → deducted at FillingOrder execute
+- Restock with `unitPrice` sets the Weighted Average Unit Price (WAUP) — this is what flows into COGS calculation for add-on costs
 
 ---
 
