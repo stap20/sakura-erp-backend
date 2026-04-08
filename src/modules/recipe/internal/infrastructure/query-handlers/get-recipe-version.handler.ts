@@ -21,6 +21,7 @@ export function mapToRecipeVersionResponse(entity: RecipeVersionEntity): GetReci
             ingredientCategory: i.ingredientCategory,
             quantity: Number(i.quantity),
             notes: i.notes,
+            resolutionPhase: i.resolutionPhase ?? 'FILLING',
         })),
         entity.createdAt,
         entity.updatedAt,

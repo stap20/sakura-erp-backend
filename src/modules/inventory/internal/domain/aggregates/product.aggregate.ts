@@ -1,5 +1,9 @@
 import { AggregateRoot } from 'src/shared/domain/aggregate-root';
 import { ProductId } from '../value-objects/product-id.vo';
+import { ProductName } from '../value-objects/product-name.vo';
+import { ReferenceBatchGm } from '../value-objects/reference-batch-gm.vo';
+import { ReferenceDurationMin } from '../value-objects/reference-duration-min.vo';
+import { ReferenceWastePercent } from '../value-objects/reference-waste-percent.vo';
 
 export interface CreateProductParams {
     id: string;
@@ -28,19 +32,19 @@ export interface UpdateProductParams {
 }
 
 export class Product extends AggregateRoot<ProductId> {
-    private name: string;
+    private name: ProductName;
     private description: string | null;
-    private referenceBatchGm: number | null;
-    private referenceDurationMin: number | null;
-    private referenceWastePercent: number | null;
+    private referenceBatchGm: ReferenceBatchGm | null;
+    private referenceDurationMin: ReferenceDurationMin | null;
+    private referenceWastePercent: ReferenceWastePercent | null;
 
     private constructor(
         id: ProductId,
-        name: string,
+        name: ProductName,
         description: string | null,
-        referenceBatchGm: number | null,
-        referenceDurationMin: number | null,
-        referenceWastePercent: number | null,
+        referenceBatchGm: ReferenceBatchGm | null,
+        referenceDurationMin: ReferenceDurationMin | null,
+        referenceWastePercent: ReferenceWastePercent | null,
     ) {
         super(id);
         this.name = name;
@@ -51,53 +55,53 @@ export class Product extends AggregateRoot<ProductId> {
     }
 
     public static create(params: CreateProductParams): Product {
-        if (!params.name || params.name.trim().length < 2) {
-            throw new Error('Product name must be at least 2 characters');
-        }
         return new Product(
             ProductId.create(params.id),
-            params.name.trim(),
+            ProductName.create(params.name),
             params.description ?? null,
-            params.referenceBatchGm ?? null,
-            params.referenceDurationMin ?? null,
-            params.referenceWastePercent ?? null,
+            params.referenceBatchGm != null ? ReferenceBatchGm.create(params.referenceBatchGm) : null,
+            params.referenceDurationMin != null ? ReferenceDurationMin.create(params.referenceDurationMin) : null,
+            params.referenceWastePercent != null ? ReferenceWastePercent.create(params.referenceWastePercent) : null,
         );
     }
 
     public static createFromPersistence(params: PersistenceProductParams): Product {
         return new Product(
             ProductId.create(params.id),
-            params.name,
+            ProductName.create(params.name),
             params.description,
-            params.referenceBatchGm,
-            params.referenceDurationMin,
-            params.referenceWastePercent,
+            params.referenceBatchGm != null ? ReferenceBatchGm.create(params.referenceBatchGm) : null,
+            params.referenceDurationMin != null ? ReferenceDurationMin.create(params.referenceDurationMin) : null,
+            params.referenceWastePercent != null ? ReferenceWastePercent.create(params.referenceWastePercent) : null,
         );
     }
 
     public update(params: UpdateProductParams): void {
         if (params.name !== undefined) {
-            if (!params.name || params.name.trim().length < 2) {
-                throw new Error('Product name must be at least 2 characters');
-            }
-            this.name = params.name.trim();
+            this.name = ProductName.create(params.name);
         }
         if (params.description !== undefined) {
             this.description = params.description;
         }
         if (params.referenceBatchGm !== undefined) {
-            this.referenceBatchGm = params.referenceBatchGm;
+            this.referenceBatchGm = params.referenceBatchGm != null
+                ? ReferenceBatchGm.create(params.referenceBatchGm)
+                : null;
         }
         if (params.referenceDurationMin !== undefined) {
-            this.referenceDurationMin = params.referenceDurationMin;
+            this.referenceDurationMin = params.referenceDurationMin != null
+                ? ReferenceDurationMin.create(params.referenceDurationMin)
+                : null;
         }
         if (params.referenceWastePercent !== undefined) {
-            this.referenceWastePercent = params.referenceWastePercent;
+            this.referenceWastePercent = params.referenceWastePercent != null
+                ? ReferenceWastePercent.create(params.referenceWastePercent)
+                : null;
         }
     }
 
     public getName(): string {
-        return this.name;
+        return this.name.value;
     }
 
     public getDescription(): string | null {
@@ -105,15 +109,15 @@ export class Product extends AggregateRoot<ProductId> {
     }
 
     public getReferenceBatchGm(): number | null {
-        return this.referenceBatchGm;
+        return this.referenceBatchGm?.value ?? null;
     }
 
     public getReferenceDurationMin(): number | null {
-        return this.referenceDurationMin;
+        return this.referenceDurationMin?.value ?? null;
     }
 
     public getReferenceWastePercent(): number | null {
-        return this.referenceWastePercent;
+        return this.referenceWastePercent?.value ?? null;
     }
 
     public equals(other: Product): boolean {

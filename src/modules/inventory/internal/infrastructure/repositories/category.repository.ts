@@ -34,6 +34,13 @@ export class CategoryRepository implements ICategoryRepository {
         return this.categoryMapper.toDomain(entity);
     }
 
+    async hasActiveItems(id: CategoryId): Promise<boolean> {
+        const count = await this.prisma.item.count({
+            where: { categoryId: id.value, status: 'ACTIVE' },
+        });
+        return count > 0;
+    }
+
     async save(category: Category): Promise<void> {
         const data = this.categoryMapper.toPersistence(category);
 

@@ -3,11 +3,15 @@ import { IGetItemHandler } from '../../application/queries/get-item/get-item.han
 import { GetItemQuery } from '../../application/queries/get-item/get-item.query';
 import { GetItemResponse } from '../../application/queries/get-item/get-item.response';
 import { ReadItemRepository } from '../repositories/read-item.repository';
+import { ReadAddonBomRepository } from '../repositories/read-addon-bom.repository';
 import { ItemNotFoundApplicationError } from '../../application/errors/item.errors';
 
 @Injectable()
 export class GetItemHandler implements IGetItemHandler {
-    constructor(private readonly readItemRepository: ReadItemRepository) {}
+    constructor(
+        private readonly readItemRepository: ReadItemRepository,
+        private readonly readAddonBomRepository: ReadAddonBomRepository,
+    ) {}
 
     async handle(query: GetItemQuery): Promise<GetItemResponse> {
         const item = await this.readItemRepository.getById(query.id);
@@ -15,6 +19,8 @@ export class GetItemHandler implements IGetItemHandler {
         if (!item) {
             throw new ItemNotFoundApplicationError(query.id);
         }
+
+        const addonComponents = await this.readAddonBomRepository.getByVariantItemId(item.id);
 
         return new GetItemResponse(
             item.id,
@@ -29,6 +35,7 @@ export class GetItemHandler implements IGetItemHandler {
             item.unitWeightGm ?? null,
             item.weightedAverageUnitPrice ?? null,
             item.productId ?? null,
+            addonComponents.map((c) => ({ ingredientCategory: c.ingredientCategory, addonItemId: c.addonItemId })),
         );
     }
 }

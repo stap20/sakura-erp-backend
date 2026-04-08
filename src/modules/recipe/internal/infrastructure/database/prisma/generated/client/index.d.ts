@@ -2146,6 +2146,7 @@ export namespace Prisma {
     ingredientCategory: string | null
     quantity: Decimal | null
     notes: string | null
+    resolutionPhase: string | null
   }
 
   export type RecipeIngredientMaxAggregateOutputType = {
@@ -2157,6 +2158,7 @@ export namespace Prisma {
     ingredientCategory: string | null
     quantity: Decimal | null
     notes: string | null
+    resolutionPhase: string | null
   }
 
   export type RecipeIngredientCountAggregateOutputType = {
@@ -2168,6 +2170,7 @@ export namespace Prisma {
     ingredientCategory: number
     quantity: number
     notes: number
+    resolutionPhase: number
     _all: number
   }
 
@@ -2189,6 +2192,7 @@ export namespace Prisma {
     ingredientCategory?: true
     quantity?: true
     notes?: true
+    resolutionPhase?: true
   }
 
   export type RecipeIngredientMaxAggregateInputType = {
@@ -2200,6 +2204,7 @@ export namespace Prisma {
     ingredientCategory?: true
     quantity?: true
     notes?: true
+    resolutionPhase?: true
   }
 
   export type RecipeIngredientCountAggregateInputType = {
@@ -2211,6 +2216,7 @@ export namespace Prisma {
     ingredientCategory?: true
     quantity?: true
     notes?: true
+    resolutionPhase?: true
     _all?: true
   }
 
@@ -2309,6 +2315,7 @@ export namespace Prisma {
     ingredientCategory: string | null
     quantity: Decimal
     notes: string | null
+    resolutionPhase: string
     _count: RecipeIngredientCountAggregateOutputType | null
     _avg: RecipeIngredientAvgAggregateOutputType | null
     _sum: RecipeIngredientSumAggregateOutputType | null
@@ -2339,6 +2346,7 @@ export namespace Prisma {
     ingredientCategory?: boolean
     quantity?: boolean
     notes?: boolean
+    resolutionPhase?: boolean
     recipe?: boolean | RecipeVersionDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["recipeIngredient"]>
 
@@ -2351,6 +2359,7 @@ export namespace Prisma {
     ingredientCategory?: boolean
     quantity?: boolean
     notes?: boolean
+    resolutionPhase?: boolean
     recipe?: boolean | RecipeVersionDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["recipeIngredient"]>
 
@@ -2363,6 +2372,7 @@ export namespace Prisma {
     ingredientCategory?: boolean
     quantity?: boolean
     notes?: boolean
+    resolutionPhase?: boolean
     recipe?: boolean | RecipeVersionDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["recipeIngredient"]>
 
@@ -2375,9 +2385,10 @@ export namespace Prisma {
     ingredientCategory?: boolean
     quantity?: boolean
     notes?: boolean
+    resolutionPhase?: boolean
   }
 
-  export type RecipeIngredientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "recipeId" | "itemId" | "itemName" | "isAddOn" | "ingredientCategory" | "quantity" | "notes", ExtArgs["result"]["recipeIngredient"]>
+  export type RecipeIngredientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "recipeId" | "itemId" | "itemName" | "isAddOn" | "ingredientCategory" | "quantity" | "notes" | "resolutionPhase", ExtArgs["result"]["recipeIngredient"]>
   export type RecipeIngredientInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     recipe?: boolean | RecipeVersionDefaultArgs<ExtArgs>
   }
@@ -2402,6 +2413,7 @@ export namespace Prisma {
       ingredientCategory: string | null
       quantity: Prisma.Decimal
       notes: string | null
+      resolutionPhase: string
     }, ExtArgs["result"]["recipeIngredient"]>
     composites: {}
   }
@@ -2834,6 +2846,7 @@ export namespace Prisma {
     readonly ingredientCategory: FieldRef<"RecipeIngredient", 'String'>
     readonly quantity: FieldRef<"RecipeIngredient", 'Decimal'>
     readonly notes: FieldRef<"RecipeIngredient", 'String'>
+    readonly resolutionPhase: FieldRef<"RecipeIngredient", 'String'>
   }
     
 
@@ -3283,7 +3296,8 @@ export namespace Prisma {
     isAddOn: 'isAddOn',
     ingredientCategory: 'ingredientCategory',
     quantity: 'quantity',
-    notes: 'notes'
+    notes: 'notes',
+    resolutionPhase: 'resolutionPhase'
   };
 
   export type RecipeIngredientScalarFieldEnum = (typeof RecipeIngredientScalarFieldEnum)[keyof typeof RecipeIngredientScalarFieldEnum]
@@ -3478,6 +3492,7 @@ export namespace Prisma {
     ingredientCategory?: StringNullableFilter<"RecipeIngredient"> | string | null
     quantity?: DecimalFilter<"RecipeIngredient"> | Decimal | DecimalJsLike | number | string
     notes?: StringNullableFilter<"RecipeIngredient"> | string | null
+    resolutionPhase?: StringFilter<"RecipeIngredient"> | string
     recipe?: XOR<RecipeVersionScalarRelationFilter, RecipeVersionWhereInput>
   }
 
@@ -3490,6 +3505,7 @@ export namespace Prisma {
     ingredientCategory?: SortOrderInput | SortOrder
     quantity?: SortOrder
     notes?: SortOrderInput | SortOrder
+    resolutionPhase?: SortOrder
     recipe?: RecipeVersionOrderByWithRelationInput
   }
 
@@ -3507,6 +3523,7 @@ export namespace Prisma {
     ingredientCategory?: StringNullableFilter<"RecipeIngredient"> | string | null
     quantity?: DecimalFilter<"RecipeIngredient"> | Decimal | DecimalJsLike | number | string
     notes?: StringNullableFilter<"RecipeIngredient"> | string | null
+    resolutionPhase?: StringFilter<"RecipeIngredient"> | string
     recipe?: XOR<RecipeVersionScalarRelationFilter, RecipeVersionWhereInput>
   }, "id" | "recipeId_itemId" | "recipeId_ingredientCategory">
 
@@ -3519,6 +3536,7 @@ export namespace Prisma {
     ingredientCategory?: SortOrderInput | SortOrder
     quantity?: SortOrder
     notes?: SortOrderInput | SortOrder
+    resolutionPhase?: SortOrder
     _count?: RecipeIngredientCountOrderByAggregateInput
     _avg?: RecipeIngredientAvgOrderByAggregateInput
     _max?: RecipeIngredientMaxOrderByAggregateInput
@@ -3538,6 +3556,7 @@ export namespace Prisma {
     ingredientCategory?: StringNullableWithAggregatesFilter<"RecipeIngredient"> | string | null
     quantity?: DecimalWithAggregatesFilter<"RecipeIngredient"> | Decimal | DecimalJsLike | number | string
     notes?: StringNullableWithAggregatesFilter<"RecipeIngredient"> | string | null
+    resolutionPhase?: StringWithAggregatesFilter<"RecipeIngredient"> | string
   }
 
   export type RecipeVersionCreateInput = {
@@ -3622,6 +3641,7 @@ export namespace Prisma {
     ingredientCategory?: string | null
     quantity: Decimal | DecimalJsLike | number | string
     notes?: string | null
+    resolutionPhase?: string
     recipe: RecipeVersionCreateNestedOneWithoutIngredientsInput
   }
 
@@ -3634,6 +3654,7 @@ export namespace Prisma {
     ingredientCategory?: string | null
     quantity: Decimal | DecimalJsLike | number | string
     notes?: string | null
+    resolutionPhase?: string
   }
 
   export type RecipeIngredientUpdateInput = {
@@ -3644,6 +3665,7 @@ export namespace Prisma {
     ingredientCategory?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    resolutionPhase?: StringFieldUpdateOperationsInput | string
     recipe?: RecipeVersionUpdateOneRequiredWithoutIngredientsNestedInput
   }
 
@@ -3656,6 +3678,7 @@ export namespace Prisma {
     ingredientCategory?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    resolutionPhase?: StringFieldUpdateOperationsInput | string
   }
 
   export type RecipeIngredientCreateManyInput = {
@@ -3667,6 +3690,7 @@ export namespace Prisma {
     ingredientCategory?: string | null
     quantity: Decimal | DecimalJsLike | number | string
     notes?: string | null
+    resolutionPhase?: string
   }
 
   export type RecipeIngredientUpdateManyMutationInput = {
@@ -3677,6 +3701,7 @@ export namespace Prisma {
     ingredientCategory?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    resolutionPhase?: StringFieldUpdateOperationsInput | string
   }
 
   export type RecipeIngredientUncheckedUpdateManyInput = {
@@ -3688,6 +3713,7 @@ export namespace Prisma {
     ingredientCategory?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    resolutionPhase?: StringFieldUpdateOperationsInput | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -3906,6 +3932,7 @@ export namespace Prisma {
     ingredientCategory?: SortOrder
     quantity?: SortOrder
     notes?: SortOrder
+    resolutionPhase?: SortOrder
   }
 
   export type RecipeIngredientAvgOrderByAggregateInput = {
@@ -3921,6 +3948,7 @@ export namespace Prisma {
     ingredientCategory?: SortOrder
     quantity?: SortOrder
     notes?: SortOrder
+    resolutionPhase?: SortOrder
   }
 
   export type RecipeIngredientMinOrderByAggregateInput = {
@@ -3932,6 +3960,7 @@ export namespace Prisma {
     ingredientCategory?: SortOrder
     quantity?: SortOrder
     notes?: SortOrder
+    resolutionPhase?: SortOrder
   }
 
   export type RecipeIngredientSumOrderByAggregateInput = {
@@ -4234,6 +4263,7 @@ export namespace Prisma {
     ingredientCategory?: string | null
     quantity: Decimal | DecimalJsLike | number | string
     notes?: string | null
+    resolutionPhase?: string
   }
 
   export type RecipeIngredientUncheckedCreateWithoutRecipeInput = {
@@ -4244,6 +4274,7 @@ export namespace Prisma {
     ingredientCategory?: string | null
     quantity: Decimal | DecimalJsLike | number | string
     notes?: string | null
+    resolutionPhase?: string
   }
 
   export type RecipeIngredientCreateOrConnectWithoutRecipeInput = {
@@ -4284,6 +4315,7 @@ export namespace Prisma {
     ingredientCategory?: StringNullableFilter<"RecipeIngredient"> | string | null
     quantity?: DecimalFilter<"RecipeIngredient"> | Decimal | DecimalJsLike | number | string
     notes?: StringNullableFilter<"RecipeIngredient"> | string | null
+    resolutionPhase?: StringFilter<"RecipeIngredient"> | string
   }
 
   export type RecipeVersionCreateWithoutIngredientsInput = {
@@ -4350,6 +4382,7 @@ export namespace Prisma {
     ingredientCategory?: string | null
     quantity: Decimal | DecimalJsLike | number | string
     notes?: string | null
+    resolutionPhase?: string
   }
 
   export type RecipeIngredientUpdateWithoutRecipeInput = {
@@ -4360,6 +4393,7 @@ export namespace Prisma {
     ingredientCategory?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    resolutionPhase?: StringFieldUpdateOperationsInput | string
   }
 
   export type RecipeIngredientUncheckedUpdateWithoutRecipeInput = {
@@ -4370,6 +4404,7 @@ export namespace Prisma {
     ingredientCategory?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    resolutionPhase?: StringFieldUpdateOperationsInput | string
   }
 
   export type RecipeIngredientUncheckedUpdateManyWithoutRecipeInput = {
@@ -4380,6 +4415,7 @@ export namespace Prisma {
     ingredientCategory?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    resolutionPhase?: StringFieldUpdateOperationsInput | string
   }
 
 

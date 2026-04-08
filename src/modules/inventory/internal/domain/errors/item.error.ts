@@ -54,3 +54,21 @@ export class MeasureUnitLockedError extends DomainError {
         );
     }
 }
+
+export class InvalidCurrentStockError extends DomainError {
+    constructor() {
+        super('Current stock cannot be negative');
+    }
+}
+
+export class InvalidUnitWeightGmError extends DomainError {
+    constructor() {
+        super('Unit weight must be greater than 0');
+    }
+}
+
+export class InvalidWeightedAverageUnitPriceError extends DomainError {
+    constructor() {
+        super('Weighted average unit price cannot be negative');
+    }
+}

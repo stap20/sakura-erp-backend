@@ -1,7 +1,9 @@
 export interface RecipeIngredientFacadeDto {
-    itemId: string;
+    itemId: string | null;
+    ingredientCategory: string | null;
     percentage: number;
     isAddOn: boolean;
+    resolutionPhase: string;
 }
 
 export class RecipeVersionFacadeDto {

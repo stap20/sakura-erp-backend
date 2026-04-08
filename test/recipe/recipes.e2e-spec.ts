@@ -111,6 +111,24 @@ describe('Recipes (e2e)', () => {
                 .send({ isAddOn: true, ingredientCategory: 'FRAGRANCE', quantity: 3 })
                 .expect(409);
         });
+
+        it('adds add-on with resolutionPhase=BULK → reflected in response', async () => {
+            const res = await request(app.getHttpServer())
+                .post(`/api/v1/recipes/${versionId}/ingredients`)
+                .send({ isAddOn: true, ingredientCategory: 'COLORANT', quantity: 1, resolutionPhase: 'BULK' })
+                .expect(201);
+
+            const addOn = res.body.ingredients.find((i: any) => i.ingredientCategory === 'COLORANT');
+            expect(addOn).toBeDefined();
+            expect(addOn.resolutionPhase).toBe('BULK');
+        });
+
+        it('add-on ingredient defaults resolutionPhase to FILLING when omitted', async () => {
+            const addOn = (await request(app.getHttpServer())
+                .get(`/api/v1/recipes/${versionId}`)
+                .expect(200)).body.ingredients.find((i: any) => i.ingredientCategory === 'FRAGRANCE');
+            expect(addOn.resolutionPhase).toBe('FILLING');
+        });
     });
 
     // ─── Update Ingredient ───────────────────────────────────────────────────────

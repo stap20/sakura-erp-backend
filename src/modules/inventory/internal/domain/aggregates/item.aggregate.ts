@@ -5,6 +5,11 @@ import { ItemType } from '../value-objects/item-type.vo';
 import { MeasureUnit } from '../value-objects/measure-unit.vo';
 import { ItemStatus } from '../value-objects/item-status.vo';
 import { Quantity } from '../value-objects/quantity.vo';
+import { CurrentStock } from '../value-objects/current-stock.vo';
+import { UnitWeightGm } from '../value-objects/unit-weight-gm.vo';
+import { WeightedAverageUnitPrice } from '../value-objects/weighted-average-unit-price.vo';
+import { CategoryId } from '../value-objects/category-id.vo';
+import { ProductId } from '../value-objects/product-id.vo';
 import {
     ItemAlreadyArchivedError,
     InsufficientStockError,
@@ -47,24 +52,24 @@ export class Item extends AggregateRoot<ItemId> {
     private name: ItemName;
     private type: ItemType;
     private measureUnit: MeasureUnit;
-    private currentStock: number;
-    private categoryId: string | null;
-    private productId: string | null;
+    private currentStock: CurrentStock;
+    private categoryId: CategoryId | null;
+    private productId: ProductId | null;
     private status: ItemStatus;
-    private unitWeightGm: number | null;
-    private weightedAverageUnitPrice: number | null;
+    private unitWeightGm: UnitWeightGm | null;
+    private weightedAverageUnitPrice: WeightedAverageUnitPrice | null;
 
     private constructor(
         id: ItemId,
         name: ItemName,
         type: ItemType,
         measureUnit: MeasureUnit,
-        currentStock: number,
-        categoryId: string | null,
-        productId: string | null,
+        currentStock: CurrentStock,
+        categoryId: CategoryId | null,
+        productId: ProductId | null,
         status: ItemStatus,
-        unitWeightGm: number | null,
-        weightedAverageUnitPrice: number | null,
+        unitWeightGm: UnitWeightGm | null,
+        weightedAverageUnitPrice: WeightedAverageUnitPrice | null,
     ) {
         super(id);
         this.name = name;
@@ -94,33 +99,29 @@ export class Item extends AggregateRoot<ItemId> {
             name,
             type,
             measureUnit,
-            0,
-            params.categoryId ?? null,
-            params.productId ?? null,
+            CurrentStock.create(0),
+            params.categoryId ? CategoryId.create(params.categoryId) : null,
+            params.productId ? ProductId.create(params.productId) : null,
             status,
-            params.unitWeightGm ?? null,
+            params.unitWeightGm != null ? UnitWeightGm.create(params.unitWeightGm) : null,
             null,
         );
     }
 
     public static createFromPersistence(params: PersistenceItemParams): Item {
-        const id = ItemId.create(params.id);
-        const name = ItemName.create(params.name);
-        const type = ItemType.create(params.type);
-        const measureUnit = MeasureUnit.create(params.measureUnit);
-        const status = ItemStatus.fromString(params.status);
-
         return new Item(
-            id,
-            name,
-            type,
-            measureUnit,
-            params.currentStock,
-            params.categoryId,
-            params.productId,
-            status,
-            params.unitWeightGm,
-            params.weightedAverageUnitPrice,
+            ItemId.create(params.id),
+            ItemName.create(params.name),
+            ItemType.create(params.type),
+            MeasureUnit.create(params.measureUnit),
+            CurrentStock.create(params.currentStock),
+            params.categoryId ? CategoryId.create(params.categoryId) : null,
+            params.productId ? ProductId.create(params.productId) : null,
+            ItemStatus.fromString(params.status),
+            params.unitWeightGm != null ? UnitWeightGm.create(params.unitWeightGm) : null,
+            params.weightedAverageUnitPrice != null
+                ? WeightedAverageUnitPrice.create(params.weightedAverageUnitPrice)
+                : null,
         );
     }
 
@@ -135,47 +136,47 @@ export class Item extends AggregateRoot<ItemId> {
             if (params.categoryId && !this.type.isRawMaterial()) {
                 throw new InvalidCategoryForItemTypeError();
             }
-            this.categoryId = params.categoryId;
+            this.categoryId = params.categoryId ? CategoryId.create(params.categoryId) : null;
         }
         if (params.unitWeightGm !== undefined) {
-            this.unitWeightGm = params.unitWeightGm;
+            this.unitWeightGm = params.unitWeightGm != null ? UnitWeightGm.create(params.unitWeightGm) : null;
         }
         if (params.productId !== undefined) {
-            this.productId = params.productId;
+            this.productId = params.productId ? ProductId.create(params.productId) : null;
         }
     }
 
     public updateWAUP(waup: number): void {
-        this.weightedAverageUnitPrice = waup;
+        this.weightedAverageUnitPrice = WeightedAverageUnitPrice.create(waup);
     }
 
     public restock(quantity: Quantity): void {
         if (this.status.isArchived()) {
             throw new ItemAlreadyArchivedError(this.id.value);
         }
-        this.currentStock += quantity.value;
+        this.currentStock = CurrentStock.create(this.currentStock.value + quantity.value);
     }
 
     public deduct(quantity: Quantity): void {
         if (this.status.isArchived()) {
             throw new ItemAlreadyArchivedError(this.id.value);
         }
-        if (quantity.value > this.currentStock) {
+        if (quantity.value > this.currentStock.value) {
             throw new InsufficientStockError(
                 this.id.value,
                 quantity.value,
-                this.currentStock,
+                this.currentStock.value,
             );
         }
-        this.currentStock -= quantity.value;
+        this.currentStock = CurrentStock.create(this.currentStock.value - quantity.value);
     }
 
     public archive(): void {
         if (this.status.isArchived()) {
             throw new ItemAlreadyArchivedError(this.id.value);
         }
-        if (this.currentStock > 0) {
-            throw new ItemHasStockError(this.id.value, this.currentStock);
+        if (this.currentStock.value > 0) {
+            throw new ItemHasStockError(this.id.value, this.currentStock.value);
         }
         this.status = ItemStatus.archived();
     }
@@ -189,11 +190,11 @@ export class Item extends AggregateRoot<ItemId> {
     }
 
     public getUnitWeightGm(): number | null {
-        return this.unitWeightGm;
+        return this.unitWeightGm?.value ?? null;
     }
 
     public getWeightedAverageUnitPrice(): number | null {
-        return this.weightedAverageUnitPrice;
+        return this.weightedAverageUnitPrice?.value ?? null;
     }
 
     public getName(): ItemName {
@@ -209,15 +210,15 @@ export class Item extends AggregateRoot<ItemId> {
     }
 
     public getCurrentStock(): number {
-        return this.currentStock;
+        return this.currentStock.value;
     }
 
     public getCategoryId(): string | null {
-        return this.categoryId;
+        return this.categoryId?.value ?? null;
     }
 
     public getProductId(): string | null {
-        return this.productId;
+        return this.productId?.value ?? null;
     }
 
     public getStatus(): ItemStatus {

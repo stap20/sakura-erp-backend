@@ -34,6 +34,11 @@ export type Category = $Result.DefaultSelection<Prisma.$CategoryPayload>
  */
 export type PackagingComponent = $Result.DefaultSelection<Prisma.$PackagingComponentPayload>
 /**
+ * Model AddonComponent
+ * 
+ */
+export type AddonComponent = $Result.DefaultSelection<Prisma.$AddonComponentPayload>
+/**
  * Model InventoryTransaction
  * 
  */
@@ -199,6 +204,16 @@ export class PrismaClient<
     * ```
     */
   get packagingComponent(): Prisma.PackagingComponentDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.addonComponent`: Exposes CRUD operations for the **AddonComponent** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AddonComponents
+    * const addonComponents = await prisma.addonComponent.findMany()
+    * ```
+    */
+  get addonComponent(): Prisma.AddonComponentDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.inventoryTransaction`: Exposes CRUD operations for the **InventoryTransaction** model.
@@ -647,6 +662,7 @@ export namespace Prisma {
     Item: 'Item',
     Category: 'Category',
     PackagingComponent: 'PackagingComponent',
+    AddonComponent: 'AddonComponent',
     InventoryTransaction: 'InventoryTransaction'
   };
 
@@ -663,7 +679,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "product" | "item" | "category" | "packagingComponent" | "inventoryTransaction"
+      modelProps: "product" | "item" | "category" | "packagingComponent" | "addonComponent" | "inventoryTransaction"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -963,6 +979,80 @@ export namespace Prisma {
           }
         }
       }
+      AddonComponent: {
+        payload: Prisma.$AddonComponentPayload<ExtArgs>
+        fields: Prisma.AddonComponentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AddonComponentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AddonComponentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AddonComponentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AddonComponentPayload>
+          }
+          findFirst: {
+            args: Prisma.AddonComponentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AddonComponentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AddonComponentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AddonComponentPayload>
+          }
+          findMany: {
+            args: Prisma.AddonComponentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AddonComponentPayload>[]
+          }
+          create: {
+            args: Prisma.AddonComponentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AddonComponentPayload>
+          }
+          createMany: {
+            args: Prisma.AddonComponentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AddonComponentCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AddonComponentPayload>[]
+          }
+          delete: {
+            args: Prisma.AddonComponentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AddonComponentPayload>
+          }
+          update: {
+            args: Prisma.AddonComponentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AddonComponentPayload>
+          }
+          deleteMany: {
+            args: Prisma.AddonComponentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AddonComponentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AddonComponentUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AddonComponentPayload>[]
+          }
+          upsert: {
+            args: Prisma.AddonComponentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AddonComponentPayload>
+          }
+          aggregate: {
+            args: Prisma.AddonComponentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAddonComponent>
+          }
+          groupBy: {
+            args: Prisma.AddonComponentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AddonComponentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AddonComponentCountArgs<ExtArgs>
+            result: $Utils.Optional<AddonComponentCountAggregateOutputType> | number
+          }
+        }
+      }
       InventoryTransaction: {
         payload: Prisma.$InventoryTransactionPayload<ExtArgs>
         fields: Prisma.InventoryTransactionFieldRefs
@@ -1149,6 +1239,7 @@ export namespace Prisma {
     item?: ItemOmit
     category?: CategoryOmit
     packagingComponent?: PackagingComponentOmit
+    addonComponent?: AddonComponentOmit
     inventoryTransaction?: InventoryTransactionOmit
   }
 
@@ -1264,12 +1355,16 @@ export namespace Prisma {
     transactions: number
     packagingComponents: number
     usedAsPackagingIn: number
+    addonComponents: number
+    usedAsAddonIn: number
   }
 
   export type ItemCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     transactions?: boolean | ItemCountOutputTypeCountTransactionsArgs
     packagingComponents?: boolean | ItemCountOutputTypeCountPackagingComponentsArgs
     usedAsPackagingIn?: boolean | ItemCountOutputTypeCountUsedAsPackagingInArgs
+    addonComponents?: boolean | ItemCountOutputTypeCountAddonComponentsArgs
+    usedAsAddonIn?: boolean | ItemCountOutputTypeCountUsedAsAddonInArgs
   }
 
   // Custom InputTypes
@@ -1302,6 +1397,20 @@ export namespace Prisma {
    */
   export type ItemCountOutputTypeCountUsedAsPackagingInArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PackagingComponentWhereInput
+  }
+
+  /**
+   * ItemCountOutputType without action
+   */
+  export type ItemCountOutputTypeCountAddonComponentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AddonComponentWhereInput
+  }
+
+  /**
+   * ItemCountOutputType without action
+   */
+  export type ItemCountOutputTypeCountUsedAsAddonInArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AddonComponentWhereInput
   }
 
 
@@ -2758,6 +2867,8 @@ export namespace Prisma {
     transactions?: boolean | Item$transactionsArgs<ExtArgs>
     packagingComponents?: boolean | Item$packagingComponentsArgs<ExtArgs>
     usedAsPackagingIn?: boolean | Item$usedAsPackagingInArgs<ExtArgs>
+    addonComponents?: boolean | Item$addonComponentsArgs<ExtArgs>
+    usedAsAddonIn?: boolean | Item$usedAsAddonInArgs<ExtArgs>
     _count?: boolean | ItemCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["item"]>
 
@@ -2817,6 +2928,8 @@ export namespace Prisma {
     transactions?: boolean | Item$transactionsArgs<ExtArgs>
     packagingComponents?: boolean | Item$packagingComponentsArgs<ExtArgs>
     usedAsPackagingIn?: boolean | Item$usedAsPackagingInArgs<ExtArgs>
+    addonComponents?: boolean | Item$addonComponentsArgs<ExtArgs>
+    usedAsAddonIn?: boolean | Item$usedAsAddonInArgs<ExtArgs>
     _count?: boolean | ItemCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2836,6 +2949,8 @@ export namespace Prisma {
       transactions: Prisma.$InventoryTransactionPayload<ExtArgs>[]
       packagingComponents: Prisma.$PackagingComponentPayload<ExtArgs>[]
       usedAsPackagingIn: Prisma.$PackagingComponentPayload<ExtArgs>[]
+      addonComponents: Prisma.$AddonComponentPayload<ExtArgs>[]
+      usedAsAddonIn: Prisma.$AddonComponentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3249,6 +3364,8 @@ export namespace Prisma {
     transactions<T extends Item$transactionsArgs<ExtArgs> = {}>(args?: Subset<T, Item$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     packagingComponents<T extends Item$packagingComponentsArgs<ExtArgs> = {}>(args?: Subset<T, Item$packagingComponentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackagingComponentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     usedAsPackagingIn<T extends Item$usedAsPackagingInArgs<ExtArgs> = {}>(args?: Subset<T, Item$usedAsPackagingInArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PackagingComponentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    addonComponents<T extends Item$addonComponentsArgs<ExtArgs> = {}>(args?: Subset<T, Item$addonComponentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AddonComponentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    usedAsAddonIn<T extends Item$usedAsAddonInArgs<ExtArgs> = {}>(args?: Subset<T, Item$usedAsAddonInArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AddonComponentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3793,6 +3910,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PackagingComponentScalarFieldEnum | PackagingComponentScalarFieldEnum[]
+  }
+
+  /**
+   * Item.addonComponents
+   */
+  export type Item$addonComponentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AddonComponent
+     */
+    select?: AddonComponentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AddonComponent
+     */
+    omit?: AddonComponentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AddonComponentInclude<ExtArgs> | null
+    where?: AddonComponentWhereInput
+    orderBy?: AddonComponentOrderByWithRelationInput | AddonComponentOrderByWithRelationInput[]
+    cursor?: AddonComponentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AddonComponentScalarFieldEnum | AddonComponentScalarFieldEnum[]
+  }
+
+  /**
+   * Item.usedAsAddonIn
+   */
+  export type Item$usedAsAddonInArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AddonComponent
+     */
+    select?: AddonComponentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AddonComponent
+     */
+    omit?: AddonComponentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AddonComponentInclude<ExtArgs> | null
+    where?: AddonComponentWhereInput
+    orderBy?: AddonComponentOrderByWithRelationInput | AddonComponentOrderByWithRelationInput[]
+    cursor?: AddonComponentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AddonComponentScalarFieldEnum | AddonComponentScalarFieldEnum[]
   }
 
   /**
@@ -5985,6 +6150,1059 @@ export namespace Prisma {
 
 
   /**
+   * Model AddonComponent
+   */
+
+  export type AggregateAddonComponent = {
+    _count: AddonComponentCountAggregateOutputType | null
+    _min: AddonComponentMinAggregateOutputType | null
+    _max: AddonComponentMaxAggregateOutputType | null
+  }
+
+  export type AddonComponentMinAggregateOutputType = {
+    id: string | null
+    variantItemId: string | null
+    ingredientCategory: string | null
+    addonItemId: string | null
+  }
+
+  export type AddonComponentMaxAggregateOutputType = {
+    id: string | null
+    variantItemId: string | null
+    ingredientCategory: string | null
+    addonItemId: string | null
+  }
+
+  export type AddonComponentCountAggregateOutputType = {
+    id: number
+    variantItemId: number
+    ingredientCategory: number
+    addonItemId: number
+    _all: number
+  }
+
+
+  export type AddonComponentMinAggregateInputType = {
+    id?: true
+    variantItemId?: true
+    ingredientCategory?: true
+    addonItemId?: true
+  }
+
+  export type AddonComponentMaxAggregateInputType = {
+    id?: true
+    variantItemId?: true
+    ingredientCategory?: true
+    addonItemId?: true
+  }
+
+  export type AddonComponentCountAggregateInputType = {
+    id?: true
+    variantItemId?: true
+    ingredientCategory?: true
+    addonItemId?: true
+    _all?: true
+  }
+
+  export type AddonComponentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AddonComponent to aggregate.
+     */
+    where?: AddonComponentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AddonComponents to fetch.
+     */
+    orderBy?: AddonComponentOrderByWithRelationInput | AddonComponentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AddonComponentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AddonComponents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AddonComponents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AddonComponents
+    **/
+    _count?: true | AddonComponentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AddonComponentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AddonComponentMaxAggregateInputType
+  }
+
+  export type GetAddonComponentAggregateType<T extends AddonComponentAggregateArgs> = {
+        [P in keyof T & keyof AggregateAddonComponent]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAddonComponent[P]>
+      : GetScalarType<T[P], AggregateAddonComponent[P]>
+  }
+
+
+
+
+  export type AddonComponentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AddonComponentWhereInput
+    orderBy?: AddonComponentOrderByWithAggregationInput | AddonComponentOrderByWithAggregationInput[]
+    by: AddonComponentScalarFieldEnum[] | AddonComponentScalarFieldEnum
+    having?: AddonComponentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AddonComponentCountAggregateInputType | true
+    _min?: AddonComponentMinAggregateInputType
+    _max?: AddonComponentMaxAggregateInputType
+  }
+
+  export type AddonComponentGroupByOutputType = {
+    id: string
+    variantItemId: string
+    ingredientCategory: string
+    addonItemId: string
+    _count: AddonComponentCountAggregateOutputType | null
+    _min: AddonComponentMinAggregateOutputType | null
+    _max: AddonComponentMaxAggregateOutputType | null
+  }
+
+  type GetAddonComponentGroupByPayload<T extends AddonComponentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AddonComponentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AddonComponentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AddonComponentGroupByOutputType[P]>
+            : GetScalarType<T[P], AddonComponentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AddonComponentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    variantItemId?: boolean
+    ingredientCategory?: boolean
+    addonItemId?: boolean
+    variantItem?: boolean | ItemDefaultArgs<ExtArgs>
+    addonItem?: boolean | ItemDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["addonComponent"]>
+
+  export type AddonComponentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    variantItemId?: boolean
+    ingredientCategory?: boolean
+    addonItemId?: boolean
+    variantItem?: boolean | ItemDefaultArgs<ExtArgs>
+    addonItem?: boolean | ItemDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["addonComponent"]>
+
+  export type AddonComponentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    variantItemId?: boolean
+    ingredientCategory?: boolean
+    addonItemId?: boolean
+    variantItem?: boolean | ItemDefaultArgs<ExtArgs>
+    addonItem?: boolean | ItemDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["addonComponent"]>
+
+  export type AddonComponentSelectScalar = {
+    id?: boolean
+    variantItemId?: boolean
+    ingredientCategory?: boolean
+    addonItemId?: boolean
+  }
+
+  export type AddonComponentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "variantItemId" | "ingredientCategory" | "addonItemId", ExtArgs["result"]["addonComponent"]>
+  export type AddonComponentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    variantItem?: boolean | ItemDefaultArgs<ExtArgs>
+    addonItem?: boolean | ItemDefaultArgs<ExtArgs>
+  }
+  export type AddonComponentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    variantItem?: boolean | ItemDefaultArgs<ExtArgs>
+    addonItem?: boolean | ItemDefaultArgs<ExtArgs>
+  }
+  export type AddonComponentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    variantItem?: boolean | ItemDefaultArgs<ExtArgs>
+    addonItem?: boolean | ItemDefaultArgs<ExtArgs>
+  }
+
+  export type $AddonComponentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AddonComponent"
+    objects: {
+      variantItem: Prisma.$ItemPayload<ExtArgs>
+      addonItem: Prisma.$ItemPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      variantItemId: string
+      ingredientCategory: string
+      addonItemId: string
+    }, ExtArgs["result"]["addonComponent"]>
+    composites: {}
+  }
+
+  type AddonComponentGetPayload<S extends boolean | null | undefined | AddonComponentDefaultArgs> = $Result.GetResult<Prisma.$AddonComponentPayload, S>
+
+  type AddonComponentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AddonComponentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AddonComponentCountAggregateInputType | true
+    }
+
+  export interface AddonComponentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AddonComponent'], meta: { name: 'AddonComponent' } }
+    /**
+     * Find zero or one AddonComponent that matches the filter.
+     * @param {AddonComponentFindUniqueArgs} args - Arguments to find a AddonComponent
+     * @example
+     * // Get one AddonComponent
+     * const addonComponent = await prisma.addonComponent.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AddonComponentFindUniqueArgs>(args: SelectSubset<T, AddonComponentFindUniqueArgs<ExtArgs>>): Prisma__AddonComponentClient<$Result.GetResult<Prisma.$AddonComponentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AddonComponent that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AddonComponentFindUniqueOrThrowArgs} args - Arguments to find a AddonComponent
+     * @example
+     * // Get one AddonComponent
+     * const addonComponent = await prisma.addonComponent.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AddonComponentFindUniqueOrThrowArgs>(args: SelectSubset<T, AddonComponentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AddonComponentClient<$Result.GetResult<Prisma.$AddonComponentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AddonComponent that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AddonComponentFindFirstArgs} args - Arguments to find a AddonComponent
+     * @example
+     * // Get one AddonComponent
+     * const addonComponent = await prisma.addonComponent.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AddonComponentFindFirstArgs>(args?: SelectSubset<T, AddonComponentFindFirstArgs<ExtArgs>>): Prisma__AddonComponentClient<$Result.GetResult<Prisma.$AddonComponentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AddonComponent that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AddonComponentFindFirstOrThrowArgs} args - Arguments to find a AddonComponent
+     * @example
+     * // Get one AddonComponent
+     * const addonComponent = await prisma.addonComponent.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AddonComponentFindFirstOrThrowArgs>(args?: SelectSubset<T, AddonComponentFindFirstOrThrowArgs<ExtArgs>>): Prisma__AddonComponentClient<$Result.GetResult<Prisma.$AddonComponentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AddonComponents that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AddonComponentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AddonComponents
+     * const addonComponents = await prisma.addonComponent.findMany()
+     * 
+     * // Get first 10 AddonComponents
+     * const addonComponents = await prisma.addonComponent.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const addonComponentWithIdOnly = await prisma.addonComponent.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AddonComponentFindManyArgs>(args?: SelectSubset<T, AddonComponentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AddonComponentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AddonComponent.
+     * @param {AddonComponentCreateArgs} args - Arguments to create a AddonComponent.
+     * @example
+     * // Create one AddonComponent
+     * const AddonComponent = await prisma.addonComponent.create({
+     *   data: {
+     *     // ... data to create a AddonComponent
+     *   }
+     * })
+     * 
+     */
+    create<T extends AddonComponentCreateArgs>(args: SelectSubset<T, AddonComponentCreateArgs<ExtArgs>>): Prisma__AddonComponentClient<$Result.GetResult<Prisma.$AddonComponentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AddonComponents.
+     * @param {AddonComponentCreateManyArgs} args - Arguments to create many AddonComponents.
+     * @example
+     * // Create many AddonComponents
+     * const addonComponent = await prisma.addonComponent.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AddonComponentCreateManyArgs>(args?: SelectSubset<T, AddonComponentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AddonComponents and returns the data saved in the database.
+     * @param {AddonComponentCreateManyAndReturnArgs} args - Arguments to create many AddonComponents.
+     * @example
+     * // Create many AddonComponents
+     * const addonComponent = await prisma.addonComponent.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AddonComponents and only return the `id`
+     * const addonComponentWithIdOnly = await prisma.addonComponent.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AddonComponentCreateManyAndReturnArgs>(args?: SelectSubset<T, AddonComponentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AddonComponentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AddonComponent.
+     * @param {AddonComponentDeleteArgs} args - Arguments to delete one AddonComponent.
+     * @example
+     * // Delete one AddonComponent
+     * const AddonComponent = await prisma.addonComponent.delete({
+     *   where: {
+     *     // ... filter to delete one AddonComponent
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AddonComponentDeleteArgs>(args: SelectSubset<T, AddonComponentDeleteArgs<ExtArgs>>): Prisma__AddonComponentClient<$Result.GetResult<Prisma.$AddonComponentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AddonComponent.
+     * @param {AddonComponentUpdateArgs} args - Arguments to update one AddonComponent.
+     * @example
+     * // Update one AddonComponent
+     * const addonComponent = await prisma.addonComponent.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AddonComponentUpdateArgs>(args: SelectSubset<T, AddonComponentUpdateArgs<ExtArgs>>): Prisma__AddonComponentClient<$Result.GetResult<Prisma.$AddonComponentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AddonComponents.
+     * @param {AddonComponentDeleteManyArgs} args - Arguments to filter AddonComponents to delete.
+     * @example
+     * // Delete a few AddonComponents
+     * const { count } = await prisma.addonComponent.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AddonComponentDeleteManyArgs>(args?: SelectSubset<T, AddonComponentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AddonComponents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AddonComponentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AddonComponents
+     * const addonComponent = await prisma.addonComponent.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AddonComponentUpdateManyArgs>(args: SelectSubset<T, AddonComponentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AddonComponents and returns the data updated in the database.
+     * @param {AddonComponentUpdateManyAndReturnArgs} args - Arguments to update many AddonComponents.
+     * @example
+     * // Update many AddonComponents
+     * const addonComponent = await prisma.addonComponent.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AddonComponents and only return the `id`
+     * const addonComponentWithIdOnly = await prisma.addonComponent.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AddonComponentUpdateManyAndReturnArgs>(args: SelectSubset<T, AddonComponentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AddonComponentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AddonComponent.
+     * @param {AddonComponentUpsertArgs} args - Arguments to update or create a AddonComponent.
+     * @example
+     * // Update or create a AddonComponent
+     * const addonComponent = await prisma.addonComponent.upsert({
+     *   create: {
+     *     // ... data to create a AddonComponent
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AddonComponent we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AddonComponentUpsertArgs>(args: SelectSubset<T, AddonComponentUpsertArgs<ExtArgs>>): Prisma__AddonComponentClient<$Result.GetResult<Prisma.$AddonComponentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AddonComponents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AddonComponentCountArgs} args - Arguments to filter AddonComponents to count.
+     * @example
+     * // Count the number of AddonComponents
+     * const count = await prisma.addonComponent.count({
+     *   where: {
+     *     // ... the filter for the AddonComponents we want to count
+     *   }
+     * })
+    **/
+    count<T extends AddonComponentCountArgs>(
+      args?: Subset<T, AddonComponentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AddonComponentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AddonComponent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AddonComponentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AddonComponentAggregateArgs>(args: Subset<T, AddonComponentAggregateArgs>): Prisma.PrismaPromise<GetAddonComponentAggregateType<T>>
+
+    /**
+     * Group by AddonComponent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AddonComponentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AddonComponentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AddonComponentGroupByArgs['orderBy'] }
+        : { orderBy?: AddonComponentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AddonComponentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAddonComponentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AddonComponent model
+   */
+  readonly fields: AddonComponentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AddonComponent.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AddonComponentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    variantItem<T extends ItemDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ItemDefaultArgs<ExtArgs>>): Prisma__ItemClient<$Result.GetResult<Prisma.$ItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    addonItem<T extends ItemDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ItemDefaultArgs<ExtArgs>>): Prisma__ItemClient<$Result.GetResult<Prisma.$ItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AddonComponent model
+   */
+  interface AddonComponentFieldRefs {
+    readonly id: FieldRef<"AddonComponent", 'String'>
+    readonly variantItemId: FieldRef<"AddonComponent", 'String'>
+    readonly ingredientCategory: FieldRef<"AddonComponent", 'String'>
+    readonly addonItemId: FieldRef<"AddonComponent", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AddonComponent findUnique
+   */
+  export type AddonComponentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AddonComponent
+     */
+    select?: AddonComponentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AddonComponent
+     */
+    omit?: AddonComponentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AddonComponentInclude<ExtArgs> | null
+    /**
+     * Filter, which AddonComponent to fetch.
+     */
+    where: AddonComponentWhereUniqueInput
+  }
+
+  /**
+   * AddonComponent findUniqueOrThrow
+   */
+  export type AddonComponentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AddonComponent
+     */
+    select?: AddonComponentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AddonComponent
+     */
+    omit?: AddonComponentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AddonComponentInclude<ExtArgs> | null
+    /**
+     * Filter, which AddonComponent to fetch.
+     */
+    where: AddonComponentWhereUniqueInput
+  }
+
+  /**
+   * AddonComponent findFirst
+   */
+  export type AddonComponentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AddonComponent
+     */
+    select?: AddonComponentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AddonComponent
+     */
+    omit?: AddonComponentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AddonComponentInclude<ExtArgs> | null
+    /**
+     * Filter, which AddonComponent to fetch.
+     */
+    where?: AddonComponentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AddonComponents to fetch.
+     */
+    orderBy?: AddonComponentOrderByWithRelationInput | AddonComponentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AddonComponents.
+     */
+    cursor?: AddonComponentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AddonComponents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AddonComponents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AddonComponents.
+     */
+    distinct?: AddonComponentScalarFieldEnum | AddonComponentScalarFieldEnum[]
+  }
+
+  /**
+   * AddonComponent findFirstOrThrow
+   */
+  export type AddonComponentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AddonComponent
+     */
+    select?: AddonComponentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AddonComponent
+     */
+    omit?: AddonComponentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AddonComponentInclude<ExtArgs> | null
+    /**
+     * Filter, which AddonComponent to fetch.
+     */
+    where?: AddonComponentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AddonComponents to fetch.
+     */
+    orderBy?: AddonComponentOrderByWithRelationInput | AddonComponentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AddonComponents.
+     */
+    cursor?: AddonComponentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AddonComponents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AddonComponents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AddonComponents.
+     */
+    distinct?: AddonComponentScalarFieldEnum | AddonComponentScalarFieldEnum[]
+  }
+
+  /**
+   * AddonComponent findMany
+   */
+  export type AddonComponentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AddonComponent
+     */
+    select?: AddonComponentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AddonComponent
+     */
+    omit?: AddonComponentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AddonComponentInclude<ExtArgs> | null
+    /**
+     * Filter, which AddonComponents to fetch.
+     */
+    where?: AddonComponentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AddonComponents to fetch.
+     */
+    orderBy?: AddonComponentOrderByWithRelationInput | AddonComponentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AddonComponents.
+     */
+    cursor?: AddonComponentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AddonComponents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AddonComponents.
+     */
+    skip?: number
+    distinct?: AddonComponentScalarFieldEnum | AddonComponentScalarFieldEnum[]
+  }
+
+  /**
+   * AddonComponent create
+   */
+  export type AddonComponentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AddonComponent
+     */
+    select?: AddonComponentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AddonComponent
+     */
+    omit?: AddonComponentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AddonComponentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AddonComponent.
+     */
+    data: XOR<AddonComponentCreateInput, AddonComponentUncheckedCreateInput>
+  }
+
+  /**
+   * AddonComponent createMany
+   */
+  export type AddonComponentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AddonComponents.
+     */
+    data: AddonComponentCreateManyInput | AddonComponentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AddonComponent createManyAndReturn
+   */
+  export type AddonComponentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AddonComponent
+     */
+    select?: AddonComponentSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AddonComponent
+     */
+    omit?: AddonComponentOmit<ExtArgs> | null
+    /**
+     * The data used to create many AddonComponents.
+     */
+    data: AddonComponentCreateManyInput | AddonComponentCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AddonComponentIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AddonComponent update
+   */
+  export type AddonComponentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AddonComponent
+     */
+    select?: AddonComponentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AddonComponent
+     */
+    omit?: AddonComponentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AddonComponentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AddonComponent.
+     */
+    data: XOR<AddonComponentUpdateInput, AddonComponentUncheckedUpdateInput>
+    /**
+     * Choose, which AddonComponent to update.
+     */
+    where: AddonComponentWhereUniqueInput
+  }
+
+  /**
+   * AddonComponent updateMany
+   */
+  export type AddonComponentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AddonComponents.
+     */
+    data: XOR<AddonComponentUpdateManyMutationInput, AddonComponentUncheckedUpdateManyInput>
+    /**
+     * Filter which AddonComponents to update
+     */
+    where?: AddonComponentWhereInput
+    /**
+     * Limit how many AddonComponents to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AddonComponent updateManyAndReturn
+   */
+  export type AddonComponentUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AddonComponent
+     */
+    select?: AddonComponentSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AddonComponent
+     */
+    omit?: AddonComponentOmit<ExtArgs> | null
+    /**
+     * The data used to update AddonComponents.
+     */
+    data: XOR<AddonComponentUpdateManyMutationInput, AddonComponentUncheckedUpdateManyInput>
+    /**
+     * Filter which AddonComponents to update
+     */
+    where?: AddonComponentWhereInput
+    /**
+     * Limit how many AddonComponents to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AddonComponentIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AddonComponent upsert
+   */
+  export type AddonComponentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AddonComponent
+     */
+    select?: AddonComponentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AddonComponent
+     */
+    omit?: AddonComponentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AddonComponentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AddonComponent to update in case it exists.
+     */
+    where: AddonComponentWhereUniqueInput
+    /**
+     * In case the AddonComponent found by the `where` argument doesn't exist, create a new AddonComponent with this data.
+     */
+    create: XOR<AddonComponentCreateInput, AddonComponentUncheckedCreateInput>
+    /**
+     * In case the AddonComponent was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AddonComponentUpdateInput, AddonComponentUncheckedUpdateInput>
+  }
+
+  /**
+   * AddonComponent delete
+   */
+  export type AddonComponentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AddonComponent
+     */
+    select?: AddonComponentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AddonComponent
+     */
+    omit?: AddonComponentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AddonComponentInclude<ExtArgs> | null
+    /**
+     * Filter which AddonComponent to delete.
+     */
+    where: AddonComponentWhereUniqueInput
+  }
+
+  /**
+   * AddonComponent deleteMany
+   */
+  export type AddonComponentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AddonComponents to delete
+     */
+    where?: AddonComponentWhereInput
+    /**
+     * Limit how many AddonComponents to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AddonComponent without action
+   */
+  export type AddonComponentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AddonComponent
+     */
+    select?: AddonComponentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AddonComponent
+     */
+    omit?: AddonComponentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AddonComponentInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model InventoryTransaction
    */
 
@@ -7200,6 +8418,16 @@ export namespace Prisma {
   export type PackagingComponentScalarFieldEnum = (typeof PackagingComponentScalarFieldEnum)[keyof typeof PackagingComponentScalarFieldEnum]
 
 
+  export const AddonComponentScalarFieldEnum: {
+    id: 'id',
+    variantItemId: 'variantItemId',
+    ingredientCategory: 'ingredientCategory',
+    addonItemId: 'addonItemId'
+  };
+
+  export type AddonComponentScalarFieldEnum = (typeof AddonComponentScalarFieldEnum)[keyof typeof AddonComponentScalarFieldEnum]
+
+
   export const InventoryTransactionScalarFieldEnum: {
     id: 'id',
     itemId: 'itemId',
@@ -7410,6 +8638,8 @@ export namespace Prisma {
     transactions?: InventoryTransactionListRelationFilter
     packagingComponents?: PackagingComponentListRelationFilter
     usedAsPackagingIn?: PackagingComponentListRelationFilter
+    addonComponents?: AddonComponentListRelationFilter
+    usedAsAddonIn?: AddonComponentListRelationFilter
   }
 
   export type ItemOrderByWithRelationInput = {
@@ -7430,6 +8660,8 @@ export namespace Prisma {
     transactions?: InventoryTransactionOrderByRelationAggregateInput
     packagingComponents?: PackagingComponentOrderByRelationAggregateInput
     usedAsPackagingIn?: PackagingComponentOrderByRelationAggregateInput
+    addonComponents?: AddonComponentOrderByRelationAggregateInput
+    usedAsAddonIn?: AddonComponentOrderByRelationAggregateInput
   }
 
   export type ItemWhereUniqueInput = Prisma.AtLeast<{
@@ -7453,6 +8685,8 @@ export namespace Prisma {
     transactions?: InventoryTransactionListRelationFilter
     packagingComponents?: PackagingComponentListRelationFilter
     usedAsPackagingIn?: PackagingComponentListRelationFilter
+    addonComponents?: AddonComponentListRelationFilter
+    usedAsAddonIn?: AddonComponentListRelationFilter
   }, "id" | "name">
 
   export type ItemOrderByWithAggregationInput = {
@@ -7606,6 +8840,60 @@ export namespace Prisma {
     variantItemId?: StringWithAggregatesFilter<"PackagingComponent"> | string
     packagingItemId?: StringWithAggregatesFilter<"PackagingComponent"> | string
     qtyPerUnit?: FloatWithAggregatesFilter<"PackagingComponent"> | number
+  }
+
+  export type AddonComponentWhereInput = {
+    AND?: AddonComponentWhereInput | AddonComponentWhereInput[]
+    OR?: AddonComponentWhereInput[]
+    NOT?: AddonComponentWhereInput | AddonComponentWhereInput[]
+    id?: StringFilter<"AddonComponent"> | string
+    variantItemId?: StringFilter<"AddonComponent"> | string
+    ingredientCategory?: StringFilter<"AddonComponent"> | string
+    addonItemId?: StringFilter<"AddonComponent"> | string
+    variantItem?: XOR<ItemScalarRelationFilter, ItemWhereInput>
+    addonItem?: XOR<ItemScalarRelationFilter, ItemWhereInput>
+  }
+
+  export type AddonComponentOrderByWithRelationInput = {
+    id?: SortOrder
+    variantItemId?: SortOrder
+    ingredientCategory?: SortOrder
+    addonItemId?: SortOrder
+    variantItem?: ItemOrderByWithRelationInput
+    addonItem?: ItemOrderByWithRelationInput
+  }
+
+  export type AddonComponentWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    variantItemId_ingredientCategory?: AddonComponentVariantItemIdIngredientCategoryCompoundUniqueInput
+    AND?: AddonComponentWhereInput | AddonComponentWhereInput[]
+    OR?: AddonComponentWhereInput[]
+    NOT?: AddonComponentWhereInput | AddonComponentWhereInput[]
+    variantItemId?: StringFilter<"AddonComponent"> | string
+    ingredientCategory?: StringFilter<"AddonComponent"> | string
+    addonItemId?: StringFilter<"AddonComponent"> | string
+    variantItem?: XOR<ItemScalarRelationFilter, ItemWhereInput>
+    addonItem?: XOR<ItemScalarRelationFilter, ItemWhereInput>
+  }, "id" | "variantItemId_ingredientCategory">
+
+  export type AddonComponentOrderByWithAggregationInput = {
+    id?: SortOrder
+    variantItemId?: SortOrder
+    ingredientCategory?: SortOrder
+    addonItemId?: SortOrder
+    _count?: AddonComponentCountOrderByAggregateInput
+    _max?: AddonComponentMaxOrderByAggregateInput
+    _min?: AddonComponentMinOrderByAggregateInput
+  }
+
+  export type AddonComponentScalarWhereWithAggregatesInput = {
+    AND?: AddonComponentScalarWhereWithAggregatesInput | AddonComponentScalarWhereWithAggregatesInput[]
+    OR?: AddonComponentScalarWhereWithAggregatesInput[]
+    NOT?: AddonComponentScalarWhereWithAggregatesInput | AddonComponentScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AddonComponent"> | string
+    variantItemId?: StringWithAggregatesFilter<"AddonComponent"> | string
+    ingredientCategory?: StringWithAggregatesFilter<"AddonComponent"> | string
+    addonItemId?: StringWithAggregatesFilter<"AddonComponent"> | string
   }
 
   export type InventoryTransactionWhereInput = {
@@ -7782,6 +9070,8 @@ export namespace Prisma {
     transactions?: InventoryTransactionCreateNestedManyWithoutItemInput
     packagingComponents?: PackagingComponentCreateNestedManyWithoutVariantItemInput
     usedAsPackagingIn?: PackagingComponentCreateNestedManyWithoutPackagingItemInput
+    addonComponents?: AddonComponentCreateNestedManyWithoutVariantItemInput
+    usedAsAddonIn?: AddonComponentCreateNestedManyWithoutAddonItemInput
   }
 
   export type ItemUncheckedCreateInput = {
@@ -7800,6 +9090,8 @@ export namespace Prisma {
     transactions?: InventoryTransactionUncheckedCreateNestedManyWithoutItemInput
     packagingComponents?: PackagingComponentUncheckedCreateNestedManyWithoutVariantItemInput
     usedAsPackagingIn?: PackagingComponentUncheckedCreateNestedManyWithoutPackagingItemInput
+    addonComponents?: AddonComponentUncheckedCreateNestedManyWithoutVariantItemInput
+    usedAsAddonIn?: AddonComponentUncheckedCreateNestedManyWithoutAddonItemInput
   }
 
   export type ItemUpdateInput = {
@@ -7818,6 +9110,8 @@ export namespace Prisma {
     transactions?: InventoryTransactionUpdateManyWithoutItemNestedInput
     packagingComponents?: PackagingComponentUpdateManyWithoutVariantItemNestedInput
     usedAsPackagingIn?: PackagingComponentUpdateManyWithoutPackagingItemNestedInput
+    addonComponents?: AddonComponentUpdateManyWithoutVariantItemNestedInput
+    usedAsAddonIn?: AddonComponentUpdateManyWithoutAddonItemNestedInput
   }
 
   export type ItemUncheckedUpdateInput = {
@@ -7836,6 +9130,8 @@ export namespace Prisma {
     transactions?: InventoryTransactionUncheckedUpdateManyWithoutItemNestedInput
     packagingComponents?: PackagingComponentUncheckedUpdateManyWithoutVariantItemNestedInput
     usedAsPackagingIn?: PackagingComponentUncheckedUpdateManyWithoutPackagingItemNestedInput
+    addonComponents?: AddonComponentUncheckedUpdateManyWithoutVariantItemNestedInput
+    usedAsAddonIn?: AddonComponentUncheckedUpdateManyWithoutAddonItemNestedInput
   }
 
   export type ItemCreateManyInput = {
@@ -7993,6 +9289,53 @@ export namespace Prisma {
     variantItemId?: StringFieldUpdateOperationsInput | string
     packagingItemId?: StringFieldUpdateOperationsInput | string
     qtyPerUnit?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type AddonComponentCreateInput = {
+    id: string
+    ingredientCategory: string
+    variantItem: ItemCreateNestedOneWithoutAddonComponentsInput
+    addonItem: ItemCreateNestedOneWithoutUsedAsAddonInInput
+  }
+
+  export type AddonComponentUncheckedCreateInput = {
+    id: string
+    variantItemId: string
+    ingredientCategory: string
+    addonItemId: string
+  }
+
+  export type AddonComponentUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ingredientCategory?: StringFieldUpdateOperationsInput | string
+    variantItem?: ItemUpdateOneRequiredWithoutAddonComponentsNestedInput
+    addonItem?: ItemUpdateOneRequiredWithoutUsedAsAddonInNestedInput
+  }
+
+  export type AddonComponentUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    variantItemId?: StringFieldUpdateOperationsInput | string
+    ingredientCategory?: StringFieldUpdateOperationsInput | string
+    addonItemId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AddonComponentCreateManyInput = {
+    id: string
+    variantItemId: string
+    ingredientCategory: string
+    addonItemId: string
+  }
+
+  export type AddonComponentUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ingredientCategory?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AddonComponentUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    variantItemId?: StringFieldUpdateOperationsInput | string
+    ingredientCategory?: StringFieldUpdateOperationsInput | string
+    addonItemId?: StringFieldUpdateOperationsInput | string
   }
 
   export type InventoryTransactionCreateInput = {
@@ -8289,11 +9632,21 @@ export namespace Prisma {
     none?: PackagingComponentWhereInput
   }
 
+  export type AddonComponentListRelationFilter = {
+    every?: AddonComponentWhereInput
+    some?: AddonComponentWhereInput
+    none?: AddonComponentWhereInput
+  }
+
   export type InventoryTransactionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type PackagingComponentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AddonComponentOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -8456,6 +9809,32 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type AddonComponentVariantItemIdIngredientCategoryCompoundUniqueInput = {
+    variantItemId: string
+    ingredientCategory: string
+  }
+
+  export type AddonComponentCountOrderByAggregateInput = {
+    id?: SortOrder
+    variantItemId?: SortOrder
+    ingredientCategory?: SortOrder
+    addonItemId?: SortOrder
+  }
+
+  export type AddonComponentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    variantItemId?: SortOrder
+    ingredientCategory?: SortOrder
+    addonItemId?: SortOrder
+  }
+
+  export type AddonComponentMinOrderByAggregateInput = {
+    id?: SortOrder
+    variantItemId?: SortOrder
+    ingredientCategory?: SortOrder
+    addonItemId?: SortOrder
   }
 
   export type DecimalNullableFilter<$PrismaModel = never> = {
@@ -8626,6 +10005,20 @@ export namespace Prisma {
     connect?: PackagingComponentWhereUniqueInput | PackagingComponentWhereUniqueInput[]
   }
 
+  export type AddonComponentCreateNestedManyWithoutVariantItemInput = {
+    create?: XOR<AddonComponentCreateWithoutVariantItemInput, AddonComponentUncheckedCreateWithoutVariantItemInput> | AddonComponentCreateWithoutVariantItemInput[] | AddonComponentUncheckedCreateWithoutVariantItemInput[]
+    connectOrCreate?: AddonComponentCreateOrConnectWithoutVariantItemInput | AddonComponentCreateOrConnectWithoutVariantItemInput[]
+    createMany?: AddonComponentCreateManyVariantItemInputEnvelope
+    connect?: AddonComponentWhereUniqueInput | AddonComponentWhereUniqueInput[]
+  }
+
+  export type AddonComponentCreateNestedManyWithoutAddonItemInput = {
+    create?: XOR<AddonComponentCreateWithoutAddonItemInput, AddonComponentUncheckedCreateWithoutAddonItemInput> | AddonComponentCreateWithoutAddonItemInput[] | AddonComponentUncheckedCreateWithoutAddonItemInput[]
+    connectOrCreate?: AddonComponentCreateOrConnectWithoutAddonItemInput | AddonComponentCreateOrConnectWithoutAddonItemInput[]
+    createMany?: AddonComponentCreateManyAddonItemInputEnvelope
+    connect?: AddonComponentWhereUniqueInput | AddonComponentWhereUniqueInput[]
+  }
+
   export type InventoryTransactionUncheckedCreateNestedManyWithoutItemInput = {
     create?: XOR<InventoryTransactionCreateWithoutItemInput, InventoryTransactionUncheckedCreateWithoutItemInput> | InventoryTransactionCreateWithoutItemInput[] | InventoryTransactionUncheckedCreateWithoutItemInput[]
     connectOrCreate?: InventoryTransactionCreateOrConnectWithoutItemInput | InventoryTransactionCreateOrConnectWithoutItemInput[]
@@ -8645,6 +10038,20 @@ export namespace Prisma {
     connectOrCreate?: PackagingComponentCreateOrConnectWithoutPackagingItemInput | PackagingComponentCreateOrConnectWithoutPackagingItemInput[]
     createMany?: PackagingComponentCreateManyPackagingItemInputEnvelope
     connect?: PackagingComponentWhereUniqueInput | PackagingComponentWhereUniqueInput[]
+  }
+
+  export type AddonComponentUncheckedCreateNestedManyWithoutVariantItemInput = {
+    create?: XOR<AddonComponentCreateWithoutVariantItemInput, AddonComponentUncheckedCreateWithoutVariantItemInput> | AddonComponentCreateWithoutVariantItemInput[] | AddonComponentUncheckedCreateWithoutVariantItemInput[]
+    connectOrCreate?: AddonComponentCreateOrConnectWithoutVariantItemInput | AddonComponentCreateOrConnectWithoutVariantItemInput[]
+    createMany?: AddonComponentCreateManyVariantItemInputEnvelope
+    connect?: AddonComponentWhereUniqueInput | AddonComponentWhereUniqueInput[]
+  }
+
+  export type AddonComponentUncheckedCreateNestedManyWithoutAddonItemInput = {
+    create?: XOR<AddonComponentCreateWithoutAddonItemInput, AddonComponentUncheckedCreateWithoutAddonItemInput> | AddonComponentCreateWithoutAddonItemInput[] | AddonComponentUncheckedCreateWithoutAddonItemInput[]
+    connectOrCreate?: AddonComponentCreateOrConnectWithoutAddonItemInput | AddonComponentCreateOrConnectWithoutAddonItemInput[]
+    createMany?: AddonComponentCreateManyAddonItemInputEnvelope
+    connect?: AddonComponentWhereUniqueInput | AddonComponentWhereUniqueInput[]
   }
 
   export type DecimalFieldUpdateOperationsInput = {
@@ -8717,6 +10124,34 @@ export namespace Prisma {
     deleteMany?: PackagingComponentScalarWhereInput | PackagingComponentScalarWhereInput[]
   }
 
+  export type AddonComponentUpdateManyWithoutVariantItemNestedInput = {
+    create?: XOR<AddonComponentCreateWithoutVariantItemInput, AddonComponentUncheckedCreateWithoutVariantItemInput> | AddonComponentCreateWithoutVariantItemInput[] | AddonComponentUncheckedCreateWithoutVariantItemInput[]
+    connectOrCreate?: AddonComponentCreateOrConnectWithoutVariantItemInput | AddonComponentCreateOrConnectWithoutVariantItemInput[]
+    upsert?: AddonComponentUpsertWithWhereUniqueWithoutVariantItemInput | AddonComponentUpsertWithWhereUniqueWithoutVariantItemInput[]
+    createMany?: AddonComponentCreateManyVariantItemInputEnvelope
+    set?: AddonComponentWhereUniqueInput | AddonComponentWhereUniqueInput[]
+    disconnect?: AddonComponentWhereUniqueInput | AddonComponentWhereUniqueInput[]
+    delete?: AddonComponentWhereUniqueInput | AddonComponentWhereUniqueInput[]
+    connect?: AddonComponentWhereUniqueInput | AddonComponentWhereUniqueInput[]
+    update?: AddonComponentUpdateWithWhereUniqueWithoutVariantItemInput | AddonComponentUpdateWithWhereUniqueWithoutVariantItemInput[]
+    updateMany?: AddonComponentUpdateManyWithWhereWithoutVariantItemInput | AddonComponentUpdateManyWithWhereWithoutVariantItemInput[]
+    deleteMany?: AddonComponentScalarWhereInput | AddonComponentScalarWhereInput[]
+  }
+
+  export type AddonComponentUpdateManyWithoutAddonItemNestedInput = {
+    create?: XOR<AddonComponentCreateWithoutAddonItemInput, AddonComponentUncheckedCreateWithoutAddonItemInput> | AddonComponentCreateWithoutAddonItemInput[] | AddonComponentUncheckedCreateWithoutAddonItemInput[]
+    connectOrCreate?: AddonComponentCreateOrConnectWithoutAddonItemInput | AddonComponentCreateOrConnectWithoutAddonItemInput[]
+    upsert?: AddonComponentUpsertWithWhereUniqueWithoutAddonItemInput | AddonComponentUpsertWithWhereUniqueWithoutAddonItemInput[]
+    createMany?: AddonComponentCreateManyAddonItemInputEnvelope
+    set?: AddonComponentWhereUniqueInput | AddonComponentWhereUniqueInput[]
+    disconnect?: AddonComponentWhereUniqueInput | AddonComponentWhereUniqueInput[]
+    delete?: AddonComponentWhereUniqueInput | AddonComponentWhereUniqueInput[]
+    connect?: AddonComponentWhereUniqueInput | AddonComponentWhereUniqueInput[]
+    update?: AddonComponentUpdateWithWhereUniqueWithoutAddonItemInput | AddonComponentUpdateWithWhereUniqueWithoutAddonItemInput[]
+    updateMany?: AddonComponentUpdateManyWithWhereWithoutAddonItemInput | AddonComponentUpdateManyWithWhereWithoutAddonItemInput[]
+    deleteMany?: AddonComponentScalarWhereInput | AddonComponentScalarWhereInput[]
+  }
+
   export type InventoryTransactionUncheckedUpdateManyWithoutItemNestedInput = {
     create?: XOR<InventoryTransactionCreateWithoutItemInput, InventoryTransactionUncheckedCreateWithoutItemInput> | InventoryTransactionCreateWithoutItemInput[] | InventoryTransactionUncheckedCreateWithoutItemInput[]
     connectOrCreate?: InventoryTransactionCreateOrConnectWithoutItemInput | InventoryTransactionCreateOrConnectWithoutItemInput[]
@@ -8757,6 +10192,34 @@ export namespace Prisma {
     update?: PackagingComponentUpdateWithWhereUniqueWithoutPackagingItemInput | PackagingComponentUpdateWithWhereUniqueWithoutPackagingItemInput[]
     updateMany?: PackagingComponentUpdateManyWithWhereWithoutPackagingItemInput | PackagingComponentUpdateManyWithWhereWithoutPackagingItemInput[]
     deleteMany?: PackagingComponentScalarWhereInput | PackagingComponentScalarWhereInput[]
+  }
+
+  export type AddonComponentUncheckedUpdateManyWithoutVariantItemNestedInput = {
+    create?: XOR<AddonComponentCreateWithoutVariantItemInput, AddonComponentUncheckedCreateWithoutVariantItemInput> | AddonComponentCreateWithoutVariantItemInput[] | AddonComponentUncheckedCreateWithoutVariantItemInput[]
+    connectOrCreate?: AddonComponentCreateOrConnectWithoutVariantItemInput | AddonComponentCreateOrConnectWithoutVariantItemInput[]
+    upsert?: AddonComponentUpsertWithWhereUniqueWithoutVariantItemInput | AddonComponentUpsertWithWhereUniqueWithoutVariantItemInput[]
+    createMany?: AddonComponentCreateManyVariantItemInputEnvelope
+    set?: AddonComponentWhereUniqueInput | AddonComponentWhereUniqueInput[]
+    disconnect?: AddonComponentWhereUniqueInput | AddonComponentWhereUniqueInput[]
+    delete?: AddonComponentWhereUniqueInput | AddonComponentWhereUniqueInput[]
+    connect?: AddonComponentWhereUniqueInput | AddonComponentWhereUniqueInput[]
+    update?: AddonComponentUpdateWithWhereUniqueWithoutVariantItemInput | AddonComponentUpdateWithWhereUniqueWithoutVariantItemInput[]
+    updateMany?: AddonComponentUpdateManyWithWhereWithoutVariantItemInput | AddonComponentUpdateManyWithWhereWithoutVariantItemInput[]
+    deleteMany?: AddonComponentScalarWhereInput | AddonComponentScalarWhereInput[]
+  }
+
+  export type AddonComponentUncheckedUpdateManyWithoutAddonItemNestedInput = {
+    create?: XOR<AddonComponentCreateWithoutAddonItemInput, AddonComponentUncheckedCreateWithoutAddonItemInput> | AddonComponentCreateWithoutAddonItemInput[] | AddonComponentUncheckedCreateWithoutAddonItemInput[]
+    connectOrCreate?: AddonComponentCreateOrConnectWithoutAddonItemInput | AddonComponentCreateOrConnectWithoutAddonItemInput[]
+    upsert?: AddonComponentUpsertWithWhereUniqueWithoutAddonItemInput | AddonComponentUpsertWithWhereUniqueWithoutAddonItemInput[]
+    createMany?: AddonComponentCreateManyAddonItemInputEnvelope
+    set?: AddonComponentWhereUniqueInput | AddonComponentWhereUniqueInput[]
+    disconnect?: AddonComponentWhereUniqueInput | AddonComponentWhereUniqueInput[]
+    delete?: AddonComponentWhereUniqueInput | AddonComponentWhereUniqueInput[]
+    connect?: AddonComponentWhereUniqueInput | AddonComponentWhereUniqueInput[]
+    update?: AddonComponentUpdateWithWhereUniqueWithoutAddonItemInput | AddonComponentUpdateWithWhereUniqueWithoutAddonItemInput[]
+    updateMany?: AddonComponentUpdateManyWithWhereWithoutAddonItemInput | AddonComponentUpdateManyWithWhereWithoutAddonItemInput[]
+    deleteMany?: AddonComponentScalarWhereInput | AddonComponentScalarWhereInput[]
   }
 
   export type ItemCreateNestedManyWithoutCategoryInput = {
@@ -8835,6 +10298,34 @@ export namespace Prisma {
     upsert?: ItemUpsertWithoutUsedAsPackagingInInput
     connect?: ItemWhereUniqueInput
     update?: XOR<XOR<ItemUpdateToOneWithWhereWithoutUsedAsPackagingInInput, ItemUpdateWithoutUsedAsPackagingInInput>, ItemUncheckedUpdateWithoutUsedAsPackagingInInput>
+  }
+
+  export type ItemCreateNestedOneWithoutAddonComponentsInput = {
+    create?: XOR<ItemCreateWithoutAddonComponentsInput, ItemUncheckedCreateWithoutAddonComponentsInput>
+    connectOrCreate?: ItemCreateOrConnectWithoutAddonComponentsInput
+    connect?: ItemWhereUniqueInput
+  }
+
+  export type ItemCreateNestedOneWithoutUsedAsAddonInInput = {
+    create?: XOR<ItemCreateWithoutUsedAsAddonInInput, ItemUncheckedCreateWithoutUsedAsAddonInInput>
+    connectOrCreate?: ItemCreateOrConnectWithoutUsedAsAddonInInput
+    connect?: ItemWhereUniqueInput
+  }
+
+  export type ItemUpdateOneRequiredWithoutAddonComponentsNestedInput = {
+    create?: XOR<ItemCreateWithoutAddonComponentsInput, ItemUncheckedCreateWithoutAddonComponentsInput>
+    connectOrCreate?: ItemCreateOrConnectWithoutAddonComponentsInput
+    upsert?: ItemUpsertWithoutAddonComponentsInput
+    connect?: ItemWhereUniqueInput
+    update?: XOR<XOR<ItemUpdateToOneWithWhereWithoutAddonComponentsInput, ItemUpdateWithoutAddonComponentsInput>, ItemUncheckedUpdateWithoutAddonComponentsInput>
+  }
+
+  export type ItemUpdateOneRequiredWithoutUsedAsAddonInNestedInput = {
+    create?: XOR<ItemCreateWithoutUsedAsAddonInInput, ItemUncheckedCreateWithoutUsedAsAddonInInput>
+    connectOrCreate?: ItemCreateOrConnectWithoutUsedAsAddonInInput
+    upsert?: ItemUpsertWithoutUsedAsAddonInInput
+    connect?: ItemWhereUniqueInput
+    update?: XOR<XOR<ItemUpdateToOneWithWhereWithoutUsedAsAddonInInput, ItemUpdateWithoutUsedAsAddonInInput>, ItemUncheckedUpdateWithoutUsedAsAddonInInput>
   }
 
   export type ItemCreateNestedOneWithoutTransactionsInput = {
@@ -9091,6 +10582,8 @@ export namespace Prisma {
     transactions?: InventoryTransactionCreateNestedManyWithoutItemInput
     packagingComponents?: PackagingComponentCreateNestedManyWithoutVariantItemInput
     usedAsPackagingIn?: PackagingComponentCreateNestedManyWithoutPackagingItemInput
+    addonComponents?: AddonComponentCreateNestedManyWithoutVariantItemInput
+    usedAsAddonIn?: AddonComponentCreateNestedManyWithoutAddonItemInput
   }
 
   export type ItemUncheckedCreateWithoutProductInput = {
@@ -9108,6 +10601,8 @@ export namespace Prisma {
     transactions?: InventoryTransactionUncheckedCreateNestedManyWithoutItemInput
     packagingComponents?: PackagingComponentUncheckedCreateNestedManyWithoutVariantItemInput
     usedAsPackagingIn?: PackagingComponentUncheckedCreateNestedManyWithoutPackagingItemInput
+    addonComponents?: AddonComponentUncheckedCreateNestedManyWithoutVariantItemInput
+    usedAsAddonIn?: AddonComponentUncheckedCreateNestedManyWithoutAddonItemInput
   }
 
   export type ItemCreateOrConnectWithoutProductInput = {
@@ -9280,6 +10775,50 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AddonComponentCreateWithoutVariantItemInput = {
+    id: string
+    ingredientCategory: string
+    addonItem: ItemCreateNestedOneWithoutUsedAsAddonInInput
+  }
+
+  export type AddonComponentUncheckedCreateWithoutVariantItemInput = {
+    id: string
+    ingredientCategory: string
+    addonItemId: string
+  }
+
+  export type AddonComponentCreateOrConnectWithoutVariantItemInput = {
+    where: AddonComponentWhereUniqueInput
+    create: XOR<AddonComponentCreateWithoutVariantItemInput, AddonComponentUncheckedCreateWithoutVariantItemInput>
+  }
+
+  export type AddonComponentCreateManyVariantItemInputEnvelope = {
+    data: AddonComponentCreateManyVariantItemInput | AddonComponentCreateManyVariantItemInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AddonComponentCreateWithoutAddonItemInput = {
+    id: string
+    ingredientCategory: string
+    variantItem: ItemCreateNestedOneWithoutAddonComponentsInput
+  }
+
+  export type AddonComponentUncheckedCreateWithoutAddonItemInput = {
+    id: string
+    variantItemId: string
+    ingredientCategory: string
+  }
+
+  export type AddonComponentCreateOrConnectWithoutAddonItemInput = {
+    where: AddonComponentWhereUniqueInput
+    create: XOR<AddonComponentCreateWithoutAddonItemInput, AddonComponentUncheckedCreateWithoutAddonItemInput>
+  }
+
+  export type AddonComponentCreateManyAddonItemInputEnvelope = {
+    data: AddonComponentCreateManyAddonItemInput | AddonComponentCreateManyAddonItemInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CategoryUpsertWithoutItemsInput = {
     update: XOR<CategoryUpdateWithoutItemsInput, CategoryUncheckedUpdateWithoutItemsInput>
     create: XOR<CategoryCreateWithoutItemsInput, CategoryUncheckedCreateWithoutItemsInput>
@@ -9415,6 +10954,48 @@ export namespace Prisma {
     data: XOR<PackagingComponentUpdateManyMutationInput, PackagingComponentUncheckedUpdateManyWithoutPackagingItemInput>
   }
 
+  export type AddonComponentUpsertWithWhereUniqueWithoutVariantItemInput = {
+    where: AddonComponentWhereUniqueInput
+    update: XOR<AddonComponentUpdateWithoutVariantItemInput, AddonComponentUncheckedUpdateWithoutVariantItemInput>
+    create: XOR<AddonComponentCreateWithoutVariantItemInput, AddonComponentUncheckedCreateWithoutVariantItemInput>
+  }
+
+  export type AddonComponentUpdateWithWhereUniqueWithoutVariantItemInput = {
+    where: AddonComponentWhereUniqueInput
+    data: XOR<AddonComponentUpdateWithoutVariantItemInput, AddonComponentUncheckedUpdateWithoutVariantItemInput>
+  }
+
+  export type AddonComponentUpdateManyWithWhereWithoutVariantItemInput = {
+    where: AddonComponentScalarWhereInput
+    data: XOR<AddonComponentUpdateManyMutationInput, AddonComponentUncheckedUpdateManyWithoutVariantItemInput>
+  }
+
+  export type AddonComponentScalarWhereInput = {
+    AND?: AddonComponentScalarWhereInput | AddonComponentScalarWhereInput[]
+    OR?: AddonComponentScalarWhereInput[]
+    NOT?: AddonComponentScalarWhereInput | AddonComponentScalarWhereInput[]
+    id?: StringFilter<"AddonComponent"> | string
+    variantItemId?: StringFilter<"AddonComponent"> | string
+    ingredientCategory?: StringFilter<"AddonComponent"> | string
+    addonItemId?: StringFilter<"AddonComponent"> | string
+  }
+
+  export type AddonComponentUpsertWithWhereUniqueWithoutAddonItemInput = {
+    where: AddonComponentWhereUniqueInput
+    update: XOR<AddonComponentUpdateWithoutAddonItemInput, AddonComponentUncheckedUpdateWithoutAddonItemInput>
+    create: XOR<AddonComponentCreateWithoutAddonItemInput, AddonComponentUncheckedCreateWithoutAddonItemInput>
+  }
+
+  export type AddonComponentUpdateWithWhereUniqueWithoutAddonItemInput = {
+    where: AddonComponentWhereUniqueInput
+    data: XOR<AddonComponentUpdateWithoutAddonItemInput, AddonComponentUncheckedUpdateWithoutAddonItemInput>
+  }
+
+  export type AddonComponentUpdateManyWithWhereWithoutAddonItemInput = {
+    where: AddonComponentScalarWhereInput
+    data: XOR<AddonComponentUpdateManyMutationInput, AddonComponentUncheckedUpdateManyWithoutAddonItemInput>
+  }
+
   export type ItemCreateWithoutCategoryInput = {
     id?: string
     name: string
@@ -9430,6 +11011,8 @@ export namespace Prisma {
     transactions?: InventoryTransactionCreateNestedManyWithoutItemInput
     packagingComponents?: PackagingComponentCreateNestedManyWithoutVariantItemInput
     usedAsPackagingIn?: PackagingComponentCreateNestedManyWithoutPackagingItemInput
+    addonComponents?: AddonComponentCreateNestedManyWithoutVariantItemInput
+    usedAsAddonIn?: AddonComponentCreateNestedManyWithoutAddonItemInput
   }
 
   export type ItemUncheckedCreateWithoutCategoryInput = {
@@ -9447,6 +11030,8 @@ export namespace Prisma {
     transactions?: InventoryTransactionUncheckedCreateNestedManyWithoutItemInput
     packagingComponents?: PackagingComponentUncheckedCreateNestedManyWithoutVariantItemInput
     usedAsPackagingIn?: PackagingComponentUncheckedCreateNestedManyWithoutPackagingItemInput
+    addonComponents?: AddonComponentUncheckedCreateNestedManyWithoutVariantItemInput
+    usedAsAddonIn?: AddonComponentUncheckedCreateNestedManyWithoutAddonItemInput
   }
 
   export type ItemCreateOrConnectWithoutCategoryInput = {
@@ -9490,6 +11075,8 @@ export namespace Prisma {
     product?: ProductCreateNestedOneWithoutItemsInput
     transactions?: InventoryTransactionCreateNestedManyWithoutItemInput
     usedAsPackagingIn?: PackagingComponentCreateNestedManyWithoutPackagingItemInput
+    addonComponents?: AddonComponentCreateNestedManyWithoutVariantItemInput
+    usedAsAddonIn?: AddonComponentCreateNestedManyWithoutAddonItemInput
   }
 
   export type ItemUncheckedCreateWithoutPackagingComponentsInput = {
@@ -9507,6 +11094,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     transactions?: InventoryTransactionUncheckedCreateNestedManyWithoutItemInput
     usedAsPackagingIn?: PackagingComponentUncheckedCreateNestedManyWithoutPackagingItemInput
+    addonComponents?: AddonComponentUncheckedCreateNestedManyWithoutVariantItemInput
+    usedAsAddonIn?: AddonComponentUncheckedCreateNestedManyWithoutAddonItemInput
   }
 
   export type ItemCreateOrConnectWithoutPackagingComponentsInput = {
@@ -9529,6 +11118,8 @@ export namespace Prisma {
     product?: ProductCreateNestedOneWithoutItemsInput
     transactions?: InventoryTransactionCreateNestedManyWithoutItemInput
     packagingComponents?: PackagingComponentCreateNestedManyWithoutVariantItemInput
+    addonComponents?: AddonComponentCreateNestedManyWithoutVariantItemInput
+    usedAsAddonIn?: AddonComponentCreateNestedManyWithoutAddonItemInput
   }
 
   export type ItemUncheckedCreateWithoutUsedAsPackagingInInput = {
@@ -9546,6 +11137,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     transactions?: InventoryTransactionUncheckedCreateNestedManyWithoutItemInput
     packagingComponents?: PackagingComponentUncheckedCreateNestedManyWithoutVariantItemInput
+    addonComponents?: AddonComponentUncheckedCreateNestedManyWithoutVariantItemInput
+    usedAsAddonIn?: AddonComponentUncheckedCreateNestedManyWithoutAddonItemInput
   }
 
   export type ItemCreateOrConnectWithoutUsedAsPackagingInInput = {
@@ -9579,6 +11172,8 @@ export namespace Prisma {
     product?: ProductUpdateOneWithoutItemsNestedInput
     transactions?: InventoryTransactionUpdateManyWithoutItemNestedInput
     usedAsPackagingIn?: PackagingComponentUpdateManyWithoutPackagingItemNestedInput
+    addonComponents?: AddonComponentUpdateManyWithoutVariantItemNestedInput
+    usedAsAddonIn?: AddonComponentUpdateManyWithoutAddonItemNestedInput
   }
 
   export type ItemUncheckedUpdateWithoutPackagingComponentsInput = {
@@ -9596,6 +11191,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     transactions?: InventoryTransactionUncheckedUpdateManyWithoutItemNestedInput
     usedAsPackagingIn?: PackagingComponentUncheckedUpdateManyWithoutPackagingItemNestedInput
+    addonComponents?: AddonComponentUncheckedUpdateManyWithoutVariantItemNestedInput
+    usedAsAddonIn?: AddonComponentUncheckedUpdateManyWithoutAddonItemNestedInput
   }
 
   export type ItemUpsertWithoutUsedAsPackagingInInput = {
@@ -9624,6 +11221,8 @@ export namespace Prisma {
     product?: ProductUpdateOneWithoutItemsNestedInput
     transactions?: InventoryTransactionUpdateManyWithoutItemNestedInput
     packagingComponents?: PackagingComponentUpdateManyWithoutVariantItemNestedInput
+    addonComponents?: AddonComponentUpdateManyWithoutVariantItemNestedInput
+    usedAsAddonIn?: AddonComponentUpdateManyWithoutAddonItemNestedInput
   }
 
   export type ItemUncheckedUpdateWithoutUsedAsPackagingInInput = {
@@ -9641,6 +11240,192 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     transactions?: InventoryTransactionUncheckedUpdateManyWithoutItemNestedInput
     packagingComponents?: PackagingComponentUncheckedUpdateManyWithoutVariantItemNestedInput
+    addonComponents?: AddonComponentUncheckedUpdateManyWithoutVariantItemNestedInput
+    usedAsAddonIn?: AddonComponentUncheckedUpdateManyWithoutAddonItemNestedInput
+  }
+
+  export type ItemCreateWithoutAddonComponentsInput = {
+    id?: string
+    name: string
+    type: string
+    measureUnit: string
+    currentStock?: Decimal | DecimalJsLike | number | string
+    status?: string
+    unitWeightGm?: number | null
+    weightedAverageUnitPrice?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    category?: CategoryCreateNestedOneWithoutItemsInput
+    product?: ProductCreateNestedOneWithoutItemsInput
+    transactions?: InventoryTransactionCreateNestedManyWithoutItemInput
+    packagingComponents?: PackagingComponentCreateNestedManyWithoutVariantItemInput
+    usedAsPackagingIn?: PackagingComponentCreateNestedManyWithoutPackagingItemInput
+    usedAsAddonIn?: AddonComponentCreateNestedManyWithoutAddonItemInput
+  }
+
+  export type ItemUncheckedCreateWithoutAddonComponentsInput = {
+    id?: string
+    name: string
+    type: string
+    measureUnit: string
+    currentStock?: Decimal | DecimalJsLike | number | string
+    categoryId?: string | null
+    productId?: string | null
+    status?: string
+    unitWeightGm?: number | null
+    weightedAverageUnitPrice?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    transactions?: InventoryTransactionUncheckedCreateNestedManyWithoutItemInput
+    packagingComponents?: PackagingComponentUncheckedCreateNestedManyWithoutVariantItemInput
+    usedAsPackagingIn?: PackagingComponentUncheckedCreateNestedManyWithoutPackagingItemInput
+    usedAsAddonIn?: AddonComponentUncheckedCreateNestedManyWithoutAddonItemInput
+  }
+
+  export type ItemCreateOrConnectWithoutAddonComponentsInput = {
+    where: ItemWhereUniqueInput
+    create: XOR<ItemCreateWithoutAddonComponentsInput, ItemUncheckedCreateWithoutAddonComponentsInput>
+  }
+
+  export type ItemCreateWithoutUsedAsAddonInInput = {
+    id?: string
+    name: string
+    type: string
+    measureUnit: string
+    currentStock?: Decimal | DecimalJsLike | number | string
+    status?: string
+    unitWeightGm?: number | null
+    weightedAverageUnitPrice?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    category?: CategoryCreateNestedOneWithoutItemsInput
+    product?: ProductCreateNestedOneWithoutItemsInput
+    transactions?: InventoryTransactionCreateNestedManyWithoutItemInput
+    packagingComponents?: PackagingComponentCreateNestedManyWithoutVariantItemInput
+    usedAsPackagingIn?: PackagingComponentCreateNestedManyWithoutPackagingItemInput
+    addonComponents?: AddonComponentCreateNestedManyWithoutVariantItemInput
+  }
+
+  export type ItemUncheckedCreateWithoutUsedAsAddonInInput = {
+    id?: string
+    name: string
+    type: string
+    measureUnit: string
+    currentStock?: Decimal | DecimalJsLike | number | string
+    categoryId?: string | null
+    productId?: string | null
+    status?: string
+    unitWeightGm?: number | null
+    weightedAverageUnitPrice?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    transactions?: InventoryTransactionUncheckedCreateNestedManyWithoutItemInput
+    packagingComponents?: PackagingComponentUncheckedCreateNestedManyWithoutVariantItemInput
+    usedAsPackagingIn?: PackagingComponentUncheckedCreateNestedManyWithoutPackagingItemInput
+    addonComponents?: AddonComponentUncheckedCreateNestedManyWithoutVariantItemInput
+  }
+
+  export type ItemCreateOrConnectWithoutUsedAsAddonInInput = {
+    where: ItemWhereUniqueInput
+    create: XOR<ItemCreateWithoutUsedAsAddonInInput, ItemUncheckedCreateWithoutUsedAsAddonInInput>
+  }
+
+  export type ItemUpsertWithoutAddonComponentsInput = {
+    update: XOR<ItemUpdateWithoutAddonComponentsInput, ItemUncheckedUpdateWithoutAddonComponentsInput>
+    create: XOR<ItemCreateWithoutAddonComponentsInput, ItemUncheckedCreateWithoutAddonComponentsInput>
+    where?: ItemWhereInput
+  }
+
+  export type ItemUpdateToOneWithWhereWithoutAddonComponentsInput = {
+    where?: ItemWhereInput
+    data: XOR<ItemUpdateWithoutAddonComponentsInput, ItemUncheckedUpdateWithoutAddonComponentsInput>
+  }
+
+  export type ItemUpdateWithoutAddonComponentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    measureUnit?: StringFieldUpdateOperationsInput | string
+    currentStock?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: StringFieldUpdateOperationsInput | string
+    unitWeightGm?: NullableFloatFieldUpdateOperationsInput | number | null
+    weightedAverageUnitPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: CategoryUpdateOneWithoutItemsNestedInput
+    product?: ProductUpdateOneWithoutItemsNestedInput
+    transactions?: InventoryTransactionUpdateManyWithoutItemNestedInput
+    packagingComponents?: PackagingComponentUpdateManyWithoutVariantItemNestedInput
+    usedAsPackagingIn?: PackagingComponentUpdateManyWithoutPackagingItemNestedInput
+    usedAsAddonIn?: AddonComponentUpdateManyWithoutAddonItemNestedInput
+  }
+
+  export type ItemUncheckedUpdateWithoutAddonComponentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    measureUnit?: StringFieldUpdateOperationsInput | string
+    currentStock?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    categoryId?: NullableStringFieldUpdateOperationsInput | string | null
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    unitWeightGm?: NullableFloatFieldUpdateOperationsInput | number | null
+    weightedAverageUnitPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    transactions?: InventoryTransactionUncheckedUpdateManyWithoutItemNestedInput
+    packagingComponents?: PackagingComponentUncheckedUpdateManyWithoutVariantItemNestedInput
+    usedAsPackagingIn?: PackagingComponentUncheckedUpdateManyWithoutPackagingItemNestedInput
+    usedAsAddonIn?: AddonComponentUncheckedUpdateManyWithoutAddonItemNestedInput
+  }
+
+  export type ItemUpsertWithoutUsedAsAddonInInput = {
+    update: XOR<ItemUpdateWithoutUsedAsAddonInInput, ItemUncheckedUpdateWithoutUsedAsAddonInInput>
+    create: XOR<ItemCreateWithoutUsedAsAddonInInput, ItemUncheckedCreateWithoutUsedAsAddonInInput>
+    where?: ItemWhereInput
+  }
+
+  export type ItemUpdateToOneWithWhereWithoutUsedAsAddonInInput = {
+    where?: ItemWhereInput
+    data: XOR<ItemUpdateWithoutUsedAsAddonInInput, ItemUncheckedUpdateWithoutUsedAsAddonInInput>
+  }
+
+  export type ItemUpdateWithoutUsedAsAddonInInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    measureUnit?: StringFieldUpdateOperationsInput | string
+    currentStock?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: StringFieldUpdateOperationsInput | string
+    unitWeightGm?: NullableFloatFieldUpdateOperationsInput | number | null
+    weightedAverageUnitPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: CategoryUpdateOneWithoutItemsNestedInput
+    product?: ProductUpdateOneWithoutItemsNestedInput
+    transactions?: InventoryTransactionUpdateManyWithoutItemNestedInput
+    packagingComponents?: PackagingComponentUpdateManyWithoutVariantItemNestedInput
+    usedAsPackagingIn?: PackagingComponentUpdateManyWithoutPackagingItemNestedInput
+    addonComponents?: AddonComponentUpdateManyWithoutVariantItemNestedInput
+  }
+
+  export type ItemUncheckedUpdateWithoutUsedAsAddonInInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    measureUnit?: StringFieldUpdateOperationsInput | string
+    currentStock?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    categoryId?: NullableStringFieldUpdateOperationsInput | string | null
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    unitWeightGm?: NullableFloatFieldUpdateOperationsInput | number | null
+    weightedAverageUnitPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    transactions?: InventoryTransactionUncheckedUpdateManyWithoutItemNestedInput
+    packagingComponents?: PackagingComponentUncheckedUpdateManyWithoutVariantItemNestedInput
+    usedAsPackagingIn?: PackagingComponentUncheckedUpdateManyWithoutPackagingItemNestedInput
+    addonComponents?: AddonComponentUncheckedUpdateManyWithoutVariantItemNestedInput
   }
 
   export type ItemCreateWithoutTransactionsInput = {
@@ -9658,6 +11443,8 @@ export namespace Prisma {
     product?: ProductCreateNestedOneWithoutItemsInput
     packagingComponents?: PackagingComponentCreateNestedManyWithoutVariantItemInput
     usedAsPackagingIn?: PackagingComponentCreateNestedManyWithoutPackagingItemInput
+    addonComponents?: AddonComponentCreateNestedManyWithoutVariantItemInput
+    usedAsAddonIn?: AddonComponentCreateNestedManyWithoutAddonItemInput
   }
 
   export type ItemUncheckedCreateWithoutTransactionsInput = {
@@ -9675,6 +11462,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     packagingComponents?: PackagingComponentUncheckedCreateNestedManyWithoutVariantItemInput
     usedAsPackagingIn?: PackagingComponentUncheckedCreateNestedManyWithoutPackagingItemInput
+    addonComponents?: AddonComponentUncheckedCreateNestedManyWithoutVariantItemInput
+    usedAsAddonIn?: AddonComponentUncheckedCreateNestedManyWithoutAddonItemInput
   }
 
   export type ItemCreateOrConnectWithoutTransactionsInput = {
@@ -9708,6 +11497,8 @@ export namespace Prisma {
     product?: ProductUpdateOneWithoutItemsNestedInput
     packagingComponents?: PackagingComponentUpdateManyWithoutVariantItemNestedInput
     usedAsPackagingIn?: PackagingComponentUpdateManyWithoutPackagingItemNestedInput
+    addonComponents?: AddonComponentUpdateManyWithoutVariantItemNestedInput
+    usedAsAddonIn?: AddonComponentUpdateManyWithoutAddonItemNestedInput
   }
 
   export type ItemUncheckedUpdateWithoutTransactionsInput = {
@@ -9725,6 +11516,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     packagingComponents?: PackagingComponentUncheckedUpdateManyWithoutVariantItemNestedInput
     usedAsPackagingIn?: PackagingComponentUncheckedUpdateManyWithoutPackagingItemNestedInput
+    addonComponents?: AddonComponentUncheckedUpdateManyWithoutVariantItemNestedInput
+    usedAsAddonIn?: AddonComponentUncheckedUpdateManyWithoutAddonItemNestedInput
   }
 
   export type ItemCreateManyProductInput = {
@@ -9756,6 +11549,8 @@ export namespace Prisma {
     transactions?: InventoryTransactionUpdateManyWithoutItemNestedInput
     packagingComponents?: PackagingComponentUpdateManyWithoutVariantItemNestedInput
     usedAsPackagingIn?: PackagingComponentUpdateManyWithoutPackagingItemNestedInput
+    addonComponents?: AddonComponentUpdateManyWithoutVariantItemNestedInput
+    usedAsAddonIn?: AddonComponentUpdateManyWithoutAddonItemNestedInput
   }
 
   export type ItemUncheckedUpdateWithoutProductInput = {
@@ -9773,6 +11568,8 @@ export namespace Prisma {
     transactions?: InventoryTransactionUncheckedUpdateManyWithoutItemNestedInput
     packagingComponents?: PackagingComponentUncheckedUpdateManyWithoutVariantItemNestedInput
     usedAsPackagingIn?: PackagingComponentUncheckedUpdateManyWithoutPackagingItemNestedInput
+    addonComponents?: AddonComponentUncheckedUpdateManyWithoutVariantItemNestedInput
+    usedAsAddonIn?: AddonComponentUncheckedUpdateManyWithoutAddonItemNestedInput
   }
 
   export type ItemUncheckedUpdateManyWithoutProductInput = {
@@ -9810,6 +11607,18 @@ export namespace Prisma {
     id: string
     variantItemId: string
     qtyPerUnit: number
+  }
+
+  export type AddonComponentCreateManyVariantItemInput = {
+    id: string
+    ingredientCategory: string
+    addonItemId: string
+  }
+
+  export type AddonComponentCreateManyAddonItemInput = {
+    id: string
+    variantItemId: string
+    ingredientCategory: string
   }
 
   export type InventoryTransactionUpdateWithoutItemInput = {
@@ -9881,6 +11690,42 @@ export namespace Prisma {
     qtyPerUnit?: FloatFieldUpdateOperationsInput | number
   }
 
+  export type AddonComponentUpdateWithoutVariantItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ingredientCategory?: StringFieldUpdateOperationsInput | string
+    addonItem?: ItemUpdateOneRequiredWithoutUsedAsAddonInNestedInput
+  }
+
+  export type AddonComponentUncheckedUpdateWithoutVariantItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ingredientCategory?: StringFieldUpdateOperationsInput | string
+    addonItemId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AddonComponentUncheckedUpdateManyWithoutVariantItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ingredientCategory?: StringFieldUpdateOperationsInput | string
+    addonItemId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AddonComponentUpdateWithoutAddonItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ingredientCategory?: StringFieldUpdateOperationsInput | string
+    variantItem?: ItemUpdateOneRequiredWithoutAddonComponentsNestedInput
+  }
+
+  export type AddonComponentUncheckedUpdateWithoutAddonItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    variantItemId?: StringFieldUpdateOperationsInput | string
+    ingredientCategory?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AddonComponentUncheckedUpdateManyWithoutAddonItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    variantItemId?: StringFieldUpdateOperationsInput | string
+    ingredientCategory?: StringFieldUpdateOperationsInput | string
+  }
+
   export type ItemCreateManyCategoryInput = {
     id?: string
     name: string
@@ -9910,6 +11755,8 @@ export namespace Prisma {
     transactions?: InventoryTransactionUpdateManyWithoutItemNestedInput
     packagingComponents?: PackagingComponentUpdateManyWithoutVariantItemNestedInput
     usedAsPackagingIn?: PackagingComponentUpdateManyWithoutPackagingItemNestedInput
+    addonComponents?: AddonComponentUpdateManyWithoutVariantItemNestedInput
+    usedAsAddonIn?: AddonComponentUpdateManyWithoutAddonItemNestedInput
   }
 
   export type ItemUncheckedUpdateWithoutCategoryInput = {
@@ -9927,6 +11774,8 @@ export namespace Prisma {
     transactions?: InventoryTransactionUncheckedUpdateManyWithoutItemNestedInput
     packagingComponents?: PackagingComponentUncheckedUpdateManyWithoutVariantItemNestedInput
     usedAsPackagingIn?: PackagingComponentUncheckedUpdateManyWithoutPackagingItemNestedInput
+    addonComponents?: AddonComponentUncheckedUpdateManyWithoutVariantItemNestedInput
+    usedAsAddonIn?: AddonComponentUncheckedUpdateManyWithoutAddonItemNestedInput
   }
 
   export type ItemUncheckedUpdateManyWithoutCategoryInput = {

@@ -20,6 +20,7 @@ export interface IItemRepository {
         item: Item,
         transaction: StockTransactionData,
     ): Promise<void>;
+    hasTransactions(id: ItemId): Promise<boolean>;
 }
 
 export const IItemRepository = Symbol('IItemRepository');

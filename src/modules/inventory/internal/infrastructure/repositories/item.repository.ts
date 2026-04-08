@@ -60,6 +60,13 @@ export class ItemRepository implements IItemRepository {
         });
     }
 
+    async hasTransactions(id: ItemId): Promise<boolean> {
+        const count = await this.prisma.inventoryTransaction.count({
+            where: { itemId: id.value },
+        });
+        return count > 0;
+    }
+
     async saveWithTransaction(
         item: Item,
         transaction: StockTransactionData,
@@ -71,6 +78,7 @@ export class ItemRepository implements IItemRepository {
                 where: { id: data.id },
                 data: {
                     currentStock: data.currentStock,
+                    weightedAverageUnitPrice: data.weightedAverageUnitPrice,
                     updatedAt: new Date(),
                 },
             }),

@@ -41,7 +41,7 @@ E2E tests use the real databases and clean relevant tables before each suite. Te
 
 **Important**: The `test:e2e` script runs with `--runInBand` (all suites in one process, sequentially). This is required because all suites share the same real databases — parallel execution causes `cleanXxxDb()` calls from one suite to corrupt in-flight data of another. Do not remove `--runInBand`.
 
-Current totals: **~120 tests** — 28 inventory (19 items + 9 categories) + 12 products + 30 recipe + 27 purchase + 7 settings + ~16 sales.
+Current totals: **148 tests** — 29 inventory items + 4 categories + 12 products + 32 recipe + 27 purchase + 7 settings + 37 sales.
 
 ### Database (Prisma — per module)
 ```bash
@@ -178,24 +178,29 @@ Prisma schemas and generated clients live inside each module's infrastructure di
 - Swagger UI: Available at `/api` in development
 - Global `ValidationPipe` with `whitelist: true`, `transform: true`, `forbidNonWhitelisted: true`
 
-### Key Domain Concepts (refactor/product-filling branch)
+### Key Domain Concepts
 
 - **Product aggregate** (`inventory` module): Groups FINAL_PRODUCT size variants under one formula identity. Recipe links to `Product.id`, not to a specific Item. `Item.productId` FK (nullable) links each variant to its parent Product.
 - **PackagingBOM** (`inventory` module): `PackagingComponent` records per FINAL_PRODUCT variant define which PACKAGING items and qty per unit to deduct during FillingOrder execution. Managed via `PUT /inventory/items/:id/packaging-bom`.
-- **WAUP (Weighted Average Unit Price)**: Running average on Item, updated on each RESTOCK: `newWAUP = (oldStock × oldWAUP + newQty × newPrice) / (oldStock + newQty)`. Computed O(1) per restock, not on read.
+- **AddonBOM** (`inventory` module): `AddonComponent` records per FINAL_PRODUCT variant link a recipe add-on category (e.g. `fragrance`) to a concrete RAW_MATERIAL inventory item. Managed via `PUT /inventory/items/:id/addon-bom`. No qty stored — derived from recipe percentage at runtime. Visible in `GET /inventory/items/:id` response.
+- **Add-on ingredients** (`recipe` module): Recipe ingredients with `isAddOn: true` have `ingredientCategory` (e.g. `fragrance`) instead of `itemId`. They carry a `resolutionPhase: 'BULK' | 'FILLING'` (default `FILLING`) that determines when the ingredient is deducted. The recipe `RecipeFacade` exposes all ingredients including add-ons.
+- **WAUP (Weighted Average Unit Price)**: Running average on Item, updated on each RESTOCK that includes a `unitPrice`: `newWAUP = (oldStock × oldWAUP + newQty × newPrice) / (oldStock + newQty)`. Computed O(1) per restock, not on read. The `PUT /inventory/items/:id/restock` endpoint accepts optional `unitPrice`.
 - **Two-phase production**:
-  - **Phase 1 — ProductionOrder** (bulk): deducts base ingredients (non-addOn) scaled by `batchWeightGm × (pct/100) × (1 + waste%)`, then upserts `BulkStock.availableGm += batchWeightGm`.
-  - **Phase 2 — FillingOrder** (fill): validates `bulkUsedGm ≤ BulkStock.availableGm`, deducts bulk, restocks variant items, and deducts PackagingBOM components per unit filled.
+  - **Phase 1 — ProductionOrder** (bulk): accepts `addonResolutions[]` (which concrete item to use per add-on category). Deducts base ingredients + BULK-phase add-ons scaled by `batchWeightGm × (pct/100) × (1 + waste%)`, then upserts `BulkStock.availableGm += batchWeightGm`.
+  - **Phase 2 — FillingOrder** (fill): validates `bulkUsedGm ≤ BulkStock.availableGm`, deducts bulk, restocks variant items, deducts PackagingBOM components per unit filled, and deducts FILLING-phase add-ons per variant's AddonBOM.
 - **BulkStock**: Per-Product entity in `production` DB tracking available bulk grams.
-- **SHIPPING_PACKAGING**: New ItemType (boxes, bags, shipping flyers) reserved for the future Sales module.
+- **COGS pricing** (`sales` module): `GET /sales/pricing/item/:itemId` computes per-unit cost breakdown including `addonCostPerUnit` (from AddonBOM × recipe % × WAUP). PR #9.
+- **SHIPPING_PACKAGING**: ItemType for boxes/bags/flyers used in sales orders alongside FINAL_PRODUCT.
 
 ### Module Implementation Status
 
 - **Auth**: Complete (login, user CRUD)
 - **Vendor**: Complete (CRUD, activate/deactivate)
 - **Security**: Complete (JWT + RBAC)
-- **Inventory**: Complete — 4 item types (RAW_MATERIAL, PACKAGING, FINAL_PRODUCT, SHIPPING_PACKAGING), categories, Product aggregate, PackagingBOM, restock/deduct with WAUP + immutable transaction audit trail, soft-delete (archive). E2E tested (28 tests).
-- **Recipe**: Complete — formula/BOM management with version lifecycle (DRAFT → ACTIVE → ARCHIVED), w/w% percentage quantities, add-on placeholders (fragrance/colorants), 100% base formula validation at activation. Links to Product aggregate (not Item). E2E tested (30 tests).
+- **Inventory**: Complete — 4 item types, categories, Product aggregate, PackagingBOM, AddonBOM (`PUT /inventory/items/:id/addon-bom`), restock/deduct with WAUP (unitPrice now exposed on HTTP restock), immutable transaction audit trail, soft-delete (archive). `GET /inventory/items/:id` returns `addonComponents[]`. E2E tested (29 tests).
+- **Recipe**: Complete — formula/BOM management with version lifecycle (DRAFT → ACTIVE → ARCHIVED), w/w% percentage quantities, add-on placeholders with `ingredientCategory` + `resolutionPhase` (BULK/FILLING), 100% base formula validation at activation. Links to Product aggregate (not Item). `GET /recipes/:id` returns `resolutionPhase` per ingredient. E2E tested (32 tests).
 - **Purchase**: Complete — procurement management with PO lifecycle (DRAFT → CONFIRMED → RECEIVED + CANCELLED), vendor snapshot, item validation (RAW_MATERIAL/PACKAGING only), auto-restock on receive with vendorId + unitPrice propagation to InventoryTransaction. Cross-module integration via `IInventoryFacade` (facade pattern). E2E tested (27 tests).
-- **Production**: Complete — two-phase production: ProductionOrder (bulk batch) + FillingOrder (fill into variants). BulkStock tracks available bulk grams per Product. Cross-module integration via `IInventoryFacade` + `IRecipeFacade`.
-- **Sales**: Complete — sell FINAL_PRODUCT and SHIPPING_PACKAGING to customers with lifecycle (DRAFT → CONFIRMED → SHIPPED + CANCELLED). Customer snapshot, stock deducted on SHIP, COGS pricing endpoint. Cross-module integration via `IInventoryFacade` + `IRecipeFacade` + `ISettingsFacade`. E2E tested (~16 tests).
+- **Production**: Complete — two-phase production: ProductionOrder (bulk batch, supports `addonResolutions[]` for BULK add-on deduction) + FillingOrder (fill into variants, deducts FILLING add-ons via AddonBOM). BulkStock tracks available bulk grams per Product. Cross-module integration via `IInventoryFacade` + `IRecipeFacade`. No E2E tests yet.
+- **Sales**: Complete — sell FINAL_PRODUCT and SHIPPING_PACKAGING with lifecycle (DRAFT → CONFIRMED → SHIPPED + CANCELLED). Invoice number + payment status (PENDING/PAID). Gift line support. Discount codes (PERCENT + FIXED_AMOUNT). COGS pricing includes `addonCostPerUnit`. Cross-module integration via `IInventoryFacade` + `IRecipeFacade` + `ISettingsFacade`. E2E tested (37 tests).
+
+**Total E2E tests: 148** (inventory 29 + recipe 32 + purchase 27 + settings 7 + products 12 + sales 37 + categories 4)

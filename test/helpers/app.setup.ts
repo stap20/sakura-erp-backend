@@ -51,6 +51,7 @@ export async function cleanInventoryDb(app: INestApplication): Promise<void> {
     const prisma = app.get<IInventoryPrismaClient>(IInventoryPrismaClient);
     await prisma.inventoryTransaction.deleteMany();
     await prisma.packagingComponent.deleteMany();
+    await prisma.addonComponent.deleteMany();
     await prisma.item.deleteMany();
     await prisma.category.deleteMany();
     await prisma.product.deleteMany();

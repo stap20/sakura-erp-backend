@@ -1,3 +1,8 @@
+export interface AddonComponentResponse {
+    ingredientCategory: string;
+    addonItemId: string;
+}
+
 export class GetItemResponse {
     constructor(
         public readonly id: string,
@@ -12,5 +17,6 @@ export class GetItemResponse {
         public readonly unitWeightGm: number | null,
         public readonly weightedAverageUnitPrice: number | null,
         public readonly productId: string | null,
+        public readonly addonComponents: AddonComponentResponse[] = [],
     ) {}
 }

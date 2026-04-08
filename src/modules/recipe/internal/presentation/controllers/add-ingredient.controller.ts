@@ -29,6 +29,7 @@ export class AddIngredientController {
             dto.itemId,
             dto.itemName,
             dto.ingredientCategory,
+            dto.resolutionPhase,
         );
         const result = await this.handler.handle(command);
         return toRecipeVersionResponseDto(result);

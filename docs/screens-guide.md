@@ -237,10 +237,14 @@
 Show additional section:
 - **Linked Product**: link to `/inventory/products/:productId`
 - **Packaging BOM**: table of packaging components + `[Edit BOM]` → inline table editor → `PUT /inventory/items/:id/packaging-bom`
+- **Addon BOM**: table of add-on ingredient resolutions + `[Edit Addon BOM]` → inline table editor → `PUT /inventory/items/:id/addon-bom`
+  - Each row: `ingredientCategory` (e.g. `fragrance`) → `addonItemId` (RAW_MATERIAL item picker)
+  - Used to resolve which concrete inventory item gets deducted when a FILLING add-on is executed
 - **Pricing**: card showing COGS breakdown → `GET /sales/pricing/item/:id`
+  - Shows: `materialPerUnit`, `laborPerUnit`, `depreciationPerUnit`, `packagingPerUnit`, **`addonCostPerUnit`** (NEW), `totalCogs`, `suggestedPrice`
 
 ### UX Notes
-- Restock modal: `vendorId` optional dropdown (loads from `GET /vendors?status=ACTIVE`)
+- Restock modal: `vendorId` optional dropdown (loads from `GET /vendors?status=ACTIVE`); `unitPrice` optional number field — sets the Weighted Average Unit Price used in COGS calculations
 - Transaction history paginated, filterable by type (RESTOCK / DEDUCT)
 - `performedBy` can default to logged-in user id
 
@@ -392,13 +396,11 @@ Show additional section:
 ┌─ [← Recipes]  Rose Body Butter — v3 ── [Activate] [Archive] ───┐
 │  Status: [DRAFT]   Created: 2026-03-01   Notes: Updated formula │
 │  [Edit Notes]                                                   │
-├─ Ingredients ───────────────────────────────── [+ Add] ─────────┤
-│  Item              │ Category │ Add-on │  %   │ Notes │ Actions │
-│  Rose Hip Oil      │ Oils     │ ✗      │ 30.0 │ —     │ [✎][🗑] │
-│  Shea Butter       │ Butters  │ ✗      │ 40.0 │ —     │ [✎][🗑] │
-│  Beeswax           │ Waxes    │ ✗      │ 15.0 │ —     │ [✎][🗑] │
-│  Vitamin E         │ Additives│ ✗      │ 15.0 │ —     │ [✎][🗑] │
-│  [Fragrance]       │ —        │ ✓      │  —   │ add-on│ [✎][🗑] │
+├─ Ingredients ─────────────────────────────────── [+ Add] ───────┤
+│  Item              │ Category │ Add-on │ Phase   │  %   │ Actions│
+│  Rose Hip Oil      │ Oils     │ ✗      │ —       │ 100.0│ [✎][🗑]│
+│  [Fragrance]       │ fragrance│ ✓      │ FILLING │   5.0│ [✎][🗑]│
+│  [Colorant]        │ colorant │ ✓      │ BULK    │   2.0│ [✎][🗑]│
 ├─────────────────────────────────────────────────────────────────┤
 │  Base total: 100%  ✅           Add-ons: excluded from total    │
 └─────────────────────────────────────────────────────────────────┘
@@ -419,7 +421,10 @@ Show additional section:
 - Running total displayed at bottom — only counts base ingredients (`isAddOn: false`)
 - Activate button **disabled** and shows warning if total ≠ 100%
 - Only DRAFT recipes are editable — all edit actions hidden for ACTIVE/ARCHIVED
-- Add ingredient modal: item picker (searchable dropdown → `GET /inventory/items?type=RAW_MATERIAL`), quantity (%), isAddOn toggle
+- **Add ingredient modal**:
+  - Item picker (searchable dropdown → `GET /inventory/items?type=RAW_MATERIAL`), quantity (%), isAddOn toggle
+  - When `isAddOn = true`: hide item picker, show `ingredientCategory` text input (e.g. `fragrance`) and `resolutionPhase` dropdown (`BULK` / `FILLING`, default `FILLING`)
+  - **Phase column** only shown for add-on rows — `BULK` = deducted at bulk production time, `FILLING` = deducted per unit at filling time
 
 ---
 
@@ -529,12 +534,15 @@ For CONFIRMED status:
 ┌─ [← Production]  Bulk Run — Rose Body Butter ──────────────────┐
 │  Status: [CONFIRMED]   Batch: 10,000 gm   Waste: 5%            │
 │  Notes: [edit inline]                                           │
-├─ Ingredient Preview (from active recipe) ───────────────────────┤
+├─ Base Ingredients (from active recipe) ─────────────────────────┤
 │  Ingredient    │ Recipe % │ Will Deduct  │ Current Stock        │
 │  Rose Hip Oil  │ 30%      │ 3,150 gm     │ 🟢 5,000 gm         │
 │  Shea Butter   │ 40%      │ 4,200 gm     │ 🟡 4,500 gm         │
 │  Beeswax       │ 15%      │ 1,575 gm     │ 🟢 8,000 gm         │
 │  Vitamin E     │ 15%      │ 1,575 gm     │ 🔴 1,200 gm ⚠       │
+├─ BULK Add-on Resolutions (only shown if recipe has BULK add-ons)┤
+│  Add-on Category │ Resolved Item         │ Will Deduct         │
+│  colorant        │ [Red Colorant ▾]      │ 210 gm              │
 ├─────────────────────────────────────────────────────────────────┤
 │         [Execute Run]         [Cancel]                          │
 │  ⚠ Vitamin E stock insufficient — execution may fail           │
@@ -547,7 +555,7 @@ For CONFIRMED status:
 | Load order | `GET /production/orders/:id` |
 | Load active recipe | `GET /recipes/product/:productId/active` |
 | Load item stocks | `GET /inventory/items?type=RAW_MATERIAL` |
-| Create (new) | `POST /production/orders` |
+| Create (new) | `POST /production/orders` with optional `addonResolutions[]` |
 | Update (DRAFT) | `PATCH /production/orders/:id` |
 | Confirm | `POST /production/orders/:id/confirm` |
 | Execute | `POST /production/orders/:id/execute` |
@@ -557,6 +565,11 @@ For CONFIRMED status:
 - Ingredient preview is client-side calculation: `deductQty = batchWeightGm × (pct/100) × (1 + wastePercent/100)`
 - Highlight rows where `deductQty > currentStock` in red with warning
 - Execute shows confirmation dialog listing all deductions
+- **BULK Add-on Resolutions**: If recipe has ingredients where `isAddOn: true && resolutionPhase === 'BULK'`, show a resolver section at creation time
+  - Each add-on `ingredientCategory` (e.g. `colorant`) must be mapped to a concrete RAW_MATERIAL item via a dropdown (`GET /inventory/items?type=RAW_MATERIAL`)
+  - Include these mappings as `addonResolutions: [{ ingredientCategory, addonItemId }]` in the `POST /production/orders` body
+  - Will deduct quantity: same formula as base ingredients — `batchWeightGm × (pct/100) × (1 + waste%/100)`
+- **FILLING add-ons** (resolutionPhase=FILLING) are NOT resolved here — they're resolved automatically at FillingOrder execute via the variant item's AddonBOM
 
 ---
 
@@ -619,6 +632,9 @@ For CONFIRMED status:
 - `bulkUsedGm = units × unitWeightGm` — calculated live on the client
 - Warn if total bulk used > available bulk
 - Packaging BOM is informational only (shown from item detail, not recalculated here)
+- **FILLING Add-ons**: At execute time, the backend automatically deducts add-on ingredients (e.g. fragrance) using each variant's `addonComponents[]` BOM — no user input needed
+  - Show an informational note: "Add-on ingredients (e.g. fragrance, colorant) will be automatically deducted from inventory based on each variant's Addon BOM"
+  - If a variant is missing its AddonBOM for a required add-on category, the backend silently skips it (no error) — a missing AddonBOM means that add-on is not tracked for that variant
 
 ---
 

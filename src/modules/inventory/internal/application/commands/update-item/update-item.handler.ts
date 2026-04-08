@@ -5,7 +5,6 @@ import { ItemId } from '../../../domain/value-objects/item-id.vo';
 import { ItemNotFoundApplicationError, MeasureUnitLockedApplicationError } from '../../errors/item.errors';
 import { UpdateItemCommand } from './update-item.command';
 import { UpdateItemResponse } from './update-item.response';
-import { ReadItemRepository } from '../../../infrastructure/repositories/read-item.repository';
 
 @Injectable()
 export class UpdateItemHandler extends CommandHandlerBase<
@@ -15,7 +14,6 @@ export class UpdateItemHandler extends CommandHandlerBase<
     constructor(
         @Inject(IItemRepository)
         private readonly itemRepository: IItemRepository,
-        private readonly readItemRepository: ReadItemRepository,
     ) {
         super();
     }
@@ -29,7 +27,7 @@ export class UpdateItemHandler extends CommandHandlerBase<
         }
 
         if (command.measureUnit !== undefined && command.measureUnit !== item.getMeasureUnit().value) {
-            const hasTransactions = await this.readItemRepository.hasTransactions(command.id);
+            const hasTransactions = await this.itemRepository.hasTransactions(idVO);
             if (hasTransactions) {
                 throw new MeasureUnitLockedApplicationError();
             }

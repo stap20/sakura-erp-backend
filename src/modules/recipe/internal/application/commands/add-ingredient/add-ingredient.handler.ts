@@ -32,6 +32,7 @@ export class AddIngredientHandler extends CommandHandlerBase<
             ingredientCategory: command.ingredientCategory ?? null,
             quantity: command.quantity,
             notes: command.notes,
+            resolutionPhase: command.resolutionPhase ?? 'FILLING',
         });
 
         recipe.addIngredient(ingredient);

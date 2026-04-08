@@ -3,6 +3,11 @@ export interface PackagingComponentDto {
     qtyPerUnit: number;
 }
 
+export interface AddonComponentDto {
+    ingredientCategory: string;
+    addonItemId: string;
+}
+
 export class InventoryItemDto {
     constructor(
         public readonly id: string,
@@ -13,5 +18,6 @@ export class InventoryItemDto {
         public readonly weightedAverageUnitPrice: number | null,
         public readonly packagingComponents: PackagingComponentDto[] = [],
         public readonly productId: string | null = null,
+        public readonly addonComponents: AddonComponentDto[] = [],
     ) {}
 }

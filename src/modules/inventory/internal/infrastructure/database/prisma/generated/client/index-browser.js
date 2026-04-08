@@ -162,6 +162,13 @@ exports.Prisma.PackagingComponentScalarFieldEnum = {
   qtyPerUnit: 'qtyPerUnit'
 };
 
+exports.Prisma.AddonComponentScalarFieldEnum = {
+  id: 'id',
+  variantItemId: 'variantItemId',
+  ingredientCategory: 'ingredientCategory',
+  addonItemId: 'addonItemId'
+};
+
 exports.Prisma.InventoryTransactionScalarFieldEnum = {
   id: 'id',
   itemId: 'itemId',
@@ -195,6 +202,7 @@ exports.Prisma.ModelName = {
   Item: 'Item',
   Category: 'Category',
   PackagingComponent: 'PackagingComponent',
+  AddonComponent: 'AddonComponent',
   InventoryTransaction: 'InventoryTransaction'
 };
 

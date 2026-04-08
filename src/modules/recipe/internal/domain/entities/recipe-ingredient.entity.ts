@@ -6,6 +6,7 @@ export interface CreateRecipeIngredientParams {
     ingredientCategory: string | null;
     quantity: number;
     notes?: string | null;
+    resolutionPhase?: string;
 }
 
 export class RecipeIngredient {
@@ -16,6 +17,7 @@ export class RecipeIngredient {
     public readonly ingredientCategory: string | null;
     public quantity: number;
     public notes: string | null;
+    public readonly resolutionPhase: string;
 
     constructor(params: CreateRecipeIngredientParams) {
         this.id = params.id;
@@ -25,6 +27,7 @@ export class RecipeIngredient {
         this.ingredientCategory = params.ingredientCategory;
         this.quantity = params.quantity;
         this.notes = params.notes ?? null;
+        this.resolutionPhase = params.resolutionPhase ?? 'FILLING';
     }
 
     public update(quantity?: number, notes?: string | null): void {
