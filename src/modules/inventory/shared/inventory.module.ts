@@ -90,6 +90,8 @@ import { ReadAddonBomRepository } from '../internal/infrastructure/repositories/
 import { ItemMapper } from '../internal/infrastructure/database/mappers/item.mapper';
 import { CategoryMapper } from '../internal/infrastructure/database/mappers/category.mapper';
 import { ProductMapper } from '../internal/infrastructure/database/mappers/product.mapper';
+import { AddonComponentMapper } from '../internal/infrastructure/database/mappers/addon-component.mapper';
+import { PackagingComponentMapper } from '../internal/infrastructure/database/mappers/packaging-component.mapper';
 
 // Interfaces
 import { IInventoryPrismaClient } from '../internal/infrastructure/database/inventory.prisma.client.interface';
@@ -173,6 +175,8 @@ import { IInventoryFacade } from 'src/modules/inventory/shared/contracts/invento
         ItemMapper,
         CategoryMapper,
         ProductMapper,
+        AddonComponentMapper,
+        PackagingComponentMapper,
 
         // Logger
         { provide: ILogger, useClass: NestLogger },

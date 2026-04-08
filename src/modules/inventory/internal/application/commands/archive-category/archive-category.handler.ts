@@ -4,7 +4,6 @@ import { ICategoryRepository } from '../../../domain/repositories/category.repo.
 import { CategoryId } from '../../../domain/value-objects/category-id.vo';
 import { CategoryNotFoundApplicationError, CategoryHasActiveItemsApplicationError } from '../../errors/category.errors';
 import { ArchiveCategoryCommand } from './archive-category.command';
-import { ReadCategoryRepository } from '../../../infrastructure/repositories/read-category.repository';
 
 @Injectable()
 export class ArchiveCategoryHandler extends CommandHandlerBase<
@@ -14,7 +13,6 @@ export class ArchiveCategoryHandler extends CommandHandlerBase<
     constructor(
         @Inject(ICategoryRepository)
         private readonly categoryRepository: ICategoryRepository,
-        private readonly readCategoryRepository: ReadCategoryRepository,
     ) {
         super();
     }
@@ -27,8 +25,7 @@ export class ArchiveCategoryHandler extends CommandHandlerBase<
             throw new CategoryNotFoundApplicationError(command.id);
         }
 
-        const hasActiveItems =
-            await this.readCategoryRepository.hasActiveItems(command.id);
+        const hasActiveItems = await this.categoryRepository.hasActiveItems(idVO);
 
         if (hasActiveItems) {
             throw new CategoryHasActiveItemsApplicationError(command.id);

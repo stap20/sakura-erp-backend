@@ -18,3 +18,15 @@ export class MeasureUnitLockedApplicationError extends ConflictError {
         super('Measure unit cannot be changed once the item has transactions');
     }
 }
+
+export class ItemNotFinalProductApplicationError extends ConflictError {
+    constructor() {
+        super('Item is not a FINAL_PRODUCT and cannot have a packaging BOM');
+    }
+}
+
+export class ItemNotFinalProductForAddonError extends ConflictError {
+    constructor() {
+        super('Item is not a FINAL_PRODUCT and cannot have an addon BOM');
+    }
+}

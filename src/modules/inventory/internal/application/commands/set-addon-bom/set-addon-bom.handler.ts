@@ -1,41 +1,37 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { CommandHandlerBase } from 'src/shared/application/command.handler.base';
 import { IAddonBomRepository } from '../../../domain/repositories/addon-bom.repo.interface';
-import { ReadItemRepository } from '../../../infrastructure/repositories/read-item.repository';
+import { IItemRepository } from '../../../domain/repositories/item.repo.interface';
+import { ItemId } from '../../../domain/value-objects/item-id.vo';
 import { AddonComponent } from '../../../domain/entities/addon-component.entity';
-import { ItemNotFoundApplicationError } from '../../errors/item.errors';
-import { ConflictError } from 'src/shared/application/errors/conflict.error';
+import { ItemNotFoundApplicationError, ItemNotFinalProductForAddonError } from '../../errors/item.errors';
 import { SetAddonBomCommand } from './set-addon-bom.command';
 import { SetAddonBomResponse } from './set-addon-bom.response';
-
-export class ItemNotFinalProductForAddonError extends ConflictError {
-    constructor() {
-        super('Item is not a FINAL_PRODUCT and cannot have an addon BOM');
-    }
-}
 
 @Injectable()
 export class SetAddonBomHandler extends CommandHandlerBase<SetAddonBomCommand, SetAddonBomResponse> {
     constructor(
         @Inject(IAddonBomRepository)
         private readonly addonBomRepository: IAddonBomRepository,
-        private readonly readItemRepository: ReadItemRepository,
+        @Inject(IItemRepository)
+        private readonly itemRepository: IItemRepository,
     ) {
         super();
     }
 
     async handle(command: SetAddonBomCommand): Promise<SetAddonBomResponse> {
-        const item = await this.readItemRepository.getById(command.variantItemId);
+        const itemId = ItemId.create(command.variantItemId);
+        const item = await this.itemRepository.getById(itemId);
 
         if (!item) {
             throw new ItemNotFoundApplicationError(command.variantItemId);
         }
 
-        if (item.type !== 'FINAL_PRODUCT') {
+        if (item.getType().value !== 'FINAL_PRODUCT') {
             throw new ItemNotFinalProductForAddonError();
         }
 
-        await this.addonBomRepository.deleteAllForVariant(command.variantItemId);
+        await this.addonBomRepository.deleteAllForVariant(item.getId());
 
         const components = command.components.map((c) =>
             AddonComponent.create({
