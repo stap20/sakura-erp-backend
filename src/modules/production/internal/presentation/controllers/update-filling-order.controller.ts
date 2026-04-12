@@ -9,7 +9,7 @@ import { FillingOrderResponseDto } from '../dtos/responses/filling-order.respons
 import { toFillingOrderResponseDto } from './helpers/response.mapper';
 
 @ApiTags('Filling Orders')
-@Controller('production/filling-orders')
+@Controller('filling-orders')
 export class UpdateFillingOrderController {
     constructor(
         @Inject(UpdateFillingOrderHandler)

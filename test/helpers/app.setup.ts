@@ -11,6 +11,7 @@ import { IRecipePrismaClient } from 'src/modules/recipe/internal/infrastructure/
 import { IPurchasePrismaClient } from 'src/modules/purchase/internal/infrastructure/database/purchase.prisma.client.interface';
 import { ISettingsPrismaClient } from 'src/modules/settings/internal/infrastructure/database/settings.prisma.client.interface';
 import { ISalesPrismaClient } from 'src/modules/sales/internal/infrastructure/database/sales.prisma.client.interface';
+import { IProductionPrismaClient } from 'src/modules/production/internal/infrastructure/database/production.prisma.client.interface';
 
 export async function createTestApp(): Promise<INestApplication> {
     const moduleRef = await Test.createTestingModule({
@@ -72,6 +73,15 @@ export async function cleanPurchaseDb(app: INestApplication): Promise<void> {
 export async function cleanSettingsDb(app: INestApplication): Promise<void> {
     const prisma = app.get<ISettingsPrismaClient>(ISettingsPrismaClient);
     await prisma.costConfig.deleteMany();
+}
+
+export async function cleanProductionDb(app: INestApplication): Promise<void> {
+    const prisma = app.get<IProductionPrismaClient>(IProductionPrismaClient);
+    await prisma.fillingOrderLine.deleteMany();
+    await prisma.fillingOrder.deleteMany();
+    await prisma.productionOrderAddonResolution.deleteMany();
+    await prisma.productionOrder.deleteMany();
+    await prisma.bulkStock.deleteMany();
 }
 
 export async function cleanSalesDb(app: INestApplication): Promise<void> {
