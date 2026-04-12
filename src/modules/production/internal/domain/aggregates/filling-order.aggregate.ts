@@ -124,6 +124,16 @@ export class FillingOrder extends AggregateRoot<FillingOrderId> {
         this.updatedAt = new Date();
     }
 
+    public update(params: { notes?: string | null }): void {
+        if (!this.status.isDraft()) {
+            throw new FillingOrderNotEditableError(this.status.value);
+        }
+        if (params.notes !== undefined) {
+            this.notes = params.notes;
+        }
+        this.updatedAt = new Date();
+    }
+
     public cancel(): void {
         if (this.status.isExecuted()) {
             throw new FillingOrderNotEditableError(this.status.value);
