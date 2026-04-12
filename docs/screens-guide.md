@@ -607,7 +607,7 @@ For CONFIRMED status:
 ### Layout
 ```
 ┌─ [← Filling]  Filling — Rose Body Butter ──────────────────────┐
-│  Status: [DRAFT]   Available Bulk: 4,500 gm                    │
+│  Status: [DRAFT]   Available Bulk: 4,500 gm   [Edit Notes]     │
 ├─ Fill Lines ─────────────────────────────── [+ Add Variant] ───┤
 │  Variant         │ Units │ Unit Weight │ Bulk Used │ Pkg Needed │
 │  Body Butter 50g │ 20    │ 50 gm       │ 1,000 gm  │ 20× Box50 │
@@ -618,11 +618,14 @@ For CONFIRMED status:
 └─────────────────────────────────────────────────────────────────┘
 ```
 
+`[Edit Notes]` button only visible when status is `DRAFT`.
+
 ### Data & Actions
 | Action | API Call |
 |--------|----------|
 | Load | `GET /filling-orders/:id` |
 | Create | `POST /filling-orders` |
+| Update notes (DRAFT only) | `PATCH /filling-orders/:id` `{notes?}` |
 | Confirm | `POST /filling-orders/:id/confirm` |
 | Execute | `POST /filling-orders/:id/execute` |
 | Cancel | `POST /filling-orders/:id/cancel` |
