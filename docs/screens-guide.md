@@ -609,16 +609,16 @@ For CONFIRMED status:
 ┌─ [← Filling]  Filling — Rose Body Butter ──────────────────────┐
 │  Status: [DRAFT]   Available Bulk: 4,500 gm   [Edit Notes]     │
 ├─ Fill Lines ─────────────────────────────── [+ Add Variant] ───┤
-│  Variant         │ Units │ Unit Weight │ Bulk Used │ Pkg Needed │
-│  Body Butter 50g │ 20    │ 50 gm       │ 1,000 gm  │ 20× Box50 │
-│  Body Butter 100g│ 10    │ 100 gm      │ 1,000 gm  │ 10× Box100│
+│  Variant         │ Units │ Unit Weight │ Bulk Used │ Actions    │
+│  Body Butter 50g │ 20    │ 50 gm       │ 1,000 gm  │ [Edit] [×]│
+│  Body Butter 100g│ 10    │ 100 gm      │ 1,000 gm  │ [Edit] [×]│
 ├─────────────────────────────────────────────────────────────────┤
 │  Total Bulk Used: 2,000 gm  (Available: 4,500 gm ✅)           │
 │         [Confirm]           [Cancel]                            │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-`[Edit Notes]` button only visible when status is `DRAFT`.
+`[Edit Notes]`, `[+ Add Variant]`, `[Edit]`, and `[×]` are only visible when status is `DRAFT`.
 
 ### Data & Actions
 | Action | API Call |
@@ -626,13 +626,17 @@ For CONFIRMED status:
 | Load | `GET /filling-orders/:id` |
 | Create | `POST /filling-orders` |
 | Update notes (DRAFT only) | `PATCH /filling-orders/:id` `{notes?}` |
+| Add line (DRAFT only) | `POST /filling-orders/:id/lines` `{variantItemId, quantityUnits}` |
+| Update line qty (DRAFT only) | `PATCH /filling-orders/:id/lines/:lineId` `{quantityUnits}` |
+| Remove line (DRAFT only) | `DELETE /filling-orders/:id/lines/:lineId` |
 | Confirm | `POST /filling-orders/:id/confirm` |
 | Execute | `POST /filling-orders/:id/execute` |
 | Cancel | `POST /filling-orders/:id/cancel` |
 
 ### UX Notes
-- Variant picker: only FINAL_PRODUCT items linked to the selected product
-- `bulkUsedGm = units × unitWeightGm` — calculated live on the client
+- Variant picker (`[+ Add Variant]`): only FINAL_PRODUCT items linked to the selected product; `unitWeightGm` is auto-resolved by the backend from the item — do NOT send it in the add-line request
+- `[Edit]` on a line opens a qty-only input (unit weight is read-only, derived from the variant item)
+- `bulkUsedGm = units × unitWeightGm` — recalculated by the backend on each add/update/remove; reflect the returned `bulkUsedGm` from the response
 - Warn if total bulk used > available bulk
 - Packaging BOM is informational only (shown from item detail, not recalculated here)
 - **FILLING Add-ons**: At execute time, the backend automatically deducts add-on ingredients (e.g. fragrance) using each variant's `addonComponents[]` BOM — no user input needed

@@ -582,7 +582,7 @@ flowchart TD
   /production/orders           → Production order list
   /production/orders/:id       → Production order detail + execute
   /production/filling-orders   → Filling order list
-  /production/filling-orders/:id → Filling order detail + execute
+  /production/filling-orders/:id → Filling order detail + line editor (DRAFT) + execute
 
 /sales
   /sales                       → Sales order list (tabs by status + paymentStatus filter)
