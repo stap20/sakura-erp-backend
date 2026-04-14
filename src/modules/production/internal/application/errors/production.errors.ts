@@ -36,3 +36,9 @@ export class BulkStockNotFoundApplicationError extends NotFoundError {
         super(`No bulk stock found for product ${productId}`);
     }
 }
+
+export class FillingOrderLineNotFoundApplicationError extends NotFoundError {
+    constructor(lineId: string) {
+        super(`Filling order line ${lineId} not found`);
+    }
+}

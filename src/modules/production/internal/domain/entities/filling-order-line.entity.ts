@@ -69,6 +69,11 @@ export class FillingOrderLine extends Entity<FillingOrderLineId> {
         );
     }
 
+    public updateQuantityUnits(qty: number): void {
+        this.quantityUnits = qty;
+        this.bulkUsedGm = qty * this.unitWeightGm;
+    }
+
     public getVariantItemId(): string { return this.variantItemId; }
     public getVariantName(): string { return this.variantName; }
     public getQuantityUnits(): number { return this.quantityUnits; }

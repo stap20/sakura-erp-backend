@@ -28,6 +28,9 @@ import { ConfirmFillingOrderController } from '../internal/presentation/controll
 import { ExecuteFillingOrderController } from '../internal/presentation/controllers/execute-filling-order.controller';
 import { CancelFillingOrderController } from '../internal/presentation/controllers/cancel-filling-order.controller';
 import { UpdateFillingOrderController } from '../internal/presentation/controllers/update-filling-order.controller';
+import { AddFillingOrderLineController } from '../internal/presentation/controllers/add-filling-order-line.controller';
+import { UpdateFillingOrderLineController } from '../internal/presentation/controllers/update-filling-order-line.controller';
+import { RemoveFillingOrderLineController } from '../internal/presentation/controllers/remove-filling-order-line.controller';
 
 // Command Handlers — Production Orders
 import { CreateProductionOrderHandler } from '../internal/application/commands/create-production-order/create-production-order.handler';
@@ -42,6 +45,9 @@ import { ConfirmFillingOrderHandler } from '../internal/application/commands/con
 import { ExecuteFillingOrderHandler } from '../internal/application/commands/execute-filling-order/execute-filling-order.handler';
 import { CancelFillingOrderHandler } from '../internal/application/commands/cancel-filling-order/cancel-filling-order.handler';
 import { UpdateFillingOrderHandler } from '../internal/application/commands/update-filling-order/update-filling-order.handler';
+import { AddFillingOrderLineHandler } from '../internal/application/commands/add-filling-order-line/add-filling-order-line.handler';
+import { UpdateFillingOrderLineHandler } from '../internal/application/commands/update-filling-order-line/update-filling-order-line.handler';
+import { RemoveFillingOrderLineHandler } from '../internal/application/commands/remove-filling-order-line/remove-filling-order-line.handler';
 
 // Query Handler Interfaces
 import { IGetAllBulkStocksHandler } from '../internal/application/queries/get-all-bulk-stocks/get-all-bulk-stocks.handler.interface';
@@ -113,6 +119,9 @@ import { NestLogger } from 'src/shared/infrastructure/logger/nest-logger';
         // Command Handlers — Filling Orders
         CreateFillingOrderHandler,
         UpdateFillingOrderHandler,
+        AddFillingOrderLineHandler,
+        UpdateFillingOrderLineHandler,
+        RemoveFillingOrderLineHandler,
         ConfirmFillingOrderHandler,
         ExecuteFillingOrderHandler,
         CancelFillingOrderHandler,
@@ -154,6 +163,9 @@ import { NestLogger } from 'src/shared/infrastructure/logger/nest-logger';
         GetAllFillingOrdersController,
         GetFillingOrderByIdController,
         UpdateFillingOrderController,
+        AddFillingOrderLineController,
+        UpdateFillingOrderLineController,
+        RemoveFillingOrderLineController,
         ConfirmFillingOrderController,
         ExecuteFillingOrderController,
         CancelFillingOrderController,
