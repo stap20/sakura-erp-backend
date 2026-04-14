@@ -2,7 +2,7 @@ import { AggregateRoot } from 'src/shared/domain/aggregate-root';
 import { FillingOrderId } from '../value-objects/filling-order-id.vo';
 import { FillingOrderStatus } from '../value-objects/filling-order-status.vo';
 import { FillingOrderLine } from '../entities/filling-order-line.entity';
-import { FillingOrderNotEditableError } from '../errors/production.error';
+import { FillingOrderNotEditableError, FillingOrderLineNotFoundDomainError } from '../errors/production.error';
 
 export interface CreateFillingOrderParams {
     id: string;
@@ -122,6 +122,45 @@ export class FillingOrder extends AggregateRoot<FillingOrderId> {
         this.performedBy = performedBy;
         this.executedAt = new Date();
         this.updatedAt = new Date();
+    }
+
+    public update(params: { notes?: string | null }): void {
+        if (!this.status.isDraft()) {
+            throw new FillingOrderNotEditableError(this.status.value);
+        }
+        if (params.notes !== undefined) {
+            this.notes = params.notes;
+        }
+        this.updatedAt = new Date();
+    }
+
+    public addLine(line: FillingOrderLine): void {
+        if (!this.status.isDraft()) throw new FillingOrderNotEditableError(this.status.value);
+        this.lines.push(line);
+        this.recalculateBulkUsed();
+        this.updatedAt = new Date();
+    }
+
+    public updateLine(lineId: string, quantityUnits: number): void {
+        if (!this.status.isDraft()) throw new FillingOrderNotEditableError(this.status.value);
+        const line = this.lines.find((l) => l.getId().value === lineId);
+        if (!line) throw new FillingOrderLineNotFoundDomainError(lineId);
+        line.updateQuantityUnits(quantityUnits);
+        this.recalculateBulkUsed();
+        this.updatedAt = new Date();
+    }
+
+    public removeLine(lineId: string): void {
+        if (!this.status.isDraft()) throw new FillingOrderNotEditableError(this.status.value);
+        const idx = this.lines.findIndex((l) => l.getId().value === lineId);
+        if (idx === -1) throw new FillingOrderLineNotFoundDomainError(lineId);
+        this.lines.splice(idx, 1);
+        this.recalculateBulkUsed();
+        this.updatedAt = new Date();
+    }
+
+    private recalculateBulkUsed(): void {
+        this.bulkUsedGm = this.lines.reduce((sum, l) => sum + l.getBulkUsedGm(), 0);
     }
 
     public cancel(): void {

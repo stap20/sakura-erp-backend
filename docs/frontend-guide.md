@@ -489,6 +489,10 @@ flowchart TD
 | POST | `/filling-orders` | Create DRAFT | `{productId, lines[{variantItemId, quantityUnits, unitWeightGm}], notes?}` | FillingOrder |
 | GET | `/filling-orders` | List | `?productId&status&offset&limit` | FillingOrder[] |
 | GET | `/filling-orders/:id` | Get | — | FillingOrder |
+| PATCH | `/filling-orders/:id` | Update notes (DRAFT only) | `{notes?}` | FillingOrder |
+| POST | `/filling-orders/:id/lines` | Add a line (DRAFT only) | `{variantItemId, quantityUnits}` | FillingOrder |
+| PATCH | `/filling-orders/:id/lines/:lineId` | Update quantityUnits (DRAFT only) | `{quantityUnits}` | FillingOrder |
+| DELETE | `/filling-orders/:id/lines/:lineId` | Remove a line (DRAFT only) | — | void 204 |
 | POST | `/filling-orders/:id/confirm` | Confirm | — | void 204 |
 | POST | `/filling-orders/:id/execute` | Execute | `{performedBy?}` | void 204 |
 | POST | `/filling-orders/:id/cancel` | Cancel | — | void 204 |
