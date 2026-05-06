@@ -731,7 +731,7 @@ graph LR
 ### Key Business Rules (Frontend Validation)
 
 - Only items of type `FINAL_PRODUCT` or `SHIPPING_PACKAGING` can be added to a sales order line
-- Only `RAW_MATERIAL` or `PACKAGING` items can be added to a purchase order line
+- Only `RAW_MATERIAL`, `PACKAGING`, or `SHIPPING_PACKAGING` items can be added to a purchase order line
 - A recipe version can only be activated if base ingredient percentages sum to exactly 100%
 - A sales order can only be edited (lines, discount) when in `DRAFT` status
 - Payment can only be marked as `PAID` when `paymentStatus === 'PENDING'`

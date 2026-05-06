@@ -491,7 +491,7 @@ For CONFIRMED status:
 | Cancel | `POST /purchases/:id/cancel` |
 
 ### UX Notes
-- Add line modal: item picker (only RAW_MATERIAL + PACKAGING items), quantity, unit price
+- Add line modal: item picker (only RAW_MATERIAL, PACKAGING, or SHIPPING_PACKAGING items), quantity, unit price
 - Action buttons shown based on status: DRAFT → [Confirm][Cancel] / CONFIRMED → [Receive][Cancel]
 - Receive shows confirmation dialog warning it will restock inventory
 - After receive, all line editing is hidden (order becomes read-only)

@@ -12,6 +12,7 @@ describe('Purchases (e2e)', () => {
     let rawMaterialItemId: string;
     let packagingItemId: string;
     let finalProductItemId: string;
+    let shippingPackagingItemId: string;
     let rawMaterialMeasureUnit: string;
 
     let orderId: string;
@@ -39,6 +40,11 @@ describe('Purchases (e2e)', () => {
             .post('/api/v1/inventory/items')
             .send({ name: 'Rose Serum 30ml (Purchase Test)', type: 'FINAL_PRODUCT', measureUnit: 'PCS' });
         finalProductItemId = fpRes.body.id;
+
+        const spRes = await request(app.getHttpServer())
+            .post('/api/v1/inventory/items')
+            .send({ name: 'Shipping Box 30x20 (Purchase Test)', type: 'SHIPPING_PACKAGING', measureUnit: 'PCS' });
+        shippingPackagingItemId = spRes.body.id;
     });
 
     afterAll(async () => {
@@ -124,6 +130,15 @@ describe('Purchases (e2e)', () => {
             expect(res.body.lines).toHaveLength(2);
         });
 
+        it('adds a SHIPPING_PACKAGING line', async () => {
+            const res = await request(app.getHttpServer())
+                .post(`/api/v1/purchases/${orderId}/lines`)
+                .send({ itemId: shippingPackagingItemId, quantity: 200, unitPrice: 1.5 })
+                .expect(201);
+
+            expect(res.body.lines.some((l: any) => l.itemId === shippingPackagingItemId)).toBe(true);
+        });
+
         it('returns 409 when adding duplicate itemId on same PO', async () => {
             await request(app.getHttpServer())
                 .post(`/api/v1/purchases/${orderId}/lines`)
@@ -174,7 +189,7 @@ describe('Purchases (e2e)', () => {
                 .get(`/api/v1/purchases/${orderId}`)
                 .expect(200);
 
-            expect(afterRes.body.lines).toHaveLength(1);
+            expect(afterRes.body.lines).toHaveLength(2);
         });
     });
 
