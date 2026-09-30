@@ -59,6 +59,11 @@ export class GlobalErrorFilter implements ExceptionFilter {
                 customData = { ...response };
                 delete customData.statusCode;
                 delete customData.message;
+                // ValidationPipe puts the per-field messages in an array; keep them for the client
+                const details = (response as { message?: unknown }).message;
+                if (Array.isArray(details)) {
+                    customData.errors = details;
+                }
             }
         }
 

@@ -2,6 +2,7 @@ import { INestApplication, ValidationPipe, VersioningType } from '@nestjs/common
 import { Test } from '@nestjs/testing';
 import * as cookieParser from 'cookie-parser';
 import { AppModule } from 'src/app.module';
+import { JwtAuthGuard } from 'src/modules/security/internal/infrastructure/guards/jwt-auth.guard';
 import { NestLogger } from 'src/shared/infrastructure/logger/nest-logger';
 import { GlobalErrorFilter } from 'src/shared/infrastructure/filters/global-error.filter';
 import { PrismaKnownExceptionFilter } from 'src/shared/infrastructure/filters/prisma-known-exception.filter';
@@ -16,7 +17,11 @@ import { IProductionPrismaClient } from 'src/modules/production/internal/infrast
 export async function createTestApp(): Promise<INestApplication> {
     const moduleRef = await Test.createTestingModule({
         imports: [AppModule],
-    }).compile();
+    })
+        // Feature e2e suites test business flows, not auth; the global guard is bypassed here
+        .overrideProvider(JwtAuthGuard)
+        .useValue({ canActivate: () => true })
+        .compile();
 
     const app = moduleRef.createNestApplication();
 
