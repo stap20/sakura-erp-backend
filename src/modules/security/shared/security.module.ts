@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtModule } from '@nestjs/jwt';
 
 import { RolesGuard } from '../internal/infrastructure/guards/roles.guard';
 import { JwtAuthGuard } from '../internal/infrastructure/guards/jwt-auth.guard';
@@ -26,8 +26,6 @@ import { JwtAuthGuard } from '../internal/infrastructure/guards/jwt-auth.guard';
     providers: [
         JwtAuthGuard,
         RolesGuard,
-        JwtService,
-        // Every route requires a valid token unless marked @Public()
         { provide: APP_GUARD, useExisting: JwtAuthGuard },
     ],
     exports: [JwtModule, RolesGuard, JwtAuthGuard],
