@@ -35,13 +35,14 @@ npx jest --config test/jest-e2e.json --testPathPatterns=purchases         # Purc
 npx jest --config test/jest-e2e.json --testPathPatterns=products          # Products suite only
 npx jest --config test/jest-e2e.json --testPathPatterns=settings          # Settings suite only
 npx jest --config test/jest-e2e.json --testPathPatterns=sales             # Sales suite only
+npx jest --config test/jest-e2e.json --testPathPatterns=security          # Security (real JwtAuthGuard) suite only
 ```
 
-E2E tests use the real databases and clean relevant tables before each suite. Test files live in `test/inventory/`, `test/recipe/`, `test/purchase/`, `test/settings/`, `test/sales/`, and `test/production/`. The helper `test/helpers/app.setup.ts` bootstraps the full `AppModule` with identical global setup to `main.ts` and exports `cleanInventoryDb()`, `cleanRecipeDb()`, `cleanPurchaseDb()`, `cleanSettingsDb()`, `cleanSalesDb()`, and `cleanProductionDb()`.
+E2E tests use the real databases and clean relevant tables before each suite. Test files live in `test/inventory/`, `test/recipe/`, `test/purchase/`, `test/settings/`, `test/sales/`, `test/production/`, and `test/security/`. The helper `test/helpers/app.setup.ts` bootstraps the full `AppModule` with identical global setup to `main.ts` and exports `createTestApp({ bypassAuth })` (the global `JwtAuthGuard` is bypassed by default; the security suite passes `bypassAuth: false`), `removeAuthUser()`, `cleanInventoryDb()`, `cleanRecipeDb()`, `cleanPurchaseDb()`, `cleanSettingsDb()`, `cleanSalesDb()`, and `cleanProductionDb()`.
 
 **Important**: The `test:e2e` script runs with `--runInBand` (all suites in one process, sequentially). This is required because all suites share the same real databases — parallel execution causes `cleanXxxDb()` calls from one suite to corrupt in-flight data of another. Do not remove `--runInBand`.
 
-Current totals: **162 tests** — 29 inventory items + 4 categories + 12 products + 32 recipe + 27 purchase + 7 settings + 37 sales + 14 production filling orders.
+Current totals: **168 tests** — 24 inventory items + 9 categories + 12 products + 32 recipe + 28 purchase + 7 settings + 37 sales + 14 production filling orders + 5 security.
 
 ### Database (Prisma — per module)
 ```bash
@@ -197,10 +198,10 @@ Prisma schemas and generated clients live inside each module's infrastructure di
 - **Auth**: Complete (login, user CRUD)
 - **Vendor**: Complete (CRUD, activate/deactivate)
 - **Security**: Complete (JWT + RBAC)
-- **Inventory**: Complete — 4 item types, categories, Product aggregate, PackagingBOM, AddonBOM (`PUT /inventory/items/:id/addon-bom`), restock/deduct with WAUP (unitPrice now exposed on HTTP restock), immutable transaction audit trail, soft-delete (archive). `GET /inventory/items/:id` returns `addonComponents[]`. E2E tested (29 tests).
+- **Inventory**: Complete — 4 item types, categories, Product aggregate, PackagingBOM, AddonBOM (`PUT /inventory/items/:id/addon-bom`), restock/deduct with WAUP (unitPrice now exposed on HTTP restock), immutable transaction audit trail, soft-delete (archive). `GET /inventory/items/:id` returns `addonComponents[]`. E2E tested (24 items + 9 categories + 12 products).
 - **Recipe**: Complete — formula/BOM management with version lifecycle (DRAFT → ACTIVE → ARCHIVED), w/w% percentage quantities, add-on placeholders with `ingredientCategory` + `resolutionPhase` (BULK/FILLING), 100% base formula validation at activation. Links to Product aggregate (not Item). `GET /recipes/:id` returns `resolutionPhase` per ingredient. E2E tested (32 tests).
-- **Purchase**: Complete — procurement management with PO lifecycle (DRAFT → CONFIRMED → RECEIVED + CANCELLED), vendor snapshot, item validation (RAW_MATERIAL/PACKAGING only), auto-restock on receive with vendorId + unitPrice propagation to InventoryTransaction. Cross-module integration via `IInventoryFacade` (facade pattern). E2E tested (27 tests).
+- **Purchase**: Complete — procurement management with PO lifecycle (DRAFT → CONFIRMED → RECEIVED + CANCELLED), vendor snapshot, item validation (RAW_MATERIAL/PACKAGING only), auto-restock on receive with vendorId + unitPrice propagation to InventoryTransaction. Cross-module integration via `IInventoryFacade` (facade pattern). E2E tested (28 tests).
 - **Production**: Complete — two-phase production: ProductionOrder (bulk batch, supports `addonResolutions[]` for BULK add-on deduction) + FillingOrder (fill into variants, deducts FILLING add-ons via AddonBOM, full DRAFT editing via `PATCH /filling-orders/:id` for notes + `POST/PATCH/DELETE /filling-orders/:id/lines` for line management). BulkStock tracks available bulk grams per Product. Cross-module integration via `IInventoryFacade` + `IRecipeFacade`. E2E tested (14 tests).
 - **Sales**: Complete — sell FINAL_PRODUCT and SHIPPING_PACKAGING with lifecycle (DRAFT → CONFIRMED → SHIPPED + CANCELLED). Invoice number + payment status (PENDING/PAID). Gift line support. Discount codes (PERCENT + FIXED_AMOUNT). COGS pricing includes `addonCostPerUnit`. Cross-module integration via `IInventoryFacade` + `IRecipeFacade` + `ISettingsFacade`. E2E tested (37 tests).
 
-**Total E2E tests: 162** (inventory 29 + recipe 32 + purchase 27 + settings 7 + products 12 + sales 37 + categories 4 + production filling orders 14)
+**Total E2E tests: 168** (inventory items 24 + recipe 32 + purchase 28 + settings 7 + products 12 + sales 37 + categories 9 + production filling orders 14 + security 5)

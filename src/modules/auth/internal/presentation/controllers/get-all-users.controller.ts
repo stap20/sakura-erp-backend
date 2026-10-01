@@ -25,7 +25,7 @@ export class GetAllUsersController {
 
     @Version('1')
     @Get('user')
-    @Roles(['ADMIN'])
+    @Roles(['ADMIN', 'SUPER_ADMIN'])
     @ApiBearerAuth()
     @ApiOperation({ summary: 'Get users based on query (Admin only)' })
     @ApiResponse({

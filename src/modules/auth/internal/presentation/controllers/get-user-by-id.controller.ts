@@ -16,7 +16,7 @@ export class GetUserByIdController {
 
   @Version('1')
   @Get('user/:id')
-  @Roles(['ADMIN'])
+  @Roles(['ADMIN', 'SUPER_ADMIN'])
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get user by ID (Admin only)' })
   @ApiResponse({ 

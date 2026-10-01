@@ -1,13 +1,15 @@
 import { Controller, Post, Body, Version, Inject, Res } from '@nestjs/common';
-import type { Response } from 'express';
+import type { CookieOptions, Response } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthenticateHandler } from '../../application/commands/authenticate/authenticate.handler';
 import { LoginRequestDto } from '../dtos/requests/login.request.dto';
 import { LoginResponseDto } from '../dtos/responses/login.response.dto';
 import { AuthenticateCommand } from '../../application/commands/authenticate/authenticate.command';
+import { Public } from 'src/modules/security/shared/decorators/public.decorator';
 
 @ApiTags('Authentication')
+@Public()
 @Controller('auth')
 export class AuthController {
     constructor(
@@ -42,9 +44,7 @@ export class AuthController {
         const maxAge = this.parseDuration(expiresIn);
 
         res.cookie('auth_token', result.token, {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'strict',
+            ...this.cookieOptions(),
             maxAge: maxAge,
         });
 
@@ -63,8 +63,17 @@ export class AuthController {
     @ApiOperation({ summary: 'User logout' })
     @ApiResponse({ status: 200, description: 'Logout successful' })
     async logout(@Res({ passthrough: true }) res: Response): Promise<void> {
-        res.clearCookie('auth_token');
+        res.clearCookie('auth_token', this.cookieOptions());
         return;
+    }
+
+    // Secure cookies are dropped by browsers on plain http://localhost, so only require them in production
+    private cookieOptions(): CookieOptions {
+        return {
+            httpOnly: true,
+            secure: process.env.NODE_ENV?.trim() === 'production',
+            sameSite: 'strict',
+        };
     }
 
     private parseDuration(duration: string | undefined): number {

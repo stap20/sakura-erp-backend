@@ -17,10 +17,14 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
 
     const configService = app.get(ConfigService);
-    const frontendUrl = configService.get('FRONTEND_URL');
+    // FRONTEND_URL may hold several comma-separated origins (e.g. prod domain + http://localhost:5173)
+    const frontendUrls = (configService.get<string>('FRONTEND_URL') ?? '')
+        .split(',')
+        .map((url) => url.trim())
+        .filter(Boolean);
 
     app.enableCors({
-        origin: frontendUrl,
+        origin: frontendUrls,
         credentials: true,
     });
     app.use(cookieParser());

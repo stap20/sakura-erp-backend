@@ -2,6 +2,7 @@ import { INestApplication, ValidationPipe, VersioningType } from '@nestjs/common
 import { Test } from '@nestjs/testing';
 import * as cookieParser from 'cookie-parser';
 import { AppModule } from 'src/app.module';
+import { JwtAuthGuard } from 'src/modules/security/internal/infrastructure/guards/jwt-auth.guard';
 import { NestLogger } from 'src/shared/infrastructure/logger/nest-logger';
 import { GlobalErrorFilter } from 'src/shared/infrastructure/filters/global-error.filter';
 import { PrismaKnownExceptionFilter } from 'src/shared/infrastructure/filters/prisma-known-exception.filter';
@@ -11,12 +12,21 @@ import { IRecipePrismaClient } from 'src/modules/recipe/internal/infrastructure/
 import { IPurchasePrismaClient } from 'src/modules/purchase/internal/infrastructure/database/purchase.prisma.client.interface';
 import { ISettingsPrismaClient } from 'src/modules/settings/internal/infrastructure/database/settings.prisma.client.interface';
 import { ISalesPrismaClient } from 'src/modules/sales/internal/infrastructure/database/sales.prisma.client.interface';
+import { IAuthPrismaClient } from 'src/modules/auth/internal/infrastructure/database/auth.prisma.client.interface';
 import { IProductionPrismaClient } from 'src/modules/production/internal/infrastructure/database/production.prisma.client.interface';
 
-export async function createTestApp(): Promise<INestApplication> {
-    const moduleRef = await Test.createTestingModule({
+export async function createTestApp(
+    options: { bypassAuth?: boolean } = {},
+): Promise<INestApplication> {
+    const builder = Test.createTestingModule({
         imports: [AppModule],
-    }).compile();
+    });
+
+    if (options.bypassAuth ?? true) {
+        builder.overrideProvider(JwtAuthGuard).useValue({ canActivate: () => true });
+    }
+
+    const moduleRef = await builder.compile();
 
     const app = moduleRef.createNestApplication();
 
@@ -89,4 +99,9 @@ export async function cleanSalesDb(app: INestApplication): Promise<void> {
     await prisma.salesOrderLine.deleteMany();
     await prisma.salesOrder.deleteMany();
     await prisma.discountCode.deleteMany();
+}
+
+export async function removeAuthUser(app: INestApplication, email: string): Promise<void> {
+    const prisma = app.get<IAuthPrismaClient>(IAuthPrismaClient);
+    await prisma.user.deleteMany({ where: { email } });
 }

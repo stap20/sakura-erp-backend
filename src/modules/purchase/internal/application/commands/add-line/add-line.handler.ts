@@ -8,7 +8,7 @@ import { InventoryGateway } from '../../../infrastructure/gateways/inventory.gat
 import { ItemNotFoundForPurchaseError, InvalidItemTypeForPurchaseError } from '../../errors/add-line.errors';
 import { AddLineCommand } from './add-line.command';
 
-const ALLOWED_TYPES = ['RAW_MATERIAL', 'PACKAGING'];
+const ALLOWED_TYPES = ['RAW_MATERIAL', 'PACKAGING', 'SHIPPING_PACKAGING'];
 
 @Injectable()
 export class AddLineHandler extends CommandHandlerBase<AddLineCommand, void> {
